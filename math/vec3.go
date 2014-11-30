@@ -1,4 +1,4 @@
-package vec3
+package math
 
 import "math"
 
@@ -70,27 +70,27 @@ func (v Vec3) DistanceToVec3(other Vec3) float32 {
 	return v.DistanceToCoords(other.X, other.Y, other.Z)
 }
 
-func Null() Vec3 {
+func NullVec3() Vec3 {
 	return Vec3{}
 }
 
-func BaseVectorX() Vec3 {
+func BaseVec3X() Vec3 {
 	return Vec3{1.0, 0.0, 0.0}
 }
 
-func BaseVectorY() Vec3 {
+func BaseVec3Y() Vec3 {
 	return Vec3{0.0, 1.0, 0.0}
 }
 
-func BaseVectorZ() Vec3 {
+func BaseVec3Z() Vec3 {
 	return Vec3{0.0, 0.0, 1.0}
 }
 
-func DotProduct(a, b Vec3) float32 {
+func Vec3DotProduct(a, b Vec3) float32 {
 	return a.X*b.X + a.Y*b.Y + a.Z*b.Z
 }
 
-func CrossProduct(a, b Vec3) Vec3 {
+func Vec3CrossProduct(a, b Vec3) Vec3 {
 	return Vec3{
 		a.Y*b.Z - a.Z*b.Y,
 		a.Z*b.X - a.X*b.Z,

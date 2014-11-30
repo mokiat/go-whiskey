@@ -24,12 +24,20 @@ func (v Vec3) IncCoords(x, y, z float32) Vec3 {
 	}
 }
 
+func (v Vec3) IncVec3(other Vec3) Vec3 {
+	return v.IncCoords(other.X, other.Y, other.Z)
+}
+
 func (v Vec3) DecCoords(x, y, z float32) Vec3 {
 	return Vec3{
 		v.X - x,
 		v.Y - y,
 		v.Z - z,
 	}
+}
+
+func (v Vec3) DecVec3(other Vec3) Vec3 {
+	return v.DecCoords(other.X, other.Y, other.Z)
 }
 
 func (v Vec3) Mul(amount float32) Vec3 {

@@ -43,8 +43,18 @@ var _ = Describe("Vec3", func() {
 		AssertVec3Equals(incremented, 3.5, 0.5, 9.0)
 	})
 
+	It("#IncVec3", func() {
+		incremented := firstVector.IncVec3(Vec3{1.5, -2.5, 5.0})
+		AssertVec3Equals(incremented, 3.5, 0.5, 9.0)
+	})
+
 	It("#DecCoords", func() {
 		decremented := firstVector.DecCoords(1.5, -2.5, 5.0)
+		AssertVec3Equals(decremented, 0.5, 5.5, -1.0)
+	})
+
+	It("#DecVec3", func() {
+		decremented := firstVector.DecVec3(Vec3{1.5, -2.5, 5.0})
 		AssertVec3Equals(decremented, 0.5, 5.5, -1.0)
 	})
 

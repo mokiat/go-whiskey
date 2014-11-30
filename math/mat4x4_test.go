@@ -2,36 +2,10 @@ package math_test
 
 import (
 	. "github.com/momchil-atanasov/go-whiskey/math"
+	. "github.com/momchil-atanasov/go-whiskey/math/test_helpers"
 
 	. "github.com/onsi/ginkgo"
 )
-
-func AssertMat4x4Equals(matrix Mat4x4,
-	m11, m12, m13, m14,
-	m21, m22, m23, m24,
-	m31, m32, m33, m34,
-	m41, m42, m43, m44 float32) {
-
-	AssertFloatEquals(matrix.M11, m11)
-	AssertFloatEquals(matrix.M12, m12)
-	AssertFloatEquals(matrix.M13, m13)
-	AssertFloatEquals(matrix.M14, m14)
-
-	AssertFloatEquals(matrix.M21, m21)
-	AssertFloatEquals(matrix.M22, m22)
-	AssertFloatEquals(matrix.M23, m23)
-	AssertFloatEquals(matrix.M24, m24)
-
-	AssertFloatEquals(matrix.M31, m31)
-	AssertFloatEquals(matrix.M32, m32)
-	AssertFloatEquals(matrix.M33, m33)
-	AssertFloatEquals(matrix.M34, m34)
-
-	AssertFloatEquals(matrix.M41, m41)
-	AssertFloatEquals(matrix.M42, m42)
-	AssertFloatEquals(matrix.M43, m43)
-	AssertFloatEquals(matrix.M44, m44)
-}
 
 var _ = Describe("Mat4x4", func() {
 	var vector Vec4

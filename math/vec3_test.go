@@ -2,16 +2,11 @@ package math_test
 
 import (
 	. "github.com/momchil-atanasov/go-whiskey/math"
+	. "github.com/momchil-atanasov/go-whiskey/math/test_helpers"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
-
-func AssertVec3Equals(vector Vec3, expectedX, expectedY, expectedZ float32) {
-	AssertFloatEquals(vector.X, expectedX)
-	AssertFloatEquals(vector.Y, expectedY)
-	AssertFloatEquals(vector.Z, expectedZ)
-}
 
 var _ = Describe("Vec3", func() {
 

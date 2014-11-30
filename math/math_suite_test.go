@@ -11,7 +11,3 @@ func TestMath(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Math Suite")
 }
-
-func AssertFloatEquals(actualValue, expectedValue float32) {
-	Ω(actualValue).Should(BeNumerically("~", expectedValue, 0.0001))
-}

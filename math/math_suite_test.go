@@ -13,5 +13,5 @@ func TestMath(t *testing.T) {
 }
 
 func AssertFloatEquals(actualValue, expectedValue float32) {
-	Ω(actualValue).Should(BeNumerically("~", expectedValue))
+	Ω(actualValue).Should(BeNumerically("~", expectedValue, 0.0001))
 }

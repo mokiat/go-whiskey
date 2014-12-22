@@ -2,16 +2,16 @@ package shader
 
 import "github.com/momchil-atanasov/go-whiskey/graphics"
 
-type VertexShader interface {
+type FragmentShader interface {
 	Shader
 }
 
-type vertexShader struct {
+type fragmentShader struct {
 	shader
 }
 
-func NewVertexShader(facade graphics.Facade, sourceCode string) VertexShader {
-	return &vertexShader{
+func NewFragmentShader(facade graphics.Facade, sourceCode string) FragmentShader {
+	return &fragmentShader{
 		shader: shader{
 			id:         graphics.InvalidShaderId,
 			facade:     facade,
@@ -20,8 +20,8 @@ func NewVertexShader(facade graphics.Facade, sourceCode string) VertexShader {
 	}
 }
 
-func (s *vertexShader) CreateRemotely() {
-	s.id = s.facade.CreateVertexShader()
+func (s *fragmentShader) CreateRemotely() {
+	s.id = s.facade.CreateFragmentShader()
 	s.facade.SetShaderSourceCode(s.id, s.sourceCode)
 	s.facade.CompileShader(s.id)
 }

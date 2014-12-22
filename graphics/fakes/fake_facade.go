@@ -14,6 +14,12 @@ type FakeFacade struct {
 	createVertexShaderReturns struct {
 		result1 int
 	}
+	CreateFragmentShaderStub        func() int
+	createFragmentShaderMutex       sync.RWMutex
+	createFragmentShaderArgsForCall []struct{}
+	createFragmentShaderReturns struct {
+		result1 int
+	}
 	SetShaderSourceCodeStub        func(shaderId int, sourceCode string)
 	setShaderSourceCodeMutex       sync.RWMutex
 	setShaderSourceCodeArgsForCall []struct {
@@ -52,6 +58,30 @@ func (fake *FakeFacade) CreateVertexShaderCallCount() int {
 func (fake *FakeFacade) CreateVertexShaderReturns(result1 int) {
 	fake.CreateVertexShaderStub = nil
 	fake.createVertexShaderReturns = struct {
+		result1 int
+	}{result1}
+}
+
+func (fake *FakeFacade) CreateFragmentShader() int {
+	fake.createFragmentShaderMutex.Lock()
+	fake.createFragmentShaderArgsForCall = append(fake.createFragmentShaderArgsForCall, struct{}{})
+	fake.createFragmentShaderMutex.Unlock()
+	if fake.CreateFragmentShaderStub != nil {
+		return fake.CreateFragmentShaderStub()
+	} else {
+		return fake.createFragmentShaderReturns.result1
+	}
+}
+
+func (fake *FakeFacade) CreateFragmentShaderCallCount() int {
+	fake.createFragmentShaderMutex.RLock()
+	defer fake.createFragmentShaderMutex.RUnlock()
+	return len(fake.createFragmentShaderArgsForCall)
+}
+
+func (fake *FakeFacade) CreateFragmentShaderReturns(result1 int) {
+	fake.CreateFragmentShaderStub = nil
+	fake.createFragmentShaderReturns = struct {
 		result1 int
 	}{result1}
 }

@@ -9,15 +9,15 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("VertexShader", func() {
+var _ = Describe("FragmentShader", func() {
 	var facade *fakes.FakeFacade
 	var sourceCode string
-	var shader VertexShader
+	var shader FragmentShader
 
 	BeforeEach(func() {
 		facade = new(fakes.FakeFacade)
 		sourceCode = "#version 100 ..."
-		shader = NewVertexShader(facade, sourceCode)
+		shader = NewFragmentShader(facade, sourceCode)
 	})
 
 	It("is possible to get the source code", func() {
@@ -36,8 +36,8 @@ var _ = Describe("VertexShader", func() {
 		var shaderId int
 
 		BeforeEach(func() {
-			shaderId = 123
-			facade.CreateVertexShaderReturns(shaderId)
+			shaderId = 321
+			facade.CreateFragmentShaderReturns(shaderId)
 
 			shader.CreateRemotely()
 		})
@@ -51,7 +51,7 @@ var _ = Describe("VertexShader", func() {
 		})
 
 		It("has made the proper calls to the facade", func() {
-			Ω(facade.CreateVertexShaderCallCount()).Should(Equal(1))
+			Ω(facade.CreateFragmentShaderCallCount()).Should(Equal(1))
 			Ω(facade.SetShaderSourceCodeCallCount()).Should(Equal(1))
 			argShaderId, argShaderSource := facade.SetShaderSourceCodeArgsForCall(0)
 			Ω(argShaderId).Should(Equal(shaderId))

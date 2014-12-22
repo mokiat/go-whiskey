@@ -16,13 +16,13 @@ const (
 var names = make([]string, UNIFORM_COUNT)
 
 func init() {
-	names[ProjectionMatrix] = "projectionMatrix"
-	names[ModelViewMatrix] = "modelViewMatrix"
-	names[ModelMatrix] = "modelMatrix"
-	names[ViewMatrix] = "viewMatrix"
-	names[AmbientColor] = "ambientColor"
-	names[DiffuseColor] = "diffuseColor"
-	names[DiffuseTexture] = "diffuseTexture"
+	names[ProjectionMatrix] = "projectionMatrixIn"
+	names[ModelViewMatrix] = "modelViewMatrixIn"
+	names[ModelMatrix] = "modelMatrixIn"
+	names[ViewMatrix] = "viewMatrixIn"
+	names[AmbientColor] = "ambientColorIn"
+	names[DiffuseColor] = "diffuseColorIn"
+	names[DiffuseTexture] = "diffuseTextureIn"
 }
 
 func (u Uniform) Name() string {

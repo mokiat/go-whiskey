@@ -1,11 +1,13 @@
 package graphics
 
-const InvalidShaderId = 0
+type ResourceID uint32
+
+const InvalidShaderId ResourceID = 0
 
 type Facade interface {
-	CreateVertexShader() int
-	CreateFragmentShader() int
-	SetShaderSourceCode(shaderId int, sourceCode string)
-	CompileShader(shaderId int)
-	DeleteShader(shaderId int)
+	CreateVertexShader() ResourceID
+	CreateFragmentShader() ResourceID
+	SetShaderSourceCode(shaderId ResourceID, sourceCode string)
+	CompileShader(shaderId ResourceID)
+	DeleteShader(shaderId ResourceID)
 }

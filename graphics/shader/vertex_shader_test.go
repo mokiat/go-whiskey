@@ -33,7 +33,7 @@ var _ = Describe("VertexShader", func() {
 	})
 
 	Context("when shader is created remotely", func() {
-		var shaderId int
+		var shaderId graphics.ResourceID
 
 		BeforeEach(func() {
 			shaderId = 123

@@ -3,7 +3,7 @@ package shader
 import "github.com/momchil-atanasov/go-whiskey/graphics"
 
 type Shader interface {
-	Id() int
+	Id() graphics.ResourceID
 	SourceCode() string
 	CreateRemotely()
 	DeleteRemotely()
@@ -11,12 +11,12 @@ type Shader interface {
 }
 
 type shader struct {
-	id         int
+	id         graphics.ResourceID
 	facade     graphics.Facade
 	sourceCode string
 }
 
-func (s *shader) Id() int {
+func (s *shader) Id() graphics.ResourceID {
 	return s.id
 }
 

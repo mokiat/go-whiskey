@@ -1,6 +1,8 @@
 package attribute
 
-type Attribute int
+import "github.com/momchil-atanasov/go-whiskey/common"
+
+type Attribute common.Enum
 
 const (
 	Coord Attribute = iota

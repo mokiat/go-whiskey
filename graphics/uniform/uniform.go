@@ -1,6 +1,8 @@
 package uniform
 
-type Uniform int
+import "github.com/momchil-atanasov/go-whiskey/common"
+
+type Uniform common.Enum
 
 const (
 	ProjectionMatrix Uniform = iota

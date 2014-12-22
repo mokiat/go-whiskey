@@ -11,16 +11,16 @@ import (
 
 var _ = Describe("UInt16Buffer", func() {
 
-	var data []byte
+	var size int
 	var array UInt16Buffer
 
 	itBehavesLikeAnArray := func() {
 		It("should have proper size", func() {
-			Ω(array.Size()).Should(Equal(3))
+			Ω(array.Size()).Should(Equal(size))
 		})
 
 		It("is possible to get the data", func() {
-			Ω(array.Bytes()).Should(Equal(data))
+			Ω(array.Bytes()).Should(HaveLen(size * 2))
 		})
 
 		Context("when values are set", func() {
@@ -39,12 +39,12 @@ var _ = Describe("UInt16Buffer", func() {
 	}
 
 	BeforeEach(func() {
-		data = make([]byte, 7)
+		size = 3
 	})
 
 	Describe("Little Endian", func() {
 		BeforeEach(func() {
-			array = NewUInt16Buffer(data, binary.LittleEndian)
+			array = NewUInt16Buffer(size, binary.LittleEndian)
 		})
 
 		itBehavesLikeAnArray()
@@ -52,7 +52,7 @@ var _ = Describe("UInt16Buffer", func() {
 
 	Describe("Big Endian", func() {
 		BeforeEach(func() {
-			array = NewUInt16Buffer(data, binary.BigEndian)
+			array = NewUInt16Buffer(size, binary.BigEndian)
 		})
 
 		itBehavesLikeAnArray()
@@ -62,16 +62,16 @@ var _ = Describe("UInt16Buffer", func() {
 
 var _ = Describe("Float32Buffer", func() {
 
-	var data []byte
+	var size int
 	var array Float32Buffer
 
 	itBehavesLikeAnArray := func() {
 		It("should have proper size", func() {
-			Ω(array.Size()).Should(Equal(2))
+			Ω(array.Size()).Should(Equal(size))
 		})
 
 		It("is possible to get the data", func() {
-			Ω(array.Bytes()).Should(Equal(data))
+			Ω(array.Bytes()).Should(HaveLen(size * 4))
 		})
 
 		Context("when values are set", func() {
@@ -88,12 +88,12 @@ var _ = Describe("Float32Buffer", func() {
 	}
 
 	BeforeEach(func() {
-		data = make([]byte, 9)
+		size = 2
 	})
 
 	Describe("Little Endian", func() {
 		BeforeEach(func() {
-			array = NewFloat32Buffer(data, binary.LittleEndian)
+			array = NewFloat32Buffer(size, binary.LittleEndian)
 		})
 
 		itBehavesLikeAnArray()
@@ -101,7 +101,7 @@ var _ = Describe("Float32Buffer", func() {
 
 	Describe("Big Endian", func() {
 		BeforeEach(func() {
-			array = NewFloat32Buffer(data, binary.BigEndian)
+			array = NewFloat32Buffer(size, binary.BigEndian)
 		})
 
 		itBehavesLikeAnArray()

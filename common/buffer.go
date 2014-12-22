@@ -30,12 +30,12 @@ type uInt16Buffer struct {
 	buffer
 }
 
-func NewUInt16Buffer(data []byte, order binary.ByteOrder) UInt16Buffer {
+func NewUInt16Buffer(size int, order binary.ByteOrder) UInt16Buffer {
 	return &uInt16Buffer{
 		buffer: buffer{
 			littleEndian: order == binary.LittleEndian,
-			data:         data,
-			size:         cap(data) / 2,
+			data:         make([]byte, size*2),
+			size:         size,
 		},
 	}
 }
@@ -71,12 +71,12 @@ type float32Buffer struct {
 	buffer
 }
 
-func NewFloat32Buffer(data []byte, order binary.ByteOrder) Float32Buffer {
+func NewFloat32Buffer(size int, order binary.ByteOrder) Float32Buffer {
 	return &float32Buffer{
 		buffer: buffer{
 			littleEndian: order == binary.LittleEndian,
-			data:         data,
-			size:         cap(data) / 4,
+			data:         make([]byte, size*4),
+			size:         size,
 		},
 	}
 }

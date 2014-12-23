@@ -22,6 +22,8 @@ type Facade interface {
 	CreateBuffer() ResourceID
 	BindIndexBuffer(bufferId ResourceID)
 	CreateIndexBufferData(data []byte, usage BufferUsage)
+	BindVertexBuffer(bufferId ResourceID)
+	CreateVertexBufferData(data []byte, usage BufferUsage)
 	DeleteBuffer(bufferId ResourceID)
 
 	CreateVertexShader() ResourceID

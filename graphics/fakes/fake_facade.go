@@ -25,6 +25,17 @@ type FakeFacade struct {
 		data  []byte
 		usage graphics.BufferUsage
 	}
+	BindVertexBufferStub        func(bufferId graphics.ResourceID)
+	bindVertexBufferMutex       sync.RWMutex
+	bindVertexBufferArgsForCall []struct {
+		bufferId graphics.ResourceID
+	}
+	CreateVertexBufferDataStub        func(data []byte, usage graphics.BufferUsage)
+	createVertexBufferDataMutex       sync.RWMutex
+	createVertexBufferDataArgsForCall []struct {
+		data  []byte
+		usage graphics.BufferUsage
+	}
 	DeleteBufferStub        func(bufferId graphics.ResourceID)
 	deleteBufferMutex       sync.RWMutex
 	deleteBufferArgsForCall []struct {
@@ -129,6 +140,53 @@ func (fake *FakeFacade) CreateIndexBufferDataArgsForCall(i int) ([]byte, graphic
 	fake.createIndexBufferDataMutex.RLock()
 	defer fake.createIndexBufferDataMutex.RUnlock()
 	return fake.createIndexBufferDataArgsForCall[i].data, fake.createIndexBufferDataArgsForCall[i].usage
+}
+
+func (fake *FakeFacade) BindVertexBuffer(bufferId graphics.ResourceID) {
+	fake.bindVertexBufferMutex.Lock()
+	fake.bindVertexBufferArgsForCall = append(fake.bindVertexBufferArgsForCall, struct {
+		bufferId graphics.ResourceID
+	}{bufferId})
+	fake.bindVertexBufferMutex.Unlock()
+	if fake.BindVertexBufferStub != nil {
+		fake.BindVertexBufferStub(bufferId)
+	}
+}
+
+func (fake *FakeFacade) BindVertexBufferCallCount() int {
+	fake.bindVertexBufferMutex.RLock()
+	defer fake.bindVertexBufferMutex.RUnlock()
+	return len(fake.bindVertexBufferArgsForCall)
+}
+
+func (fake *FakeFacade) BindVertexBufferArgsForCall(i int) graphics.ResourceID {
+	fake.bindVertexBufferMutex.RLock()
+	defer fake.bindVertexBufferMutex.RUnlock()
+	return fake.bindVertexBufferArgsForCall[i].bufferId
+}
+
+func (fake *FakeFacade) CreateVertexBufferData(data []byte, usage graphics.BufferUsage) {
+	fake.createVertexBufferDataMutex.Lock()
+	fake.createVertexBufferDataArgsForCall = append(fake.createVertexBufferDataArgsForCall, struct {
+		data  []byte
+		usage graphics.BufferUsage
+	}{data, usage})
+	fake.createVertexBufferDataMutex.Unlock()
+	if fake.CreateVertexBufferDataStub != nil {
+		fake.CreateVertexBufferDataStub(data, usage)
+	}
+}
+
+func (fake *FakeFacade) CreateVertexBufferDataCallCount() int {
+	fake.createVertexBufferDataMutex.RLock()
+	defer fake.createVertexBufferDataMutex.RUnlock()
+	return len(fake.createVertexBufferDataArgsForCall)
+}
+
+func (fake *FakeFacade) CreateVertexBufferDataArgsForCall(i int) ([]byte, graphics.BufferUsage) {
+	fake.createVertexBufferDataMutex.RLock()
+	defer fake.createVertexBufferDataMutex.RUnlock()
+	return fake.createVertexBufferDataArgsForCall[i].data, fake.createVertexBufferDataArgsForCall[i].usage
 }
 
 func (fake *FakeFacade) DeleteBuffer(bufferId graphics.ResourceID) {

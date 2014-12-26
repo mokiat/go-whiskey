@@ -17,27 +17,54 @@ func NewFacade() Facade {
 }
 
 func (f *facade) CreateBuffer() (ResourceId, error) {
-	return 0, nil
+	bufferId := ResourceId(gl.GenBuffer().Value)
+	if bufferId == InvalidBufferId {
+		return InvalidBufferId, errors.New("Could not allocate buffer!")
+	}
+	return bufferId, nil
 }
 
 func (f *facade) BindIndexBuffer(bufferId ResourceId) {
-
+	buffer := gl.Buffer{
+		Value: uint32(bufferId),
+	}
+	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer)
 }
 
 func (f *facade) CreateIndexBufferData(data buf.UInt16Buffer, usage BufferUsage) {
-
+	usageFlag := f.getBufferUsageFlag(usage)
+	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, usageFlag, data)
 }
 
 func (f *facade) BindVertexBuffer(bufferId ResourceId) {
-
+	buffer := gl.Buffer{
+		Value: uint32(bufferId),
+	}
+	gl.BindBuffer(gl.ARRAY_BUFFER, buffer)
 }
 
 func (f *facade) CreateVertexBufferData(data buf.Float32Buffer, usage BufferUsage) {
-
+	usageFlag := f.getBufferUsageFlag(usage)
+	gl.BufferData(gl.ARRAY_BUFFER, usageFlag, data)
 }
 
 func (f *facade) DeleteBuffer(bufferId ResourceId) {
+	gl.DeleteBuffer(gl.Buffer{
+		Value: uint32(bufferId),
+	})
+}
 
+func (f *facade) getBufferUsageFlag(usage BufferUsage) gl.Enum {
+	switch usage {
+	case StreamDraw:
+		return gl.STREAM_DRAW
+	case StaticDraw:
+		return gl.STATIC_DRAW
+	case DynamicDraw:
+		return gl.DYNAMIC_DRAW
+	default:
+		panic(fmt.Sprintf("Unknown buffer usage %v", usage))
+	}
 }
 
 func (f *facade) CreateVertexShader() (ResourceId, error) {

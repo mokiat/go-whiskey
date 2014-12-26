@@ -9,7 +9,7 @@ type Mat4x4 struct {
 	M41, M42, M43, M44 float32
 }
 
-func (m Mat4x4) MulVec4Right(vec Vec4) Vec4 {
+func (m Mat4x4) MulVec4(vec Vec4) Vec4 {
 	return Vec4{
 		m.M11*vec.X + m.M12*vec.Y + m.M13*vec.Z + m.M14*vec.W,
 		m.M21*vec.X + m.M22*vec.Y + m.M23*vec.Z + m.M24*vec.W,
@@ -18,7 +18,7 @@ func (m Mat4x4) MulVec4Right(vec Vec4) Vec4 {
 	}
 }
 
-func (m Mat4x4) MulMat4x4Right(other Mat4x4) Mat4x4 {
+func (m Mat4x4) MulMat4x4(other Mat4x4) Mat4x4 {
 	return Mat4x4{
 		m.M11*other.M11 + m.M12*other.M21 + m.M13*other.M31 + m.M14*other.M41,
 		m.M11*other.M12 + m.M12*other.M22 + m.M13*other.M32 + m.M14*other.M42,

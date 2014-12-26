@@ -29,13 +29,13 @@ var _ = Describe("Mat4x4", func() {
 		}
 	})
 
-	It("#MulVec4Right", func() {
-		result := matrix.MulVec4Right(vector)
+	It("#MulVec4", func() {
+		result := matrix.MulVec4(vector)
 		AssertVec4Equals(result, 1.85, 5.05, 8.25, 11.45)
 	})
 
-	It("#MulMat4x4Right", func() {
-		result := matrix.MulMat4x4Right(otherMatrix)
+	It("#MulMat4x4", func() {
+		result := matrix.MulMat4x4(otherMatrix)
 		AssertMat4x4Equals(result,
 			0.36, 0.49, 0.55, 0.36,
 			0.92, 1.25, 1.3900001, 0.88,
@@ -52,26 +52,26 @@ var _ = Describe("Mat4x4", func() {
 	})
 
 	It("IdentityMat4x4", func() {
-		result := IdentityMat4x4().MulMat4x4Right(matrix)
+		result := IdentityMat4x4().MulMat4x4(matrix)
 		Ω(result).Should(Equal(matrix))
 	})
 
 	It("TranslationMat4x4", func() {
 		translationMatrix := TranslationMat4x4(2.0, -3.0, 4.0)
-		result := translationMatrix.MulVec4Right(vector)
+		result := translationMatrix.MulVec4(vector)
 		AssertVec4Equals(result, 4.5, -1.5, 7.0, 1.0)
 	})
 
 	It("ScaleMat4x4", func() {
 		scaleMatrix := ScaleMat4x4(2.0, -3.0, 4.0)
-		result := scaleMatrix.MulVec4Right(vector)
+		result := scaleMatrix.MulVec4(vector)
 		AssertVec4Equals(result, 5.0, -4.5, 12.0, 1.0)
 	})
 
 	It("RotationMat4x4", func() {
 		vector = Vec4{1.0, 0.0, 0.0, 1.0}
 		rotationMatrix := RotationMat4x4(120.0, 1.0, 1.0, 1.0)
-		result := rotationMatrix.MulVec4Right(vector)
+		result := rotationMatrix.MulVec4(vector)
 		AssertVec4Equals(result, 0.0, 1.0, 0.0, 1.0)
 	})
 
@@ -80,12 +80,12 @@ var _ = Describe("Mat4x4", func() {
 
 		// Test two opposite corner projections
 		nearCorner := Vec4{-1.1, -3.4, -1.7, 1.0}
-		projectedNearCorner := orthoMatrix.MulVec4Right(nearCorner)
+		projectedNearCorner := orthoMatrix.MulVec4(nearCorner)
 		projectedNearCorner = projectedNearCorner.Div(projectedNearCorner.W)
 		AssertVec4Equals(projectedNearCorner, -1.0, -1.0, -1.0, 1.0)
 
 		farCorner := Vec4{2.1, 1.5, -3.8, 1.0}
-		projectedFarCorner := orthoMatrix.MulVec4Right(farCorner)
+		projectedFarCorner := orthoMatrix.MulVec4(farCorner)
 		projectedFarCorner = projectedFarCorner.Div(projectedFarCorner.W)
 		AssertVec4Equals(projectedFarCorner, 1.0, 1.0, 1.0, 1.0)
 	})
@@ -95,12 +95,12 @@ var _ = Describe("Mat4x4", func() {
 
 		// Test two opposite corner projection
 		nearCorner := Vec4{-1.1, -3.4, -1.7, 1.0}
-		projectedNearCorner := perspectiveMatrix.MulVec4Right(nearCorner)
+		projectedNearCorner := perspectiveMatrix.MulVec4(nearCorner)
 		projectedNearCorner = projectedNearCorner.Div(projectedNearCorner.W)
 		AssertVec4Equals(projectedNearCorner, -1.0, -1.0, -1.0, 1.0)
 
 		farCorner := Vec4{4.6941, 3.3529, -3.8, 1.0}
-		projectedFarCorner := perspectiveMatrix.MulVec4Right(farCorner)
+		projectedFarCorner := perspectiveMatrix.MulVec4(farCorner)
 		projectedFarCorner = projectedFarCorner.Div(projectedFarCorner.W)
 		AssertVec4Equals(projectedFarCorner, 1.0, 1.0, 1.0, 1.0)
 	})

@@ -74,6 +74,37 @@ type FakeFacade struct {
 	deleteShaderArgsForCall []struct {
 		shaderId graphics.ResourceId
 	}
+	CreateProgramStub        func() (graphics.ResourceId, error)
+	createProgramMutex       sync.RWMutex
+	createProgramArgsForCall []struct{}
+	createProgramReturns struct {
+		result1 graphics.ResourceId
+		result2 error
+	}
+	AttachShaderToProgramStub        func(programId graphics.ResourceId, shaderId graphics.ResourceId)
+	attachShaderToProgramMutex       sync.RWMutex
+	attachShaderToProgramArgsForCall []struct {
+		programId graphics.ResourceId
+		shaderId  graphics.ResourceId
+	}
+	LinkProgramStub        func(graphics.ResourceId) error
+	linkProgramMutex       sync.RWMutex
+	linkProgramArgsForCall []struct {
+		arg1 graphics.ResourceId
+	}
+	linkProgramReturns struct {
+		result1 error
+	}
+	UseProgramStub        func(graphics.ResourceId)
+	useProgramMutex       sync.RWMutex
+	useProgramArgsForCall []struct {
+		arg1 graphics.ResourceId
+	}
+	DeleteProgramStub        func(graphics.ResourceId)
+	deleteProgramMutex       sync.RWMutex
+	deleteProgramArgsForCall []struct {
+		arg1 graphics.ResourceId
+	}
 }
 
 func (fake *FakeFacade) CreateBuffer() graphics.ResourceId {
@@ -344,6 +375,133 @@ func (fake *FakeFacade) DeleteShaderArgsForCall(i int) graphics.ResourceId {
 	fake.deleteShaderMutex.RLock()
 	defer fake.deleteShaderMutex.RUnlock()
 	return fake.deleteShaderArgsForCall[i].shaderId
+}
+
+func (fake *FakeFacade) CreateProgram() (graphics.ResourceId, error) {
+	fake.createProgramMutex.Lock()
+	fake.createProgramArgsForCall = append(fake.createProgramArgsForCall, struct{}{})
+	fake.createProgramMutex.Unlock()
+	if fake.CreateProgramStub != nil {
+		return fake.CreateProgramStub()
+	} else {
+		return fake.createProgramReturns.result1, fake.createProgramReturns.result2
+	}
+}
+
+func (fake *FakeFacade) CreateProgramCallCount() int {
+	fake.createProgramMutex.RLock()
+	defer fake.createProgramMutex.RUnlock()
+	return len(fake.createProgramArgsForCall)
+}
+
+func (fake *FakeFacade) CreateProgramReturns(result1 graphics.ResourceId, result2 error) {
+	fake.CreateProgramStub = nil
+	fake.createProgramReturns = struct {
+		result1 graphics.ResourceId
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeFacade) AttachShaderToProgram(programId graphics.ResourceId, shaderId graphics.ResourceId) {
+	fake.attachShaderToProgramMutex.Lock()
+	fake.attachShaderToProgramArgsForCall = append(fake.attachShaderToProgramArgsForCall, struct {
+		programId graphics.ResourceId
+		shaderId  graphics.ResourceId
+	}{programId, shaderId})
+	fake.attachShaderToProgramMutex.Unlock()
+	if fake.AttachShaderToProgramStub != nil {
+		fake.AttachShaderToProgramStub(programId, shaderId)
+	}
+}
+
+func (fake *FakeFacade) AttachShaderToProgramCallCount() int {
+	fake.attachShaderToProgramMutex.RLock()
+	defer fake.attachShaderToProgramMutex.RUnlock()
+	return len(fake.attachShaderToProgramArgsForCall)
+}
+
+func (fake *FakeFacade) AttachShaderToProgramArgsForCall(i int) (graphics.ResourceId, graphics.ResourceId) {
+	fake.attachShaderToProgramMutex.RLock()
+	defer fake.attachShaderToProgramMutex.RUnlock()
+	return fake.attachShaderToProgramArgsForCall[i].programId, fake.attachShaderToProgramArgsForCall[i].shaderId
+}
+
+func (fake *FakeFacade) LinkProgram(arg1 graphics.ResourceId) error {
+	fake.linkProgramMutex.Lock()
+	fake.linkProgramArgsForCall = append(fake.linkProgramArgsForCall, struct {
+		arg1 graphics.ResourceId
+	}{arg1})
+	fake.linkProgramMutex.Unlock()
+	if fake.LinkProgramStub != nil {
+		return fake.LinkProgramStub(arg1)
+	} else {
+		return fake.linkProgramReturns.result1
+	}
+}
+
+func (fake *FakeFacade) LinkProgramCallCount() int {
+	fake.linkProgramMutex.RLock()
+	defer fake.linkProgramMutex.RUnlock()
+	return len(fake.linkProgramArgsForCall)
+}
+
+func (fake *FakeFacade) LinkProgramArgsForCall(i int) graphics.ResourceId {
+	fake.linkProgramMutex.RLock()
+	defer fake.linkProgramMutex.RUnlock()
+	return fake.linkProgramArgsForCall[i].arg1
+}
+
+func (fake *FakeFacade) LinkProgramReturns(result1 error) {
+	fake.LinkProgramStub = nil
+	fake.linkProgramReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeFacade) UseProgram(arg1 graphics.ResourceId) {
+	fake.useProgramMutex.Lock()
+	fake.useProgramArgsForCall = append(fake.useProgramArgsForCall, struct {
+		arg1 graphics.ResourceId
+	}{arg1})
+	fake.useProgramMutex.Unlock()
+	if fake.UseProgramStub != nil {
+		fake.UseProgramStub(arg1)
+	}
+}
+
+func (fake *FakeFacade) UseProgramCallCount() int {
+	fake.useProgramMutex.RLock()
+	defer fake.useProgramMutex.RUnlock()
+	return len(fake.useProgramArgsForCall)
+}
+
+func (fake *FakeFacade) UseProgramArgsForCall(i int) graphics.ResourceId {
+	fake.useProgramMutex.RLock()
+	defer fake.useProgramMutex.RUnlock()
+	return fake.useProgramArgsForCall[i].arg1
+}
+
+func (fake *FakeFacade) DeleteProgram(arg1 graphics.ResourceId) {
+	fake.deleteProgramMutex.Lock()
+	fake.deleteProgramArgsForCall = append(fake.deleteProgramArgsForCall, struct {
+		arg1 graphics.ResourceId
+	}{arg1})
+	fake.deleteProgramMutex.Unlock()
+	if fake.DeleteProgramStub != nil {
+		fake.DeleteProgramStub(arg1)
+	}
+}
+
+func (fake *FakeFacade) DeleteProgramCallCount() int {
+	fake.deleteProgramMutex.RLock()
+	defer fake.deleteProgramMutex.RUnlock()
+	return len(fake.deleteProgramArgsForCall)
+}
+
+func (fake *FakeFacade) DeleteProgramArgsForCall(i int) graphics.ResourceId {
+	fake.deleteProgramMutex.RLock()
+	defer fake.deleteProgramMutex.RUnlock()
+	return fake.deleteProgramArgsForCall[i].arg1
 }
 
 var _ graphics.Facade = new(FakeFacade)

@@ -31,4 +31,10 @@ type Facade interface {
 	SetShaderSourceCode(shaderId ResourceId, sourceCode string)
 	CompileShader(shaderId ResourceId) error
 	DeleteShader(shaderId ResourceId)
+
+	CreateProgram() (ResourceId, error)
+	AttachShaderToProgram(programId ResourceId, shaderId ResourceId)
+	LinkProgram(ResourceId) error
+	UseProgram(ResourceId)
+	DeleteProgram(ResourceId)
 }

@@ -8,16 +8,16 @@ import (
 )
 
 type FakeFacade struct {
-	CreateBufferStub        func() graphics.ResourceID
+	CreateBufferStub        func() graphics.ResourceId
 	createBufferMutex       sync.RWMutex
 	createBufferArgsForCall []struct{}
 	createBufferReturns struct {
-		result1 graphics.ResourceID
+		result1 graphics.ResourceId
 	}
-	BindIndexBufferStub        func(bufferId graphics.ResourceID)
+	BindIndexBufferStub        func(bufferId graphics.ResourceId)
 	bindIndexBufferMutex       sync.RWMutex
 	bindIndexBufferArgsForCall []struct {
-		bufferId graphics.ResourceID
+		bufferId graphics.ResourceId
 	}
 	CreateIndexBufferDataStub        func(data []byte, usage graphics.BufferUsage)
 	createIndexBufferDataMutex       sync.RWMutex
@@ -25,10 +25,10 @@ type FakeFacade struct {
 		data  []byte
 		usage graphics.BufferUsage
 	}
-	BindVertexBufferStub        func(bufferId graphics.ResourceID)
+	BindVertexBufferStub        func(bufferId graphics.ResourceId)
 	bindVertexBufferMutex       sync.RWMutex
 	bindVertexBufferArgsForCall []struct {
-		bufferId graphics.ResourceID
+		bufferId graphics.ResourceId
 	}
 	CreateVertexBufferDataStub        func(data []byte, usage graphics.BufferUsage)
 	createVertexBufferDataMutex       sync.RWMutex
@@ -36,42 +36,42 @@ type FakeFacade struct {
 		data  []byte
 		usage graphics.BufferUsage
 	}
-	DeleteBufferStub        func(bufferId graphics.ResourceID)
+	DeleteBufferStub        func(bufferId graphics.ResourceId)
 	deleteBufferMutex       sync.RWMutex
 	deleteBufferArgsForCall []struct {
-		bufferId graphics.ResourceID
+		bufferId graphics.ResourceId
 	}
-	CreateVertexShaderStub        func() graphics.ResourceID
+	CreateVertexShaderStub        func() graphics.ResourceId
 	createVertexShaderMutex       sync.RWMutex
 	createVertexShaderArgsForCall []struct{}
 	createVertexShaderReturns struct {
-		result1 graphics.ResourceID
+		result1 graphics.ResourceId
 	}
-	CreateFragmentShaderStub        func() graphics.ResourceID
+	CreateFragmentShaderStub        func() graphics.ResourceId
 	createFragmentShaderMutex       sync.RWMutex
 	createFragmentShaderArgsForCall []struct{}
 	createFragmentShaderReturns struct {
-		result1 graphics.ResourceID
+		result1 graphics.ResourceId
 	}
-	SetShaderSourceCodeStub        func(shaderId graphics.ResourceID, sourceCode string)
+	SetShaderSourceCodeStub        func(shaderId graphics.ResourceId, sourceCode string)
 	setShaderSourceCodeMutex       sync.RWMutex
 	setShaderSourceCodeArgsForCall []struct {
-		shaderId   graphics.ResourceID
+		shaderId   graphics.ResourceId
 		sourceCode string
 	}
-	CompileShaderStub        func(shaderId graphics.ResourceID)
+	CompileShaderStub        func(shaderId graphics.ResourceId)
 	compileShaderMutex       sync.RWMutex
 	compileShaderArgsForCall []struct {
-		shaderId graphics.ResourceID
+		shaderId graphics.ResourceId
 	}
-	DeleteShaderStub        func(shaderId graphics.ResourceID)
+	DeleteShaderStub        func(shaderId graphics.ResourceId)
 	deleteShaderMutex       sync.RWMutex
 	deleteShaderArgsForCall []struct {
-		shaderId graphics.ResourceID
+		shaderId graphics.ResourceId
 	}
 }
 
-func (fake *FakeFacade) CreateBuffer() graphics.ResourceID {
+func (fake *FakeFacade) CreateBuffer() graphics.ResourceId {
 	fake.createBufferMutex.Lock()
 	fake.createBufferArgsForCall = append(fake.createBufferArgsForCall, struct{}{})
 	fake.createBufferMutex.Unlock()
@@ -88,17 +88,17 @@ func (fake *FakeFacade) CreateBufferCallCount() int {
 	return len(fake.createBufferArgsForCall)
 }
 
-func (fake *FakeFacade) CreateBufferReturns(result1 graphics.ResourceID) {
+func (fake *FakeFacade) CreateBufferReturns(result1 graphics.ResourceId) {
 	fake.CreateBufferStub = nil
 	fake.createBufferReturns = struct {
-		result1 graphics.ResourceID
+		result1 graphics.ResourceId
 	}{result1}
 }
 
-func (fake *FakeFacade) BindIndexBuffer(bufferId graphics.ResourceID) {
+func (fake *FakeFacade) BindIndexBuffer(bufferId graphics.ResourceId) {
 	fake.bindIndexBufferMutex.Lock()
 	fake.bindIndexBufferArgsForCall = append(fake.bindIndexBufferArgsForCall, struct {
-		bufferId graphics.ResourceID
+		bufferId graphics.ResourceId
 	}{bufferId})
 	fake.bindIndexBufferMutex.Unlock()
 	if fake.BindIndexBufferStub != nil {
@@ -112,7 +112,7 @@ func (fake *FakeFacade) BindIndexBufferCallCount() int {
 	return len(fake.bindIndexBufferArgsForCall)
 }
 
-func (fake *FakeFacade) BindIndexBufferArgsForCall(i int) graphics.ResourceID {
+func (fake *FakeFacade) BindIndexBufferArgsForCall(i int) graphics.ResourceId {
 	fake.bindIndexBufferMutex.RLock()
 	defer fake.bindIndexBufferMutex.RUnlock()
 	return fake.bindIndexBufferArgsForCall[i].bufferId
@@ -142,10 +142,10 @@ func (fake *FakeFacade) CreateIndexBufferDataArgsForCall(i int) ([]byte, graphic
 	return fake.createIndexBufferDataArgsForCall[i].data, fake.createIndexBufferDataArgsForCall[i].usage
 }
 
-func (fake *FakeFacade) BindVertexBuffer(bufferId graphics.ResourceID) {
+func (fake *FakeFacade) BindVertexBuffer(bufferId graphics.ResourceId) {
 	fake.bindVertexBufferMutex.Lock()
 	fake.bindVertexBufferArgsForCall = append(fake.bindVertexBufferArgsForCall, struct {
-		bufferId graphics.ResourceID
+		bufferId graphics.ResourceId
 	}{bufferId})
 	fake.bindVertexBufferMutex.Unlock()
 	if fake.BindVertexBufferStub != nil {
@@ -159,7 +159,7 @@ func (fake *FakeFacade) BindVertexBufferCallCount() int {
 	return len(fake.bindVertexBufferArgsForCall)
 }
 
-func (fake *FakeFacade) BindVertexBufferArgsForCall(i int) graphics.ResourceID {
+func (fake *FakeFacade) BindVertexBufferArgsForCall(i int) graphics.ResourceId {
 	fake.bindVertexBufferMutex.RLock()
 	defer fake.bindVertexBufferMutex.RUnlock()
 	return fake.bindVertexBufferArgsForCall[i].bufferId
@@ -189,10 +189,10 @@ func (fake *FakeFacade) CreateVertexBufferDataArgsForCall(i int) ([]byte, graphi
 	return fake.createVertexBufferDataArgsForCall[i].data, fake.createVertexBufferDataArgsForCall[i].usage
 }
 
-func (fake *FakeFacade) DeleteBuffer(bufferId graphics.ResourceID) {
+func (fake *FakeFacade) DeleteBuffer(bufferId graphics.ResourceId) {
 	fake.deleteBufferMutex.Lock()
 	fake.deleteBufferArgsForCall = append(fake.deleteBufferArgsForCall, struct {
-		bufferId graphics.ResourceID
+		bufferId graphics.ResourceId
 	}{bufferId})
 	fake.deleteBufferMutex.Unlock()
 	if fake.DeleteBufferStub != nil {
@@ -206,13 +206,13 @@ func (fake *FakeFacade) DeleteBufferCallCount() int {
 	return len(fake.deleteBufferArgsForCall)
 }
 
-func (fake *FakeFacade) DeleteBufferArgsForCall(i int) graphics.ResourceID {
+func (fake *FakeFacade) DeleteBufferArgsForCall(i int) graphics.ResourceId {
 	fake.deleteBufferMutex.RLock()
 	defer fake.deleteBufferMutex.RUnlock()
 	return fake.deleteBufferArgsForCall[i].bufferId
 }
 
-func (fake *FakeFacade) CreateVertexShader() graphics.ResourceID {
+func (fake *FakeFacade) CreateVertexShader() graphics.ResourceId {
 	fake.createVertexShaderMutex.Lock()
 	fake.createVertexShaderArgsForCall = append(fake.createVertexShaderArgsForCall, struct{}{})
 	fake.createVertexShaderMutex.Unlock()
@@ -229,14 +229,14 @@ func (fake *FakeFacade) CreateVertexShaderCallCount() int {
 	return len(fake.createVertexShaderArgsForCall)
 }
 
-func (fake *FakeFacade) CreateVertexShaderReturns(result1 graphics.ResourceID) {
+func (fake *FakeFacade) CreateVertexShaderReturns(result1 graphics.ResourceId) {
 	fake.CreateVertexShaderStub = nil
 	fake.createVertexShaderReturns = struct {
-		result1 graphics.ResourceID
+		result1 graphics.ResourceId
 	}{result1}
 }
 
-func (fake *FakeFacade) CreateFragmentShader() graphics.ResourceID {
+func (fake *FakeFacade) CreateFragmentShader() graphics.ResourceId {
 	fake.createFragmentShaderMutex.Lock()
 	fake.createFragmentShaderArgsForCall = append(fake.createFragmentShaderArgsForCall, struct{}{})
 	fake.createFragmentShaderMutex.Unlock()
@@ -253,17 +253,17 @@ func (fake *FakeFacade) CreateFragmentShaderCallCount() int {
 	return len(fake.createFragmentShaderArgsForCall)
 }
 
-func (fake *FakeFacade) CreateFragmentShaderReturns(result1 graphics.ResourceID) {
+func (fake *FakeFacade) CreateFragmentShaderReturns(result1 graphics.ResourceId) {
 	fake.CreateFragmentShaderStub = nil
 	fake.createFragmentShaderReturns = struct {
-		result1 graphics.ResourceID
+		result1 graphics.ResourceId
 	}{result1}
 }
 
-func (fake *FakeFacade) SetShaderSourceCode(shaderId graphics.ResourceID, sourceCode string) {
+func (fake *FakeFacade) SetShaderSourceCode(shaderId graphics.ResourceId, sourceCode string) {
 	fake.setShaderSourceCodeMutex.Lock()
 	fake.setShaderSourceCodeArgsForCall = append(fake.setShaderSourceCodeArgsForCall, struct {
-		shaderId   graphics.ResourceID
+		shaderId   graphics.ResourceId
 		sourceCode string
 	}{shaderId, sourceCode})
 	fake.setShaderSourceCodeMutex.Unlock()
@@ -278,16 +278,16 @@ func (fake *FakeFacade) SetShaderSourceCodeCallCount() int {
 	return len(fake.setShaderSourceCodeArgsForCall)
 }
 
-func (fake *FakeFacade) SetShaderSourceCodeArgsForCall(i int) (graphics.ResourceID, string) {
+func (fake *FakeFacade) SetShaderSourceCodeArgsForCall(i int) (graphics.ResourceId, string) {
 	fake.setShaderSourceCodeMutex.RLock()
 	defer fake.setShaderSourceCodeMutex.RUnlock()
 	return fake.setShaderSourceCodeArgsForCall[i].shaderId, fake.setShaderSourceCodeArgsForCall[i].sourceCode
 }
 
-func (fake *FakeFacade) CompileShader(shaderId graphics.ResourceID) {
+func (fake *FakeFacade) CompileShader(shaderId graphics.ResourceId) {
 	fake.compileShaderMutex.Lock()
 	fake.compileShaderArgsForCall = append(fake.compileShaderArgsForCall, struct {
-		shaderId graphics.ResourceID
+		shaderId graphics.ResourceId
 	}{shaderId})
 	fake.compileShaderMutex.Unlock()
 	if fake.CompileShaderStub != nil {
@@ -301,16 +301,16 @@ func (fake *FakeFacade) CompileShaderCallCount() int {
 	return len(fake.compileShaderArgsForCall)
 }
 
-func (fake *FakeFacade) CompileShaderArgsForCall(i int) graphics.ResourceID {
+func (fake *FakeFacade) CompileShaderArgsForCall(i int) graphics.ResourceId {
 	fake.compileShaderMutex.RLock()
 	defer fake.compileShaderMutex.RUnlock()
 	return fake.compileShaderArgsForCall[i].shaderId
 }
 
-func (fake *FakeFacade) DeleteShader(shaderId graphics.ResourceID) {
+func (fake *FakeFacade) DeleteShader(shaderId graphics.ResourceId) {
 	fake.deleteShaderMutex.Lock()
 	fake.deleteShaderArgsForCall = append(fake.deleteShaderArgsForCall, struct {
-		shaderId graphics.ResourceID
+		shaderId graphics.ResourceId
 	}{shaderId})
 	fake.deleteShaderMutex.Unlock()
 	if fake.DeleteShaderStub != nil {
@@ -324,7 +324,7 @@ func (fake *FakeFacade) DeleteShaderCallCount() int {
 	return len(fake.deleteShaderArgsForCall)
 }
 
-func (fake *FakeFacade) DeleteShaderArgsForCall(i int) graphics.ResourceID {
+func (fake *FakeFacade) DeleteShaderArgsForCall(i int) graphics.ResourceId {
 	fake.deleteShaderMutex.RLock()
 	defer fake.deleteShaderMutex.RUnlock()
 	return fake.deleteShaderArgsForCall[i].shaderId

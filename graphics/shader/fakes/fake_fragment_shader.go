@@ -9,33 +9,33 @@ import (
 )
 
 type FakeFragmentShader struct {
-	IdStub        func() graphics.ResourceID
+	IdStub        func() graphics.ResourceId
 	idMutex       sync.RWMutex
 	idArgsForCall []struct{}
-	idReturns     struct {
-		result1 graphics.ResourceID
+	idReturns struct {
+		result1 graphics.ResourceId
 	}
 	SourceCodeStub        func() string
 	sourceCodeMutex       sync.RWMutex
 	sourceCodeArgsForCall []struct{}
-	sourceCodeReturns     struct {
+	sourceCodeReturns struct {
 		result1 string
 	}
-	CreateRemotelyStub         func()
-	createRemotelyMutex        sync.RWMutex
-	createRemotelyArgsForCall  []struct{}
-	DeleteRemotelyStub         func()
-	deleteRemotelyMutex        sync.RWMutex
-	deleteRemotelyArgsForCall  []struct{}
+	CreateRemotelyStub        func()
+	createRemotelyMutex       sync.RWMutex
+	createRemotelyArgsForCall []struct{}
+	DeleteRemotelyStub        func()
+	deleteRemotelyMutex       sync.RWMutex
+	deleteRemotelyArgsForCall []struct{}
 	CreatedRemotelyStub        func() bool
 	createdRemotelyMutex       sync.RWMutex
 	createdRemotelyArgsForCall []struct{}
-	createdRemotelyReturns     struct {
+	createdRemotelyReturns struct {
 		result1 bool
 	}
 }
 
-func (fake *FakeFragmentShader) Id() graphics.ResourceID {
+func (fake *FakeFragmentShader) Id() graphics.ResourceId {
 	fake.idMutex.Lock()
 	fake.idArgsForCall = append(fake.idArgsForCall, struct{}{})
 	fake.idMutex.Unlock()
@@ -52,10 +52,10 @@ func (fake *FakeFragmentShader) IdCallCount() int {
 	return len(fake.idArgsForCall)
 }
 
-func (fake *FakeFragmentShader) IdReturns(result1 graphics.ResourceID) {
+func (fake *FakeFragmentShader) IdReturns(result1 graphics.ResourceId) {
 	fake.IdStub = nil
 	fake.idReturns = struct {
-		result1 graphics.ResourceID
+		result1 graphics.ResourceId
 	}{result1}
 }
 

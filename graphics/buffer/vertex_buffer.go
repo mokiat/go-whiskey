@@ -8,7 +8,7 @@ import (
 )
 
 type VertexBuffer interface {
-	Id() graphics.ResourceID
+	Id() graphics.ResourceId
 	Usage() graphics.BufferUsage
 	Size() int
 	BindRemotely()
@@ -18,7 +18,7 @@ type VertexBuffer interface {
 }
 
 type vertexBuffer struct {
-	id     graphics.ResourceID
+	id     graphics.ResourceId
 	facade graphics.Facade
 	buffer common.Float32Buffer
 	size   int
@@ -35,7 +35,7 @@ func NewVertexBuffer(facade graphics.Facade, size int, usage graphics.BufferUsag
 	}
 }
 
-func (b *vertexBuffer) Id() graphics.ResourceID {
+func (b *vertexBuffer) Id() graphics.ResourceId {
 	return b.id
 }
 

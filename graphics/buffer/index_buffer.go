@@ -8,7 +8,7 @@ import (
 )
 
 type IndexBuffer interface {
-	Id() graphics.ResourceID
+	Id() graphics.ResourceId
 	Usage() graphics.BufferUsage
 	Size() int
 	BindRemotely()
@@ -18,7 +18,7 @@ type IndexBuffer interface {
 }
 
 type indexBuffer struct {
-	id     graphics.ResourceID
+	id     graphics.ResourceId
 	facade graphics.Facade
 	buffer common.UInt16Buffer
 	usage  graphics.BufferUsage
@@ -35,7 +35,7 @@ func NewIndexBuffer(facade graphics.Facade, usage graphics.BufferUsage, size int
 	}
 }
 
-func (b *indexBuffer) Id() graphics.ResourceID {
+func (b *indexBuffer) Id() graphics.ResourceId {
 	return b.id
 }
 

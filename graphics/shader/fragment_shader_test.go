@@ -33,7 +33,7 @@ var _ = Describe("FragmentShader", func() {
 	})
 
 	Context("when shader is created remotely", func() {
-		var shaderId graphics.ResourceID
+		var shaderId graphics.ResourceId
 
 		BeforeEach(func() {
 			shaderId = 321

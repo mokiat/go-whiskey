@@ -40,7 +40,7 @@ var _ = Describe("VertexBuffer", func() {
 	})
 
 	Context("when the buffer is created remotely", func() {
-		var bufferId graphics.ResourceID
+		var bufferId graphics.ResourceId
 
 		BeforeEach(func() {
 			bufferId = 876

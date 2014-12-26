@@ -2,12 +2,12 @@ package graphics
 
 import "github.com/momchil-atanasov/go-whiskey/common"
 
-type ResourceID uint32
+type ResourceId uint32
 type BindLocation uint
 
-const InvalidShaderId ResourceID = 0
-const InvalidProgramId ResourceID = 0
-const InvalidBufferId ResourceID = 0
+const InvalidShaderId ResourceId = 0
+const InvalidProgramId ResourceId = 0
+const InvalidBufferId ResourceId = 0
 
 type BufferUsage common.Enum
 
@@ -19,16 +19,16 @@ const (
 )
 
 type Facade interface {
-	CreateBuffer() ResourceID
-	BindIndexBuffer(bufferId ResourceID)
+	CreateBuffer() ResourceId
+	BindIndexBuffer(bufferId ResourceId)
 	CreateIndexBufferData(data []byte, usage BufferUsage)
-	BindVertexBuffer(bufferId ResourceID)
+	BindVertexBuffer(bufferId ResourceId)
 	CreateVertexBufferData(data []byte, usage BufferUsage)
-	DeleteBuffer(bufferId ResourceID)
+	DeleteBuffer(bufferId ResourceId)
 
-	CreateVertexShader() ResourceID
-	CreateFragmentShader() ResourceID
-	SetShaderSourceCode(shaderId ResourceID, sourceCode string)
-	CompileShader(shaderId ResourceID)
-	DeleteShader(shaderId ResourceID)
+	CreateVertexShader() ResourceId
+	CreateFragmentShader() ResourceId
+	SetShaderSourceCode(shaderId ResourceId, sourceCode string)
+	CompileShader(shaderId ResourceId)
+	DeleteShader(shaderId ResourceId)
 }

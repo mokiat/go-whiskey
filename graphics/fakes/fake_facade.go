@@ -9,11 +9,12 @@ import (
 )
 
 type FakeFacade struct {
-	CreateBufferStub        func() graphics.ResourceId
+	CreateBufferStub        func() (graphics.ResourceId, error)
 	createBufferMutex       sync.RWMutex
 	createBufferArgsForCall []struct{}
 	createBufferReturns struct {
 		result1 graphics.ResourceId
+		result2 error
 	}
 	BindIndexBufferStub        func(bufferId graphics.ResourceId)
 	bindIndexBufferMutex       sync.RWMutex
@@ -108,14 +109,14 @@ type FakeFacade struct {
 	}
 }
 
-func (fake *FakeFacade) CreateBuffer() graphics.ResourceId {
+func (fake *FakeFacade) CreateBuffer() (graphics.ResourceId, error) {
 	fake.createBufferMutex.Lock()
 	fake.createBufferArgsForCall = append(fake.createBufferArgsForCall, struct{}{})
 	fake.createBufferMutex.Unlock()
 	if fake.CreateBufferStub != nil {
 		return fake.CreateBufferStub()
 	} else {
-		return fake.createBufferReturns.result1
+		return fake.createBufferReturns.result1, fake.createBufferReturns.result2
 	}
 }
 
@@ -125,11 +126,12 @@ func (fake *FakeFacade) CreateBufferCallCount() int {
 	return len(fake.createBufferArgsForCall)
 }
 
-func (fake *FakeFacade) CreateBufferReturns(result1 graphics.ResourceId) {
+func (fake *FakeFacade) CreateBufferReturns(result1 graphics.ResourceId, result2 error) {
 	fake.CreateBufferStub = nil
 	fake.createBufferReturns = struct {
 		result1 graphics.ResourceId
-	}{result1}
+		result2 error
+	}{result1, result2}
 }
 
 func (fake *FakeFacade) BindIndexBuffer(bufferId graphics.ResourceId) {

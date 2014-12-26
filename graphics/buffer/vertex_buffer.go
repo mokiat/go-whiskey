@@ -12,7 +12,7 @@ type VertexBuffer interface {
 	SetValue(position int, value float32)
 	Value(position int) float32
 	BindRemotely()
-	CreateRemotely()
+	CreateRemotely() error
 	DeleteRemotely()
 	CreatedRemotely() bool
 }
@@ -60,10 +60,16 @@ func (b *vertexBuffer) BindRemotely() {
 	b.facade.BindVertexBuffer(b.id)
 }
 
-func (b *vertexBuffer) CreateRemotely() {
-	b.id = b.facade.CreateBuffer()
+func (b *vertexBuffer) CreateRemotely() error {
+	var err error
+	b.id, err = b.facade.CreateBuffer()
+	if err != nil {
+		b.id = graphics.InvalidBufferId
+		return err
+	}
 	b.facade.BindVertexBuffer(b.id)
 	b.facade.CreateVertexBufferData(b.buffer, b.usage)
+	return nil
 }
 
 func (b *vertexBuffer) DeleteRemotely() {

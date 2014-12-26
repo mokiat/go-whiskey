@@ -12,7 +12,7 @@ type IndexBuffer interface {
 	SetValue(position int, value uint16)
 	Value(position int) uint16
 	BindRemotely()
-	CreateRemotely()
+	CreateRemotely() error
 	DeleteRemotely()
 	CreatedRemotely() bool
 }
@@ -56,10 +56,16 @@ func (b *indexBuffer) Value(position int) uint16 {
 	return b.buffer.Get(position)
 }
 
-func (b *indexBuffer) CreateRemotely() {
-	b.id = b.facade.CreateBuffer()
+func (b *indexBuffer) CreateRemotely() error {
+	var err error
+	b.id, err = b.facade.CreateBuffer()
+	if err != nil {
+		b.id = graphics.InvalidBufferId
+		return err
+	}
 	b.facade.BindIndexBuffer(b.id)
 	b.facade.CreateIndexBufferData(b.buffer, b.usage)
+	return nil
 }
 
 func (b *indexBuffer) BindRemotely() {

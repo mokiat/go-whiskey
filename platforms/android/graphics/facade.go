@@ -16,8 +16,8 @@ func NewFacade() Facade {
 	return &facade{}
 }
 
-func (f *facade) CreateBuffer() ResourceId {
-	return 0
+func (f *facade) CreateBuffer() (ResourceId, error) {
+	return 0, nil
 }
 
 func (f *facade) BindIndexBuffer(bufferId ResourceId) {

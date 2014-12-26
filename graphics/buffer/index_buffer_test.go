@@ -1,6 +1,8 @@
 package buffer_test
 
 import (
+	"errors"
+
 	"github.com/momchil-atanasov/go-whiskey/graphics"
 	. "github.com/momchil-atanasov/go-whiskey/graphics/buffer"
 	. "github.com/momchil-atanasov/go-whiskey/graphics/fakes"
@@ -16,6 +18,18 @@ var _ = Describe("IndexBuffer", func() {
 	var size int
 	var indexBuffer IndexBuffer
 
+	itHasInvalidId := func() {
+		It("should have an invalid ID", func() {
+			Ω(indexBuffer.Id()).Should(Equal(graphics.InvalidBufferId))
+		})
+	}
+
+	itIsNotCreatedRemotely := func() {
+		It("is not created remotely initally", func() {
+			Ω(indexBuffer.CreatedRemotely()).Should(BeFalse())
+		})
+	}
+
 	BeforeEach(func() {
 		facade = new(FakeFacade)
 		usage = graphics.StaticDraw
@@ -27,9 +41,7 @@ var _ = Describe("IndexBuffer", func() {
 		indexBuffer.SetValue(3, 31)
 	})
 
-	It("should have an invalid ID initially", func() {
-		Ω(indexBuffer.Id()).Should(Equal(graphics.InvalidBufferId))
-	})
+	itHasInvalidId()
 
 	It("should be possible to get the usage", func() {
 		Ω(indexBuffer.Usage()).Should(Equal(usage))
@@ -39,9 +51,7 @@ var _ = Describe("IndexBuffer", func() {
 		Ω(indexBuffer.Size()).Should(Equal(size))
 	})
 
-	It("is not created remotely initally", func() {
-		Ω(indexBuffer.CreatedRemotely()).Should(BeFalse())
-	})
+	itIsNotCreatedRemotely()
 
 	It("is possible to get values", func() {
 		Ω(indexBuffer.Value(0)).Should(Equal(uint16(10)))
@@ -50,41 +60,67 @@ var _ = Describe("IndexBuffer", func() {
 		Ω(indexBuffer.Value(3)).Should(Equal(uint16(31)))
 	})
 
-	Context("when the buffer is created remotely", func() {
+	Describe("Remote Creation", func() {
 		var bufferId graphics.ResourceId
+		var createErr error
 
 		BeforeEach(func() {
 			bufferId = 876
-			facade.CreateBufferReturns(bufferId)
-
-			indexBuffer.CreateRemotely()
+			facade.CreateBufferReturns(bufferId, nil)
 		})
 
-		It("should be created remotelly", func() {
-			Ω(indexBuffer.CreatedRemotely()).Should(BeTrue())
+		JustBeforeEach(func() {
+			createErr = indexBuffer.CreateRemotely()
 		})
 
-		It("should have the proper ID", func() {
-			Ω(indexBuffer.Id()).Should(Equal(bufferId))
+		Context("happy path", func() {
+			It("should not return an error", func() {
+				Ω(createErr).ShouldNot(HaveOccurred())
+			})
+
+			It("should be created remotelly", func() {
+				Ω(indexBuffer.CreatedRemotely()).Should(BeTrue())
+			})
+
+			It("should have the proper ID", func() {
+				Ω(indexBuffer.Id()).Should(Equal(bufferId))
+			})
+
+			It("should have made the correct calls to the facade", func() {
+				Ω(facade.CreateBufferCallCount()).Should(Equal(1))
+				Ω(facade.BindIndexBufferCallCount()).Should(Equal(1))
+				argBufferId := facade.BindIndexBufferArgsForCall(0)
+				Ω(argBufferId).Should(Equal(bufferId))
+				Ω(facade.CreateIndexBufferDataCallCount()).Should(Equal(1))
+				argData, argUsage := facade.CreateIndexBufferDataArgsForCall(0)
+				Ω(argData.Length()).Should(Equal(4))
+				Ω(argData.Get(0)).Should(Equal(uint16(10)))
+				Ω(argData.Get(1)).Should(Equal(uint16(11)))
+				Ω(argData.Get(2)).Should(Equal(uint16(21)))
+				Ω(argData.Get(3)).Should(Equal(uint16(31)))
+				Ω(argUsage).Should(Equal(usage))
+			})
 		})
 
-		It("should have made the correct calls to the facade", func() {
-			Ω(facade.CreateBufferCallCount()).Should(Equal(1))
-			Ω(facade.BindIndexBufferCallCount()).Should(Equal(1))
-			argBufferId := facade.BindIndexBufferArgsForCall(0)
-			Ω(argBufferId).Should(Equal(bufferId))
-			Ω(facade.CreateIndexBufferDataCallCount()).Should(Equal(1))
-			argData, argUsage := facade.CreateIndexBufferDataArgsForCall(0)
-			Ω(argData.Length()).Should(Equal(4))
-			Ω(argData.Get(0)).Should(Equal(uint16(10)))
-			Ω(argData.Get(1)).Should(Equal(uint16(11)))
-			Ω(argData.Get(2)).Should(Equal(uint16(21)))
-			Ω(argData.Get(3)).Should(Equal(uint16(31)))
-			Ω(argUsage).Should(Equal(usage))
-		})
+		Context("when allocation fails", func() {
+			var allocErr error
 
-		Context("when the buffer is bound", func() {
 			BeforeEach(func() {
+				allocErr = errors.New("Failed to allocate buffer")
+				facade.CreateBufferReturns(bufferId, allocErr)
+			})
+
+			itHasInvalidId()
+
+			itIsNotCreatedRemotely()
+
+			It("should return an error", func() {
+				Ω(createErr).Should(Equal(allocErr))
+			})
+		})
+
+		Describe("Remote Binding", func() {
+			JustBeforeEach(func() {
 				indexBuffer.BindRemotely()
 			})
 
@@ -95,18 +131,14 @@ var _ = Describe("IndexBuffer", func() {
 			})
 		})
 
-		Context("when the buffer is deleted remotely", func() {
-			BeforeEach(func() {
+		Describe("Remote Deletion", func() {
+			JustBeforeEach(func() {
 				indexBuffer.DeleteRemotely()
 			})
 
-			It("should not be created remotely", func() {
-				Ω(indexBuffer.CreatedRemotely()).Should(BeFalse())
-			})
+			itHasInvalidId()
 
-			It("should have an invalid ID", func() {
-				Ω(indexBuffer.Id()).Should(Equal(graphics.InvalidBufferId))
-			})
+			itIsNotCreatedRemotely()
 
 			It("should have made the proper calls to the facade", func() {
 				Ω(facade.DeleteBufferCallCount()).Should(Equal(1))

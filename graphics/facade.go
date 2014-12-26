@@ -22,7 +22,7 @@ const (
 )
 
 type Facade interface {
-	CreateBuffer() ResourceId
+	CreateBuffer() (ResourceId, error)
 	BindIndexBuffer(bufferId ResourceId)
 	CreateIndexBufferData(data buf.UInt16Buffer, usage BufferUsage)
 	BindVertexBuffer(bufferId ResourceId)

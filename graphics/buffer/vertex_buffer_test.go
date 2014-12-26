@@ -1,6 +1,8 @@
 package buffer_test
 
 import (
+	"errors"
+
 	"github.com/momchil-atanasov/go-whiskey/graphics"
 	. "github.com/momchil-atanasov/go-whiskey/graphics/buffer"
 	. "github.com/momchil-atanasov/go-whiskey/graphics/fakes"
@@ -16,6 +18,18 @@ var _ = Describe("VertexBuffer", func() {
 	var size int
 	var vertexBuffer VertexBuffer
 
+	itHasInvalidId := func() {
+		It("should have an invalid ID", func() {
+			Ω(vertexBuffer.Id()).Should(Equal(graphics.InvalidBufferId))
+		})
+	}
+
+	itIsNotCreatedRemotely := func() {
+		It("is not created remotely initally", func() {
+			Ω(vertexBuffer.CreatedRemotely()).Should(BeFalse())
+		})
+	}
+
 	BeforeEach(func() {
 		facade = new(FakeFacade)
 		usage = graphics.StaticDraw
@@ -26,9 +40,7 @@ var _ = Describe("VertexBuffer", func() {
 		vertexBuffer.SetValue(2, 0.21)
 	})
 
-	It("should have an invalid ID initially", func() {
-		Ω(vertexBuffer.Id()).Should(Equal(graphics.InvalidBufferId))
-	})
+	itHasInvalidId()
 
 	It("should be possible to get the usage", func() {
 		Ω(vertexBuffer.Usage()).Should(Equal(usage))
@@ -38,9 +50,7 @@ var _ = Describe("VertexBuffer", func() {
 		Ω(vertexBuffer.Size()).Should(Equal(size))
 	})
 
-	It("is not created remotely initally", func() {
-		Ω(vertexBuffer.CreatedRemotely()).Should(BeFalse())
-	})
+	itIsNotCreatedRemotely()
 
 	It("is possible to get values", func() {
 		Ω(vertexBuffer.Value(0)).Should(Equal(float32(0.01)))
@@ -48,40 +58,66 @@ var _ = Describe("VertexBuffer", func() {
 		Ω(vertexBuffer.Value(2)).Should(Equal(float32(0.21)))
 	})
 
-	Context("when the buffer is created remotely", func() {
+	Describe("Remote Creation", func() {
 		var bufferId graphics.ResourceId
+		var createErr error
 
 		BeforeEach(func() {
 			bufferId = 876
-			facade.CreateBufferReturns(bufferId)
-
-			vertexBuffer.CreateRemotely()
+			facade.CreateBufferReturns(bufferId, nil)
 		})
 
-		It("should be created remotelly", func() {
-			Ω(vertexBuffer.CreatedRemotely()).Should(BeTrue())
+		JustBeforeEach(func() {
+			createErr = vertexBuffer.CreateRemotely()
 		})
 
-		It("should have the proper ID", func() {
-			Ω(vertexBuffer.Id()).Should(Equal(bufferId))
+		Context("happy path", func() {
+			It("does not return an error", func() {
+				Ω(createErr).ShouldNot(HaveOccurred())
+			})
+
+			It("should be created remotelly", func() {
+				Ω(vertexBuffer.CreatedRemotely()).Should(BeTrue())
+			})
+
+			It("should have the proper ID", func() {
+				Ω(vertexBuffer.Id()).Should(Equal(bufferId))
+			})
+
+			It("should have made the correct calls to the facade", func() {
+				Ω(facade.CreateBufferCallCount()).Should(Equal(1))
+				Ω(facade.BindVertexBufferCallCount()).Should(Equal(1))
+				argBufferId := facade.BindVertexBufferArgsForCall(0)
+				Ω(argBufferId).Should(Equal(bufferId))
+				Ω(facade.CreateVertexBufferDataCallCount()).Should(Equal(1))
+				argData, argUsage := facade.CreateVertexBufferDataArgsForCall(0)
+				Ω(argData.Length()).Should(Equal(3))
+				Ω(argData.Get(0)).Should(Equal(float32(0.01)))
+				Ω(argData.Get(1)).Should(Equal(float32(0.11)))
+				Ω(argData.Get(2)).Should(Equal(float32(0.21)))
+				Ω(argUsage).Should(Equal(usage))
+			})
 		})
 
-		It("should have made the correct calls to the facade", func() {
-			Ω(facade.CreateBufferCallCount()).Should(Equal(1))
-			Ω(facade.BindVertexBufferCallCount()).Should(Equal(1))
-			argBufferId := facade.BindVertexBufferArgsForCall(0)
-			Ω(argBufferId).Should(Equal(bufferId))
-			Ω(facade.CreateVertexBufferDataCallCount()).Should(Equal(1))
-			argData, argUsage := facade.CreateVertexBufferDataArgsForCall(0)
-			Ω(argData.Length()).Should(Equal(3))
-			Ω(argData.Get(0)).Should(Equal(float32(0.01)))
-			Ω(argData.Get(1)).Should(Equal(float32(0.11)))
-			Ω(argData.Get(2)).Should(Equal(float32(0.21)))
-			Ω(argUsage).Should(Equal(usage))
-		})
+		Context("when allocation fails", func() {
+			var allocErr error
 
-		Context("when the buffer is bound", func() {
 			BeforeEach(func() {
+				allocErr = errors.New("Failed to allocate buffer")
+				facade.CreateBufferReturns(bufferId, allocErr)
+			})
+
+			itHasInvalidId()
+
+			itIsNotCreatedRemotely()
+
+			It("returns an error", func() {
+				Ω(createErr).Should(Equal(allocErr))
+			})
+		})
+
+		Describe("Remote Binding", func() {
+			JustBeforeEach(func() {
 				vertexBuffer.BindRemotely()
 			})
 
@@ -92,18 +128,14 @@ var _ = Describe("VertexBuffer", func() {
 			})
 		})
 
-		Context("when the buffer is deleted remotely", func() {
-			BeforeEach(func() {
+		Describe("Remote Deletion", func() {
+			JustBeforeEach(func() {
 				vertexBuffer.DeleteRemotely()
 			})
 
-			It("should not be created remotely", func() {
-				Ω(vertexBuffer.CreatedRemotely()).Should(BeFalse())
-			})
+			itHasInvalidId()
 
-			It("should have an invalid ID", func() {
-				Ω(vertexBuffer.Id()).Should(Equal(graphics.InvalidBufferId))
-			})
+			itIsNotCreatedRemotely()
 
 			It("should have made the proper calls to the facade", func() {
 				Ω(facade.DeleteBufferCallCount()).Should(Equal(1))

@@ -21,7 +21,7 @@ var _ = Describe("Uint16Buffer", func() {
 		Ω(buffer.Length()).Should(Equal(3))
 	})
 
-	It("has made no changes initially to the underlying slice", func() {
+	It("has default values initially", func() {
 		Ω(buffer.Get(0)).Should(Equal(uint16(0)))
 		Ω(buffer.Get(1)).Should(Equal(uint16(0)))
 		Ω(buffer.Get(2)).Should(Equal(uint16(0)))

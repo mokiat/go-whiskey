@@ -1,9 +1,7 @@
 package buffer
 
 import (
-	"encoding/binary"
-
-	"github.com/momchil-atanasov/go-whiskey/common"
+	"github.com/momchil-atanasov/go-whiskey/common/buf"
 	"github.com/momchil-atanasov/go-whiskey/graphics"
 )
 
@@ -11,6 +9,8 @@ type VertexBuffer interface {
 	Id() graphics.ResourceId
 	Usage() graphics.BufferUsage
 	Size() int
+	SetValue(position int, value float32)
+	Value(position int) float32
 	BindRemotely()
 	CreateRemotely()
 	DeleteRemotely()
@@ -20,16 +20,17 @@ type VertexBuffer interface {
 type vertexBuffer struct {
 	id     graphics.ResourceId
 	facade graphics.Facade
-	buffer common.Float32Buffer
+	buffer buf.Float32Buffer
 	size   int
 	usage  graphics.BufferUsage
 }
 
 func NewVertexBuffer(facade graphics.Facade, size int, usage graphics.BufferUsage) VertexBuffer {
+	data := make([]byte, size*4)
 	return &vertexBuffer{
 		id:     graphics.InvalidBufferId,
 		facade: facade,
-		buffer: common.NewFloat32Buffer(size, binary.LittleEndian),
+		buffer: buf.Float32Buffer(data),
 		size:   size,
 		usage:  usage,
 	}
@@ -47,6 +48,14 @@ func (b *vertexBuffer) Size() int {
 	return b.size
 }
 
+func (b *vertexBuffer) SetValue(position int, value float32) {
+	b.buffer.Set(position, value)
+}
+
+func (b *vertexBuffer) Value(position int) float32 {
+	return b.buffer.Get(position)
+}
+
 func (b *vertexBuffer) BindRemotely() {
 	b.facade.BindVertexBuffer(b.id)
 }
@@ -54,7 +63,7 @@ func (b *vertexBuffer) BindRemotely() {
 func (b *vertexBuffer) CreateRemotely() {
 	b.id = b.facade.CreateBuffer()
 	b.facade.BindVertexBuffer(b.id)
-	b.facade.CreateVertexBufferData(b.buffer.Bytes(), b.usage)
+	b.facade.CreateVertexBufferData(b.buffer, b.usage)
 }
 
 func (b *vertexBuffer) DeleteRemotely() {

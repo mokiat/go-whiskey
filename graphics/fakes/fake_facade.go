@@ -4,6 +4,7 @@ package fakes
 import (
 	"sync"
 
+	"github.com/momchil-atanasov/go-whiskey/common/buf"
 	"github.com/momchil-atanasov/go-whiskey/graphics"
 )
 
@@ -19,10 +20,10 @@ type FakeFacade struct {
 	bindIndexBufferArgsForCall []struct {
 		bufferId graphics.ResourceId
 	}
-	CreateIndexBufferDataStub        func(data []byte, usage graphics.BufferUsage)
+	CreateIndexBufferDataStub        func(data buf.UInt16Buffer, usage graphics.BufferUsage)
 	createIndexBufferDataMutex       sync.RWMutex
 	createIndexBufferDataArgsForCall []struct {
-		data  []byte
+		data  buf.UInt16Buffer
 		usage graphics.BufferUsage
 	}
 	BindVertexBufferStub        func(bufferId graphics.ResourceId)
@@ -30,10 +31,10 @@ type FakeFacade struct {
 	bindVertexBufferArgsForCall []struct {
 		bufferId graphics.ResourceId
 	}
-	CreateVertexBufferDataStub        func(data []byte, usage graphics.BufferUsage)
+	CreateVertexBufferDataStub        func(data buf.Float32Buffer, usage graphics.BufferUsage)
 	createVertexBufferDataMutex       sync.RWMutex
 	createVertexBufferDataArgsForCall []struct {
-		data  []byte
+		data  buf.Float32Buffer
 		usage graphics.BufferUsage
 	}
 	DeleteBufferStub        func(bufferId graphics.ResourceId)
@@ -154,10 +155,10 @@ func (fake *FakeFacade) BindIndexBufferArgsForCall(i int) graphics.ResourceId {
 	return fake.bindIndexBufferArgsForCall[i].bufferId
 }
 
-func (fake *FakeFacade) CreateIndexBufferData(data []byte, usage graphics.BufferUsage) {
+func (fake *FakeFacade) CreateIndexBufferData(data buf.UInt16Buffer, usage graphics.BufferUsage) {
 	fake.createIndexBufferDataMutex.Lock()
 	fake.createIndexBufferDataArgsForCall = append(fake.createIndexBufferDataArgsForCall, struct {
-		data  []byte
+		data  buf.UInt16Buffer
 		usage graphics.BufferUsage
 	}{data, usage})
 	fake.createIndexBufferDataMutex.Unlock()
@@ -172,7 +173,7 @@ func (fake *FakeFacade) CreateIndexBufferDataCallCount() int {
 	return len(fake.createIndexBufferDataArgsForCall)
 }
 
-func (fake *FakeFacade) CreateIndexBufferDataArgsForCall(i int) ([]byte, graphics.BufferUsage) {
+func (fake *FakeFacade) CreateIndexBufferDataArgsForCall(i int) (buf.UInt16Buffer, graphics.BufferUsage) {
 	fake.createIndexBufferDataMutex.RLock()
 	defer fake.createIndexBufferDataMutex.RUnlock()
 	return fake.createIndexBufferDataArgsForCall[i].data, fake.createIndexBufferDataArgsForCall[i].usage
@@ -201,10 +202,10 @@ func (fake *FakeFacade) BindVertexBufferArgsForCall(i int) graphics.ResourceId {
 	return fake.bindVertexBufferArgsForCall[i].bufferId
 }
 
-func (fake *FakeFacade) CreateVertexBufferData(data []byte, usage graphics.BufferUsage) {
+func (fake *FakeFacade) CreateVertexBufferData(data buf.Float32Buffer, usage graphics.BufferUsage) {
 	fake.createVertexBufferDataMutex.Lock()
 	fake.createVertexBufferDataArgsForCall = append(fake.createVertexBufferDataArgsForCall, struct {
-		data  []byte
+		data  buf.Float32Buffer
 		usage graphics.BufferUsage
 	}{data, usage})
 	fake.createVertexBufferDataMutex.Unlock()
@@ -219,7 +220,7 @@ func (fake *FakeFacade) CreateVertexBufferDataCallCount() int {
 	return len(fake.createVertexBufferDataArgsForCall)
 }
 
-func (fake *FakeFacade) CreateVertexBufferDataArgsForCall(i int) ([]byte, graphics.BufferUsage) {
+func (fake *FakeFacade) CreateVertexBufferDataArgsForCall(i int) (buf.Float32Buffer, graphics.BufferUsage) {
 	fake.createVertexBufferDataMutex.RLock()
 	defer fake.createVertexBufferDataMutex.RUnlock()
 	return fake.createVertexBufferDataArgsForCall[i].data, fake.createVertexBufferDataArgsForCall[i].usage

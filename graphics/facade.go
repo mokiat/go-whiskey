@@ -1,6 +1,9 @@
 package graphics
 
-import "github.com/momchil-atanasov/go-whiskey/common"
+import (
+	"github.com/momchil-atanasov/go-whiskey/common"
+	"github.com/momchil-atanasov/go-whiskey/common/buf"
+)
 
 type ResourceId uint32
 type BindLocation uint
@@ -21,9 +24,9 @@ const (
 type Facade interface {
 	CreateBuffer() ResourceId
 	BindIndexBuffer(bufferId ResourceId)
-	CreateIndexBufferData(data []byte, usage BufferUsage)
+	CreateIndexBufferData(data buf.UInt16Buffer, usage BufferUsage)
 	BindVertexBuffer(bufferId ResourceId)
-	CreateVertexBufferData(data []byte, usage BufferUsage)
+	CreateVertexBufferData(data buf.Float32Buffer, usage BufferUsage)
 	DeleteBuffer(bufferId ResourceId)
 
 	CreateVertexShader() (ResourceId, error)

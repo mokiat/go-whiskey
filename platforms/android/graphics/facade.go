@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/momchil-atanasov/go-whiskey/common/buf"
 	. "github.com/momchil-atanasov/go-whiskey/graphics"
 	"golang.org/x/mobile/gl"
 )
@@ -23,7 +24,7 @@ func (f *facade) BindIndexBuffer(bufferId ResourceId) {
 
 }
 
-func (f *facade) CreateIndexBufferData(data []byte, usage BufferUsage) {
+func (f *facade) CreateIndexBufferData(data buf.UInt16Buffer, usage BufferUsage) {
 
 }
 
@@ -31,7 +32,7 @@ func (f *facade) BindVertexBuffer(bufferId ResourceId) {
 
 }
 
-func (f *facade) CreateVertexBufferData(data []byte, usage BufferUsage) {
+func (f *facade) CreateVertexBufferData(data buf.Float32Buffer, usage BufferUsage) {
 
 }
 

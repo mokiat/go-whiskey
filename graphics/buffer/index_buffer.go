@@ -1,9 +1,7 @@
 package buffer
 
 import (
-	"encoding/binary"
-
-	"github.com/momchil-atanasov/go-whiskey/common"
+	"github.com/momchil-atanasov/go-whiskey/common/buf"
 	"github.com/momchil-atanasov/go-whiskey/graphics"
 )
 
@@ -11,6 +9,8 @@ type IndexBuffer interface {
 	Id() graphics.ResourceId
 	Usage() graphics.BufferUsage
 	Size() int
+	SetValue(position int, value uint16)
+	Value(position int) uint16
 	BindRemotely()
 	CreateRemotely()
 	DeleteRemotely()
@@ -20,16 +20,17 @@ type IndexBuffer interface {
 type indexBuffer struct {
 	id     graphics.ResourceId
 	facade graphics.Facade
-	buffer common.UInt16Buffer
+	buffer buf.UInt16Buffer
 	usage  graphics.BufferUsage
 	size   int
 }
 
 func NewIndexBuffer(facade graphics.Facade, usage graphics.BufferUsage, size int) IndexBuffer {
+	data := make([]byte, size*2)
 	return &indexBuffer{
 		id:     graphics.InvalidBufferId,
 		facade: facade,
-		buffer: common.NewUInt16Buffer(size, binary.LittleEndian),
+		buffer: buf.UInt16Buffer(data),
 		usage:  usage,
 		size:   size,
 	}
@@ -47,10 +48,18 @@ func (b *indexBuffer) Size() int {
 	return b.size
 }
 
+func (b *indexBuffer) SetValue(position int, value uint16) {
+	b.buffer.Set(position, value)
+}
+
+func (b *indexBuffer) Value(position int) uint16 {
+	return b.buffer.Get(position)
+}
+
 func (b *indexBuffer) CreateRemotely() {
 	b.id = b.facade.CreateBuffer()
 	b.facade.BindIndexBuffer(b.id)
-	b.facade.CreateIndexBufferData(b.buffer.Bytes(), b.usage)
+	b.facade.CreateIndexBufferData(b.buffer, b.usage)
 }
 
 func (b *indexBuffer) BindRemotely() {

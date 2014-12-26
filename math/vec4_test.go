@@ -23,6 +23,16 @@ var _ = Describe("Vec4", func() {
 		Ω(firstVector.Null()).Should(BeFalse())
 	})
 
+	It("#Mul", func() {
+		result := firstVector.Mul(1.5)
+		AssertVec4Equals(result, 1.5, 3.0, 4.5, 6.0)
+	})
+
+	It("#Div", func() {
+		result := firstVector.Div(2.0)
+		AssertVec4Equals(result, 0.5, 1.0, 1.5, 2.0)
+	})
+
 	It("NullVec4", func() {
 		AssertVec4Equals(NullVec4(), 0.0, 0.0, 0.0, 0.0)
 	})

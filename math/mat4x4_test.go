@@ -5,6 +5,7 @@ import (
 	. "github.com/momchil-atanasov/go-whiskey/math/test_helpers"
 
 	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("Mat4x4", func() {
@@ -49,4 +50,59 @@ var _ = Describe("Mat4x4", func() {
 			0.0, 0.0, 0.0, 0.0,
 			0.0, 0.0, 0.0, 0.0)
 	})
+
+	It("IdentityMat4x4", func() {
+		result := IdentityMat4x4().MulMat4x4Right(matrix)
+		Ω(result).Should(Equal(matrix))
+	})
+
+	It("TranslationMat4x4", func() {
+		translationMatrix := TranslationMat4x4(2.0, -3.0, 4.0)
+		result := translationMatrix.MulVec4Right(vector)
+		AssertVec4Equals(result, 4.5, -1.5, 7.0, 1.0)
+	})
+
+	It("ScaleMat4x4", func() {
+		scaleMatrix := ScaleMat4x4(2.0, -3.0, 4.0)
+		result := scaleMatrix.MulVec4Right(vector)
+		AssertVec4Equals(result, 5.0, -4.5, 12.0, 1.0)
+	})
+
+	It("RotationMat4x4", func() {
+		vector = Vec4{1.0, 0.0, 0.0, 1.0}
+		rotationMatrix := RotationMat4x4(120.0, 1.0, 1.0, 1.0)
+		result := rotationMatrix.MulVec4Right(vector)
+		AssertVec4Equals(result, 0.0, 1.0, 0.0, 1.0)
+	})
+
+	It("OrthoMat4x4", func() {
+		orthoMatrix := OrthoMat4x4(-1.1, 2.1, 1.5, -3.4, 1.7, 3.8)
+
+		// Test two opposite corner projections
+		nearCorner := Vec4{-1.1, -3.4, -1.7, 1.0}
+		projectedNearCorner := orthoMatrix.MulVec4Right(nearCorner)
+		projectedNearCorner = projectedNearCorner.Div(projectedNearCorner.W)
+		AssertVec4Equals(projectedNearCorner, -1.0, -1.0, -1.0, 1.0)
+
+		farCorner := Vec4{2.1, 1.5, -3.8, 1.0}
+		projectedFarCorner := orthoMatrix.MulVec4Right(farCorner)
+		projectedFarCorner = projectedFarCorner.Div(projectedFarCorner.W)
+		AssertVec4Equals(projectedFarCorner, 1.0, 1.0, 1.0, 1.0)
+	})
+
+	It("PerspectiveMat4x4", func() {
+		perspectiveMatrix := PerspectiveMat4x4(-1.1, 2.1, 1.5, -3.4, 1.7, 3.8)
+
+		// Test two opposite corner projection
+		nearCorner := Vec4{-1.1, -3.4, -1.7, 1.0}
+		projectedNearCorner := perspectiveMatrix.MulVec4Right(nearCorner)
+		projectedNearCorner = projectedNearCorner.Div(projectedNearCorner.W)
+		AssertVec4Equals(projectedNearCorner, -1.0, -1.0, -1.0, 1.0)
+
+		farCorner := Vec4{4.6941, 3.3529, -3.8, 1.0}
+		projectedFarCorner := perspectiveMatrix.MulVec4Right(farCorner)
+		projectedFarCorner = projectedFarCorner.Div(projectedFarCorner.W)
+		AssertVec4Equals(projectedFarCorner, 1.0, 1.0, 1.0, 1.0)
+	})
+
 })

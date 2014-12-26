@@ -1,6 +1,8 @@
 package shader_test
 
 import (
+	"errors"
+
 	"github.com/momchil-atanasov/go-whiskey/graphics"
 	"github.com/momchil-atanasov/go-whiskey/graphics/fakes"
 	. "github.com/momchil-atanasov/go-whiskey/graphics/shader"
@@ -14,6 +16,18 @@ var _ = Describe("FragmentShader", func() {
 	var sourceCode string
 	var shader FragmentShader
 
+	itIsNotCreatedRemotely := func() {
+		It("is not created remotely", func() {
+			Ω(shader.CreatedRemotely()).Should(BeFalse())
+		})
+	}
+
+	itHasInvalidId := func() {
+		It("has an invalid Id", func() {
+			Ω(shader.Id()).Should(Equal(graphics.InvalidShaderId))
+		})
+	}
+
 	BeforeEach(func() {
 		facade = new(fakes.FakeFacade)
 		sourceCode = "#version 100 ..."
@@ -24,55 +38,83 @@ var _ = Describe("FragmentShader", func() {
 		Ω(shader.SourceCode()).Should(Equal(sourceCode))
 	})
 
-	It("is not created remotely by defualt", func() {
-		Ω(shader.CreatedRemotely()).Should(BeFalse())
-	})
+	itIsNotCreatedRemotely()
 
-	It("has an invalid Id by default", func() {
-		Ω(shader.Id()).Should(Equal(graphics.InvalidShaderId))
-	})
+	itHasInvalidId()
 
-	Context("when shader is created remotely", func() {
+	Describe("Remote Creation", func() {
 		var shaderId graphics.ResourceId
+		var createErr error
 
 		BeforeEach(func() {
 			shaderId = 321
-			facade.CreateFragmentShaderReturns(shaderId)
-
-			shader.CreateRemotely()
+			facade.CreateFragmentShaderReturns(shaderId, nil)
+			facade.CompileShaderReturns(nil)
 		})
 
-		It("is created remotely", func() {
-			Ω(shader.CreatedRemotely()).Should(BeTrue())
+		JustBeforeEach(func() {
+			createErr = shader.CreateRemotely()
 		})
 
-		It("has the proper shader ID", func() {
-			Ω(shader.Id()).Should(Equal(shaderId))
+		Context("happy path", func() {
+			It("is created remotely", func() {
+				Ω(shader.CreatedRemotely()).Should(BeTrue())
+			})
+
+			It("has the proper shader ID", func() {
+				Ω(shader.Id()).Should(Equal(shaderId))
+			})
+
+			It("has made the proper calls to the facade", func() {
+				Ω(facade.CreateFragmentShaderCallCount()).Should(Equal(1))
+				Ω(facade.SetShaderSourceCodeCallCount()).Should(Equal(1))
+				argShaderId, argShaderSource := facade.SetShaderSourceCodeArgsForCall(0)
+				Ω(argShaderId).Should(Equal(shaderId))
+				Ω(argShaderSource).Should(Equal(sourceCode))
+				Ω(facade.CompileShaderCallCount()).Should(Equal(1))
+				argShaderId = facade.CompileShaderArgsForCall(0)
+				Ω(argShaderId).Should(Equal(shaderId))
+			})
 		})
 
-		It("has made the proper calls to the facade", func() {
-			Ω(facade.CreateFragmentShaderCallCount()).Should(Equal(1))
-			Ω(facade.SetShaderSourceCodeCallCount()).Should(Equal(1))
-			argShaderId, argShaderSource := facade.SetShaderSourceCodeArgsForCall(0)
-			Ω(argShaderId).Should(Equal(shaderId))
-			Ω(argShaderSource).Should(Equal(sourceCode))
-			Ω(facade.CompileShaderCallCount()).Should(Equal(1))
-			argShaderId = facade.CompileShaderArgsForCall(0)
-			Ω(argShaderId).Should(Equal(shaderId))
-		})
+		Context("when shader could not be allocated", func() {
+			var allocErr error
 
-		Context("when shader is deleted remotely", func() {
 			BeforeEach(func() {
+				allocErr = errors.New("Could not allocate shader.")
+				facade.CreateFragmentShaderReturns(shaderId, allocErr)
+			})
+
+			itIsNotCreatedRemotely()
+
+			itHasInvalidId()
+
+			It("returns an error", func() {
+				Ω(createErr).Should(Equal(allocErr))
+			})
+		})
+
+		Context("when shader could not be compiled", func() {
+			var compileErr error
+
+			BeforeEach(func() {
+				compileErr = errors.New("Could not compile shader.")
+				facade.CompileShaderReturns(compileErr)
+			})
+
+			It("returns an error", func() {
+				Ω(createErr).Should(Equal(compileErr))
+			})
+		})
+
+		Describe("Remote Deletion", func() {
+			JustBeforeEach(func() {
 				shader.DeleteRemotely()
 			})
 
-			It("is not created remotely anymore", func() {
-				Ω(shader.CreatedRemotely()).Should(BeFalse())
-			})
+			itIsNotCreatedRemotely()
 
-			It("has an invalid ID once again", func() {
-				Ω(shader.Id()).Should(Equal(graphics.InvalidShaderId))
-			})
+			itHasInvalidId()
 
 			It("has made the preper calls to the facade", func() {
 				Ω(facade.DeleteShaderCallCount()).Should(Equal(1))

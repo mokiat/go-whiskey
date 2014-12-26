@@ -26,9 +26,9 @@ type Facade interface {
 	CreateVertexBufferData(data []byte, usage BufferUsage)
 	DeleteBuffer(bufferId ResourceId)
 
-	CreateVertexShader() ResourceId
-	CreateFragmentShader() ResourceId
+	CreateVertexShader() (ResourceId, error)
+	CreateFragmentShader() (ResourceId, error)
 	SetShaderSourceCode(shaderId ResourceId, sourceCode string)
-	CompileShader(shaderId ResourceId)
+	CompileShader(shaderId ResourceId) error
 	DeleteShader(shaderId ResourceId)
 }

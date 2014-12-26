@@ -21,9 +21,12 @@ type FakeFragmentShader struct {
 	sourceCodeReturns struct {
 		result1 string
 	}
-	CreateRemotelyStub        func()
+	CreateRemotelyStub        func() error
 	createRemotelyMutex       sync.RWMutex
 	createRemotelyArgsForCall []struct{}
+	createRemotelyReturns struct {
+		result1 error
+	}
 	DeleteRemotelyStub        func()
 	deleteRemotelyMutex       sync.RWMutex
 	deleteRemotelyArgsForCall []struct{}
@@ -83,12 +86,14 @@ func (fake *FakeFragmentShader) SourceCodeReturns(result1 string) {
 	}{result1}
 }
 
-func (fake *FakeFragmentShader) CreateRemotely() {
+func (fake *FakeFragmentShader) CreateRemotely() error {
 	fake.createRemotelyMutex.Lock()
 	fake.createRemotelyArgsForCall = append(fake.createRemotelyArgsForCall, struct{}{})
 	fake.createRemotelyMutex.Unlock()
 	if fake.CreateRemotelyStub != nil {
-		fake.CreateRemotelyStub()
+		return fake.CreateRemotelyStub()
+	} else {
+		return fake.createRemotelyReturns.result1
 	}
 }
 
@@ -96,6 +101,13 @@ func (fake *FakeFragmentShader) CreateRemotelyCallCount() int {
 	fake.createRemotelyMutex.RLock()
 	defer fake.createRemotelyMutex.RUnlock()
 	return len(fake.createRemotelyArgsForCall)
+}
+
+func (fake *FakeFragmentShader) CreateRemotelyReturns(result1 error) {
+	fake.CreateRemotelyStub = nil
+	fake.createRemotelyReturns = struct {
+		result1 error
+	}{result1}
 }
 
 func (fake *FakeFragmentShader) DeleteRemotely() {

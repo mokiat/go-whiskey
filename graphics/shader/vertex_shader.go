@@ -20,8 +20,17 @@ func NewVertexShader(facade graphics.Facade, sourceCode string) VertexShader {
 	}
 }
 
-func (s *vertexShader) CreateRemotely() {
-	s.id = s.facade.CreateVertexShader()
+func (s *vertexShader) CreateRemotely() error {
+	var err error
+	s.id, err = s.facade.CreateVertexShader()
+	if err != nil {
+		s.id = graphics.InvalidShaderId
+		return err
+	}
 	s.facade.SetShaderSourceCode(s.id, s.sourceCode)
-	s.facade.CompileShader(s.id)
+	err = s.facade.CompileShader(s.id)
+	if err != nil {
+		return err
+	}
+	return nil
 }

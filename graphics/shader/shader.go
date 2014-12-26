@@ -5,7 +5,7 @@ import "github.com/momchil-atanasov/go-whiskey/graphics"
 type Shader interface {
 	Id() graphics.ResourceId
 	SourceCode() string
-	CreateRemotely()
+	CreateRemotely() error
 	DeleteRemotely()
 	CreatedRemotely() bool
 }

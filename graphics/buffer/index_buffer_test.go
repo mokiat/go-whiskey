@@ -34,7 +34,7 @@ var _ = Describe("IndexBuffer", func() {
 		facade = new(FakeFacade)
 		usage = graphics.StaticDraw
 		size = 4
-		indexBuffer = NewIndexBuffer(facade, usage, size)
+		indexBuffer = NewIndexBuffer(facade, size, usage)
 		indexBuffer.SetValue(0, 10)
 		indexBuffer.SetValue(1, 11)
 		indexBuffer.SetValue(2, 21)

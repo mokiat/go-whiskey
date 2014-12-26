@@ -25,7 +25,7 @@ type indexBuffer struct {
 	size   int
 }
 
-func NewIndexBuffer(facade graphics.Facade, usage graphics.BufferUsage, size int) IndexBuffer {
+func NewIndexBuffer(facade graphics.Facade, size int, usage graphics.BufferUsage) IndexBuffer {
 	data := make([]byte, size*2)
 	return &indexBuffer{
 		id:     graphics.InvalidBufferId,

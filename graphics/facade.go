@@ -3,6 +3,7 @@ package graphics
 import (
 	"github.com/momchil-atanasov/go-whiskey/common"
 	"github.com/momchil-atanasov/go-whiskey/common/buf"
+	"github.com/momchil-atanasov/go-whiskey/math"
 )
 
 type ResourceId uint32
@@ -40,4 +41,6 @@ type Facade interface {
 	LinkProgram(ResourceId) error
 	UseProgram(ResourceId)
 	DeleteProgram(ResourceId)
+
+	BindVec4Uniform(vector math.Vec4, location BindLocation)
 }

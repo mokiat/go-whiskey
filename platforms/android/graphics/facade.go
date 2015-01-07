@@ -6,6 +6,7 @@ import (
 
 	"github.com/momchil-atanasov/go-whiskey/common/buf"
 	. "github.com/momchil-atanasov/go-whiskey/graphics"
+	"github.com/momchil-atanasov/go-whiskey/math"
 	"golang.org/x/mobile/gl"
 )
 
@@ -159,4 +160,12 @@ func (f *facade) DeleteProgram(programId ResourceId) {
 	gl.DeleteProgram(gl.Program{
 		Value: uint32(programId),
 	})
+}
+
+func (f *facade) BindVec4Uniform(vector math.Vec4, location BindLocation) {
+	uniform := gl.Uniform{
+		Value: int32(location),
+	}
+
+	gl.Uniform4f(uniform, vector.X, vector.Y, vector.Z, vector.W)
 }

@@ -6,6 +6,7 @@ import (
 
 	"github.com/momchil-atanasov/go-whiskey/common/buf"
 	"github.com/momchil-atanasov/go-whiskey/graphics"
+	"github.com/momchil-atanasov/go-whiskey/math"
 )
 
 type FakeFacade struct {
@@ -106,6 +107,12 @@ type FakeFacade struct {
 	deleteProgramMutex       sync.RWMutex
 	deleteProgramArgsForCall []struct {
 		arg1 graphics.ResourceId
+	}
+	BindVec4UniformStub        func(vector math.Vec4, location graphics.BindLocation)
+	bindVec4UniformMutex       sync.RWMutex
+	bindVec4UniformArgsForCall []struct {
+		vector   math.Vec4
+		location graphics.BindLocation
 	}
 }
 
@@ -505,6 +512,30 @@ func (fake *FakeFacade) DeleteProgramArgsForCall(i int) graphics.ResourceId {
 	fake.deleteProgramMutex.RLock()
 	defer fake.deleteProgramMutex.RUnlock()
 	return fake.deleteProgramArgsForCall[i].arg1
+}
+
+func (fake *FakeFacade) BindVec4Uniform(vector math.Vec4, location graphics.BindLocation) {
+	fake.bindVec4UniformMutex.Lock()
+	fake.bindVec4UniformArgsForCall = append(fake.bindVec4UniformArgsForCall, struct {
+		vector   math.Vec4
+		location graphics.BindLocation
+	}{vector, location})
+	fake.bindVec4UniformMutex.Unlock()
+	if fake.BindVec4UniformStub != nil {
+		fake.BindVec4UniformStub(vector, location)
+	}
+}
+
+func (fake *FakeFacade) BindVec4UniformCallCount() int {
+	fake.bindVec4UniformMutex.RLock()
+	defer fake.bindVec4UniformMutex.RUnlock()
+	return len(fake.bindVec4UniformArgsForCall)
+}
+
+func (fake *FakeFacade) BindVec4UniformArgsForCall(i int) (math.Vec4, graphics.BindLocation) {
+	fake.bindVec4UniformMutex.RLock()
+	defer fake.bindVec4UniformMutex.RUnlock()
+	return fake.bindVec4UniformArgsForCall[i].vector, fake.bindVec4UniformArgsForCall[i].location
 }
 
 var _ graphics.Facade = new(FakeFacade)

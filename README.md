@@ -1,8 +1,10 @@
 # Whiskey Game Engine in Go
 
-![](https://travis-ci.org/momchil-atanasov/go-whiskey.svg?branch=master)
+[![](https://travis-ci.org/momchil-atanasov/go-whiskey.svg?branch=master)](https://travis-ci.org/momchil-atanasov/go-whiskey)
 
 A simple game engine written in Go. It will target both 2D and 3D use cases.
+
+**Note:** This is in development so expect massive changes and backward incompatibilities.
 
 ## User's Guide
 

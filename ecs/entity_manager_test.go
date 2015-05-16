@@ -18,7 +18,7 @@ var _ = Describe("EntityManager", func() {
 		Ω(manager).ShouldNot(BeNil())
 	})
 
-	Describe("Entity creation", func() {
+	Describe("Entity lifecycle", func() {
 		var firstEntity Entity
 		var secondEntity Entity
 		var thirdEntity Entity

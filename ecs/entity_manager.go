@@ -2,7 +2,7 @@ package ecs
 
 //go:generate counterfeiter -o ecs_fakes/fake_entity_manager.go ./ EntityManager
 
-// EntityManager is manages the lifecycle of all Entity object in the game.
+// EntityManager manages the lifecycle of all Entity object in the game.
 type EntityManager interface {
 
 	// CreateEntity creates a brand new Entity object.
@@ -15,38 +15,41 @@ type EntityManager interface {
 	// DeleteEntity deletes an existing Entity object.
 	DeleteEntity(Entity)
 
-	// Deletes all existing Entity objects managed by this EntityManager.
+	// DeleteAllEntities deletes all existing Entity objects managed by this
+	// EntityManager.
 	DeleteAllEntities()
 }
 
-// Creates a new EntityManager instance
+// NewEntityManager creates a new EntityManager instance.
 func NewEntityManager() EntityManager {
 	return &entityManager{
-		entitySet: make(map[Entity]struct{}),
+		entityMap: NewDynamicEntityMap(),
 	}
 }
 
 type entityManager struct {
-	idCounter int32
-	entitySet map[Entity]struct{}
+	idCounter uint16
+	entityMap EntityMap
 }
 
 func (m *entityManager) CreateEntity() Entity {
 	m.idCounter++
-	entity := Entity(m.idCounter)
-	m.entitySet[entity] = struct{}{}
+	entity := Entity{
+		Id:      EntityId(m.idCounter),
+		Version: 0,
+	}
+	m.entityMap.Put(entity.Id, EntityDescriptor{})
 	return entity
 }
 
 func (m *entityManager) HasEntity(entity Entity) bool {
-	_, contains := m.entitySet[entity]
-	return contains
+	return m.entityMap.Has(entity.Id)
 }
 
 func (m *entityManager) DeleteEntity(entity Entity) {
-	delete(m.entitySet, entity)
+	m.entityMap.Delete(entity.Id)
 }
 
 func (m *entityManager) DeleteAllEntities() {
-	m.entitySet = make(map[Entity]struct{})
+	m.entityMap.Clear()
 }

@@ -1,9 +1,9 @@
 package client
 
-//go:generate counterfeiter -o client_fakes/fake_shader.go ./ ShaderClient
-
 type ShaderId interface{}
 type ProgramId interface{}
+
+//go:generate counterfeiter -o client_fakes/fake_shader.go ./ ShaderClient
 
 type ShaderClient interface {
 	CreateVertexShader() (ShaderId, error)

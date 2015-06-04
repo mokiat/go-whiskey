@@ -1,8 +1,8 @@
 package uniform_test
 
 import (
-	"github.com/momchil-atanasov/go-whiskey/graphics"
-	"github.com/momchil-atanasov/go-whiskey/graphics/fakes"
+	"github.com/momchil-atanasov/go-whiskey/graphics/client"
+	"github.com/momchil-atanasov/go-whiskey/graphics/client/client_fakes"
 	. "github.com/momchil-atanasov/go-whiskey/graphics/uniform"
 	"github.com/momchil-atanasov/go-whiskey/math"
 
@@ -11,30 +11,55 @@ import (
 )
 
 var _ = Describe("Value", func() {
-	var facade *fakes.FakeFacade
-	var location graphics.BindLocation
+	var uniformClient *client_fakes.FakeUniformClient
+	var location client.UniformLocation
 
 	BeforeEach(func() {
-		facade = new(fakes.FakeFacade)
+		uniformClient = new(client_fakes.FakeUniformClient)
 		location = 10
 	})
 
-	Describe("Vec4UniformValue", func() {
-		var value Vec4UniformValue
-		var vector math.Vec4
+	Describe("UniformValue", func() {
+		var value UniformValue
 
-		BeforeEach(func() {
-			vector = math.Vec4{X: 1.0, Y: 2.0, Z: 3.0, W: 4.0}
-			value.Value = vector
+		JustBeforeEach(func() {
+			value.Bind(uniformClient, location)
 		})
 
-		It("bind leads to proper calls to the facade", func() {
-			value.Bind(facade, location)
+		Describe("Vec4UniformValue", func() {
+			var vector math.Vec4
 
-			Ω(facade.BindVec4UniformCallCount()).Should(Equal(1))
-			argVector, argLocation := facade.BindVec4UniformArgsForCall(0)
-			Ω(argVector).Should(Equal(vector))
-			Ω(argLocation).Should(Equal(location))
+			BeforeEach(func() {
+				vector = math.Vec4{X: 1.0, Y: 2.0, Z: 3.0, W: 4.0}
+				value = Vec4UniformValue{
+					Value: vector,
+				}
+			})
+
+			It("bind leads to proper client calls", func() {
+				Ω(uniformClient.BindVec4UniformCallCount()).Should(Equal(1))
+				argLocation, argVector := uniformClient.BindVec4UniformArgsForCall(0)
+				Ω(argLocation).Should(Equal(location))
+				Ω(argVector).Should(Equal(vector))
+			})
+		})
+
+		Describe("Mat4x4UniformValue", func() {
+			var matrix math.Mat4x4
+
+			BeforeEach(func() {
+				matrix = math.OrthoMat4x4(-1.0, 2.0, 3.0, -4.0, 1.5, 20.0)
+				value = Mat4x4UniformValue{
+					Value: matrix,
+				}
+			})
+
+			It("bind leads to proper client calls", func() {
+				Ω(uniformClient.BindMat4x4UniformCallCount()).Should(Equal(1))
+				argLocation, argMatrix := uniformClient.BindMat4x4UniformArgsForCall(0)
+				Ω(argLocation).Should(Equal(location))
+				Ω(argMatrix).Should(Equal(matrix))
+			})
 		})
 	})
 })

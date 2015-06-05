@@ -9,21 +9,27 @@ import (
 )
 
 type FakeUniformClient struct {
-	BindVec4UniformStub        func(client.UniformLocation, math.Vec4)
+	BindVec4UniformStub        func(client.UniformLocation, math.Vec4) error
 	bindVec4UniformMutex       sync.RWMutex
 	bindVec4UniformArgsForCall []struct {
 		arg1 client.UniformLocation
 		arg2 math.Vec4
 	}
-	BindMat4x4UniformStub        func(client.UniformLocation, math.Mat4x4)
+	bindVec4UniformReturns struct {
+		result1 error
+	}
+	BindMat4x4UniformStub        func(client.UniformLocation, math.Mat4x4) error
 	bindMat4x4UniformMutex       sync.RWMutex
 	bindMat4x4UniformArgsForCall []struct {
 		arg1 client.UniformLocation
 		arg2 math.Mat4x4
 	}
+	bindMat4x4UniformReturns struct {
+		result1 error
+	}
 }
 
-func (fake *FakeUniformClient) BindVec4Uniform(arg1 client.UniformLocation, arg2 math.Vec4) {
+func (fake *FakeUniformClient) BindVec4Uniform(arg1 client.UniformLocation, arg2 math.Vec4) error {
 	fake.bindVec4UniformMutex.Lock()
 	fake.bindVec4UniformArgsForCall = append(fake.bindVec4UniformArgsForCall, struct {
 		arg1 client.UniformLocation
@@ -31,7 +37,9 @@ func (fake *FakeUniformClient) BindVec4Uniform(arg1 client.UniformLocation, arg2
 	}{arg1, arg2})
 	fake.bindVec4UniformMutex.Unlock()
 	if fake.BindVec4UniformStub != nil {
-		fake.BindVec4UniformStub(arg1, arg2)
+		return fake.BindVec4UniformStub(arg1, arg2)
+	} else {
+		return fake.bindVec4UniformReturns.result1
 	}
 }
 
@@ -47,7 +55,14 @@ func (fake *FakeUniformClient) BindVec4UniformArgsForCall(i int) (client.Uniform
 	return fake.bindVec4UniformArgsForCall[i].arg1, fake.bindVec4UniformArgsForCall[i].arg2
 }
 
-func (fake *FakeUniformClient) BindMat4x4Uniform(arg1 client.UniformLocation, arg2 math.Mat4x4) {
+func (fake *FakeUniformClient) BindVec4UniformReturns(result1 error) {
+	fake.BindVec4UniformStub = nil
+	fake.bindVec4UniformReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeUniformClient) BindMat4x4Uniform(arg1 client.UniformLocation, arg2 math.Mat4x4) error {
 	fake.bindMat4x4UniformMutex.Lock()
 	fake.bindMat4x4UniformArgsForCall = append(fake.bindMat4x4UniformArgsForCall, struct {
 		arg1 client.UniformLocation
@@ -55,7 +70,9 @@ func (fake *FakeUniformClient) BindMat4x4Uniform(arg1 client.UniformLocation, ar
 	}{arg1, arg2})
 	fake.bindMat4x4UniformMutex.Unlock()
 	if fake.BindMat4x4UniformStub != nil {
-		fake.BindMat4x4UniformStub(arg1, arg2)
+		return fake.BindMat4x4UniformStub(arg1, arg2)
+	} else {
+		return fake.bindMat4x4UniformReturns.result1
 	}
 }
 
@@ -69,6 +86,13 @@ func (fake *FakeUniformClient) BindMat4x4UniformArgsForCall(i int) (client.Unifo
 	fake.bindMat4x4UniformMutex.RLock()
 	defer fake.bindMat4x4UniformMutex.RUnlock()
 	return fake.bindMat4x4UniformArgsForCall[i].arg1, fake.bindMat4x4UniformArgsForCall[i].arg2
+}
+
+func (fake *FakeUniformClient) BindMat4x4UniformReturns(result1 error) {
+	fake.BindMat4x4UniformStub = nil
+	fake.bindMat4x4UniformReturns = struct {
+		result1 error
+	}{result1}
 }
 
 var _ client.UniformClient = new(FakeUniformClient)

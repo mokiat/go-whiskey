@@ -4,4 +4,5 @@ package client
 
 type ElementClient interface {
 	DrawTriangles(indexCount, indexOffsetInBytes int) error
+	DrawLines(indexCount, indexOffsetInBytes int) error
 }

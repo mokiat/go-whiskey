@@ -17,6 +17,15 @@ type FakeElementClient struct {
 	drawTrianglesReturns struct {
 		result1 error
 	}
+	DrawLinesStub        func(indexCount, indexOffsetInBytes int) error
+	drawLinesMutex       sync.RWMutex
+	drawLinesArgsForCall []struct {
+		indexCount         int
+		indexOffsetInBytes int
+	}
+	drawLinesReturns struct {
+		result1 error
+	}
 }
 
 func (fake *FakeElementClient) DrawTriangles(indexCount int, indexOffsetInBytes int) error {
@@ -48,6 +57,39 @@ func (fake *FakeElementClient) DrawTrianglesArgsForCall(i int) (int, int) {
 func (fake *FakeElementClient) DrawTrianglesReturns(result1 error) {
 	fake.DrawTrianglesStub = nil
 	fake.drawTrianglesReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeElementClient) DrawLines(indexCount int, indexOffsetInBytes int) error {
+	fake.drawLinesMutex.Lock()
+	fake.drawLinesArgsForCall = append(fake.drawLinesArgsForCall, struct {
+		indexCount         int
+		indexOffsetInBytes int
+	}{indexCount, indexOffsetInBytes})
+	fake.drawLinesMutex.Unlock()
+	if fake.DrawLinesStub != nil {
+		return fake.DrawLinesStub(indexCount, indexOffsetInBytes)
+	} else {
+		return fake.drawLinesReturns.result1
+	}
+}
+
+func (fake *FakeElementClient) DrawLinesCallCount() int {
+	fake.drawLinesMutex.RLock()
+	defer fake.drawLinesMutex.RUnlock()
+	return len(fake.drawLinesArgsForCall)
+}
+
+func (fake *FakeElementClient) DrawLinesArgsForCall(i int) (int, int) {
+	fake.drawLinesMutex.RLock()
+	defer fake.drawLinesMutex.RUnlock()
+	return fake.drawLinesArgsForCall[i].indexCount, fake.drawLinesArgsForCall[i].indexOffsetInBytes
+}
+
+func (fake *FakeElementClient) DrawLinesReturns(result1 error) {
+	fake.DrawLinesStub = nil
+	fake.drawLinesReturns = struct {
 		result1 error
 	}{result1}
 }

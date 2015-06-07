@@ -5,92 +5,133 @@ import (
 	"sync"
 
 	"github.com/momchil-atanasov/go-whiskey/graphics/client"
-	"github.com/momchil-atanasov/go-whiskey/math"
 )
 
 type FakeUniformClient struct {
-	BindVec4UniformStub        func(client.UniformLocation, math.Vec4) error
-	bindVec4UniformMutex       sync.RWMutex
-	bindVec4UniformArgsForCall []struct {
+	SetVec4UniformStub        func(client.UniformLocation, []float32) error
+	setVec4UniformMutex       sync.RWMutex
+	setVec4UniformArgsForCall []struct {
 		arg1 client.UniformLocation
-		arg2 math.Vec4
+		arg2 []float32
 	}
-	bindVec4UniformReturns struct {
+	setVec4UniformReturns struct {
 		result1 error
 	}
-	BindMat4x4UniformStub        func(client.UniformLocation, math.Mat4x4) error
-	bindMat4x4UniformMutex       sync.RWMutex
-	bindMat4x4UniformArgsForCall []struct {
+	SetMat4x4UniformStub        func(client.UniformLocation, []float32) error
+	setMat4x4UniformMutex       sync.RWMutex
+	setMat4x4UniformArgsForCall []struct {
 		arg1 client.UniformLocation
-		arg2 math.Mat4x4
+		arg2 []float32
 	}
-	bindMat4x4UniformReturns struct {
+	setMat4x4UniformReturns struct {
+		result1 error
+	}
+	SetSamplerUniformStub        func(client.UniformLocation, int) error
+	setSamplerUniformMutex       sync.RWMutex
+	setSamplerUniformArgsForCall []struct {
+		arg1 client.UniformLocation
+		arg2 int
+	}
+	setSamplerUniformReturns struct {
 		result1 error
 	}
 }
 
-func (fake *FakeUniformClient) BindVec4Uniform(arg1 client.UniformLocation, arg2 math.Vec4) error {
-	fake.bindVec4UniformMutex.Lock()
-	fake.bindVec4UniformArgsForCall = append(fake.bindVec4UniformArgsForCall, struct {
+func (fake *FakeUniformClient) SetVec4Uniform(arg1 client.UniformLocation, arg2 []float32) error {
+	fake.setVec4UniformMutex.Lock()
+	fake.setVec4UniformArgsForCall = append(fake.setVec4UniformArgsForCall, struct {
 		arg1 client.UniformLocation
-		arg2 math.Vec4
+		arg2 []float32
 	}{arg1, arg2})
-	fake.bindVec4UniformMutex.Unlock()
-	if fake.BindVec4UniformStub != nil {
-		return fake.BindVec4UniformStub(arg1, arg2)
+	fake.setVec4UniformMutex.Unlock()
+	if fake.SetVec4UniformStub != nil {
+		return fake.SetVec4UniformStub(arg1, arg2)
 	} else {
-		return fake.bindVec4UniformReturns.result1
+		return fake.setVec4UniformReturns.result1
 	}
 }
 
-func (fake *FakeUniformClient) BindVec4UniformCallCount() int {
-	fake.bindVec4UniformMutex.RLock()
-	defer fake.bindVec4UniformMutex.RUnlock()
-	return len(fake.bindVec4UniformArgsForCall)
+func (fake *FakeUniformClient) SetVec4UniformCallCount() int {
+	fake.setVec4UniformMutex.RLock()
+	defer fake.setVec4UniformMutex.RUnlock()
+	return len(fake.setVec4UniformArgsForCall)
 }
 
-func (fake *FakeUniformClient) BindVec4UniformArgsForCall(i int) (client.UniformLocation, math.Vec4) {
-	fake.bindVec4UniformMutex.RLock()
-	defer fake.bindVec4UniformMutex.RUnlock()
-	return fake.bindVec4UniformArgsForCall[i].arg1, fake.bindVec4UniformArgsForCall[i].arg2
+func (fake *FakeUniformClient) SetVec4UniformArgsForCall(i int) (client.UniformLocation, []float32) {
+	fake.setVec4UniformMutex.RLock()
+	defer fake.setVec4UniformMutex.RUnlock()
+	return fake.setVec4UniformArgsForCall[i].arg1, fake.setVec4UniformArgsForCall[i].arg2
 }
 
-func (fake *FakeUniformClient) BindVec4UniformReturns(result1 error) {
-	fake.BindVec4UniformStub = nil
-	fake.bindVec4UniformReturns = struct {
+func (fake *FakeUniformClient) SetVec4UniformReturns(result1 error) {
+	fake.SetVec4UniformStub = nil
+	fake.setVec4UniformReturns = struct {
 		result1 error
 	}{result1}
 }
 
-func (fake *FakeUniformClient) BindMat4x4Uniform(arg1 client.UniformLocation, arg2 math.Mat4x4) error {
-	fake.bindMat4x4UniformMutex.Lock()
-	fake.bindMat4x4UniformArgsForCall = append(fake.bindMat4x4UniformArgsForCall, struct {
+func (fake *FakeUniformClient) SetMat4x4Uniform(arg1 client.UniformLocation, arg2 []float32) error {
+	fake.setMat4x4UniformMutex.Lock()
+	fake.setMat4x4UniformArgsForCall = append(fake.setMat4x4UniformArgsForCall, struct {
 		arg1 client.UniformLocation
-		arg2 math.Mat4x4
+		arg2 []float32
 	}{arg1, arg2})
-	fake.bindMat4x4UniformMutex.Unlock()
-	if fake.BindMat4x4UniformStub != nil {
-		return fake.BindMat4x4UniformStub(arg1, arg2)
+	fake.setMat4x4UniformMutex.Unlock()
+	if fake.SetMat4x4UniformStub != nil {
+		return fake.SetMat4x4UniformStub(arg1, arg2)
 	} else {
-		return fake.bindMat4x4UniformReturns.result1
+		return fake.setMat4x4UniformReturns.result1
 	}
 }
 
-func (fake *FakeUniformClient) BindMat4x4UniformCallCount() int {
-	fake.bindMat4x4UniformMutex.RLock()
-	defer fake.bindMat4x4UniformMutex.RUnlock()
-	return len(fake.bindMat4x4UniformArgsForCall)
+func (fake *FakeUniformClient) SetMat4x4UniformCallCount() int {
+	fake.setMat4x4UniformMutex.RLock()
+	defer fake.setMat4x4UniformMutex.RUnlock()
+	return len(fake.setMat4x4UniformArgsForCall)
 }
 
-func (fake *FakeUniformClient) BindMat4x4UniformArgsForCall(i int) (client.UniformLocation, math.Mat4x4) {
-	fake.bindMat4x4UniformMutex.RLock()
-	defer fake.bindMat4x4UniformMutex.RUnlock()
-	return fake.bindMat4x4UniformArgsForCall[i].arg1, fake.bindMat4x4UniformArgsForCall[i].arg2
+func (fake *FakeUniformClient) SetMat4x4UniformArgsForCall(i int) (client.UniformLocation, []float32) {
+	fake.setMat4x4UniformMutex.RLock()
+	defer fake.setMat4x4UniformMutex.RUnlock()
+	return fake.setMat4x4UniformArgsForCall[i].arg1, fake.setMat4x4UniformArgsForCall[i].arg2
 }
 
-func (fake *FakeUniformClient) BindMat4x4UniformReturns(result1 error) {
-	fake.BindMat4x4UniformStub = nil
-	fake.bindMat4x4UniformReturns = struct {
+func (fake *FakeUniformClient) SetMat4x4UniformReturns(result1 error) {
+	fake.SetMat4x4UniformStub = nil
+	fake.setMat4x4UniformReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeUniformClient) SetSamplerUniform(arg1 client.UniformLocation, arg2 int) error {
+	fake.setSamplerUniformMutex.Lock()
+	fake.setSamplerUniformArgsForCall = append(fake.setSamplerUniformArgsForCall, struct {
+		arg1 client.UniformLocation
+		arg2 int
+	}{arg1, arg2})
+	fake.setSamplerUniformMutex.Unlock()
+	if fake.SetSamplerUniformStub != nil {
+		return fake.SetSamplerUniformStub(arg1, arg2)
+	} else {
+		return fake.setSamplerUniformReturns.result1
+	}
+}
+
+func (fake *FakeUniformClient) SetSamplerUniformCallCount() int {
+	fake.setSamplerUniformMutex.RLock()
+	defer fake.setSamplerUniformMutex.RUnlock()
+	return len(fake.setSamplerUniformArgsForCall)
+}
+
+func (fake *FakeUniformClient) SetSamplerUniformArgsForCall(i int) (client.UniformLocation, int) {
+	fake.setSamplerUniformMutex.RLock()
+	defer fake.setSamplerUniformMutex.RUnlock()
+	return fake.setSamplerUniformArgsForCall[i].arg1, fake.setSamplerUniformArgsForCall[i].arg2
+}
+
+func (fake *FakeUniformClient) SetSamplerUniformReturns(result1 error) {
+	fake.SetSamplerUniformStub = nil
+	fake.setSamplerUniformReturns = struct {
 		result1 error
 	}{result1}
 }

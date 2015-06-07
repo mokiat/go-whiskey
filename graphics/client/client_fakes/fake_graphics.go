@@ -5,7 +5,6 @@ import (
 	"sync"
 
 	"github.com/momchil-atanasov/go-whiskey/graphics/client"
-	"github.com/momchil-atanasov/go-whiskey/math"
 )
 
 type FakeGraphicsClient struct {
@@ -131,22 +130,49 @@ type FakeGraphicsClient struct {
 	configureAttributeReturns struct {
 		result1 error
 	}
-	BindVec4UniformStub        func(client.UniformLocation, math.Vec4) error
-	bindVec4UniformMutex       sync.RWMutex
-	bindVec4UniformArgsForCall []struct {
+	SetVec4UniformStub        func(client.UniformLocation, []float32) error
+	setVec4UniformMutex       sync.RWMutex
+	setVec4UniformArgsForCall []struct {
 		arg1 client.UniformLocation
-		arg2 math.Vec4
+		arg2 []float32
 	}
-	bindVec4UniformReturns struct {
+	setVec4UniformReturns struct {
 		result1 error
 	}
-	BindMat4x4UniformStub        func(client.UniformLocation, math.Mat4x4) error
-	bindMat4x4UniformMutex       sync.RWMutex
-	bindMat4x4UniformArgsForCall []struct {
+	SetMat4x4UniformStub        func(client.UniformLocation, []float32) error
+	setMat4x4UniformMutex       sync.RWMutex
+	setMat4x4UniformArgsForCall []struct {
 		arg1 client.UniformLocation
-		arg2 math.Mat4x4
+		arg2 []float32
 	}
-	bindMat4x4UniformReturns struct {
+	setMat4x4UniformReturns struct {
+		result1 error
+	}
+	SetSamplerUniformStub        func(client.UniformLocation, int) error
+	setSamplerUniformMutex       sync.RWMutex
+	setSamplerUniformArgsForCall []struct {
+		arg1 client.UniformLocation
+		arg2 int
+	}
+	setSamplerUniformReturns struct {
+		result1 error
+	}
+	Bind2DTextureStub        func(channel int, textureId client.TextureId) error
+	bind2DTextureMutex       sync.RWMutex
+	bind2DTextureArgsForCall []struct {
+		channel   int
+		textureId client.TextureId
+	}
+	bind2DTextureReturns struct {
+		result1 error
+	}
+	BindCubeTextureStub        func(channel int, textureId client.TextureId) error
+	bindCubeTextureMutex       sync.RWMutex
+	bindCubeTextureArgsForCall []struct {
+		channel   int
+		textureId client.TextureId
+	}
+	bindCubeTextureReturns struct {
 		result1 error
 	}
 	DrawTrianglesStub        func(indexCount, indexOffsetInBytes int) error
@@ -156,6 +182,15 @@ type FakeGraphicsClient struct {
 		indexOffsetInBytes int
 	}
 	drawTrianglesReturns struct {
+		result1 error
+	}
+	DrawLinesStub        func(indexCount, indexOffsetInBytes int) error
+	drawLinesMutex       sync.RWMutex
+	drawLinesArgsForCall []struct {
+		indexCount         int
+		indexOffsetInBytes int
+	}
+	drawLinesReturns struct {
 		result1 error
 	}
 }
@@ -624,68 +659,167 @@ func (fake *FakeGraphicsClient) ConfigureAttributeReturns(result1 error) {
 	}{result1}
 }
 
-func (fake *FakeGraphicsClient) BindVec4Uniform(arg1 client.UniformLocation, arg2 math.Vec4) error {
-	fake.bindVec4UniformMutex.Lock()
-	fake.bindVec4UniformArgsForCall = append(fake.bindVec4UniformArgsForCall, struct {
+func (fake *FakeGraphicsClient) SetVec4Uniform(arg1 client.UniformLocation, arg2 []float32) error {
+	fake.setVec4UniformMutex.Lock()
+	fake.setVec4UniformArgsForCall = append(fake.setVec4UniformArgsForCall, struct {
 		arg1 client.UniformLocation
-		arg2 math.Vec4
+		arg2 []float32
 	}{arg1, arg2})
-	fake.bindVec4UniformMutex.Unlock()
-	if fake.BindVec4UniformStub != nil {
-		return fake.BindVec4UniformStub(arg1, arg2)
+	fake.setVec4UniformMutex.Unlock()
+	if fake.SetVec4UniformStub != nil {
+		return fake.SetVec4UniformStub(arg1, arg2)
 	} else {
-		return fake.bindVec4UniformReturns.result1
+		return fake.setVec4UniformReturns.result1
 	}
 }
 
-func (fake *FakeGraphicsClient) BindVec4UniformCallCount() int {
-	fake.bindVec4UniformMutex.RLock()
-	defer fake.bindVec4UniformMutex.RUnlock()
-	return len(fake.bindVec4UniformArgsForCall)
+func (fake *FakeGraphicsClient) SetVec4UniformCallCount() int {
+	fake.setVec4UniformMutex.RLock()
+	defer fake.setVec4UniformMutex.RUnlock()
+	return len(fake.setVec4UniformArgsForCall)
 }
 
-func (fake *FakeGraphicsClient) BindVec4UniformArgsForCall(i int) (client.UniformLocation, math.Vec4) {
-	fake.bindVec4UniformMutex.RLock()
-	defer fake.bindVec4UniformMutex.RUnlock()
-	return fake.bindVec4UniformArgsForCall[i].arg1, fake.bindVec4UniformArgsForCall[i].arg2
+func (fake *FakeGraphicsClient) SetVec4UniformArgsForCall(i int) (client.UniformLocation, []float32) {
+	fake.setVec4UniformMutex.RLock()
+	defer fake.setVec4UniformMutex.RUnlock()
+	return fake.setVec4UniformArgsForCall[i].arg1, fake.setVec4UniformArgsForCall[i].arg2
 }
 
-func (fake *FakeGraphicsClient) BindVec4UniformReturns(result1 error) {
-	fake.BindVec4UniformStub = nil
-	fake.bindVec4UniformReturns = struct {
+func (fake *FakeGraphicsClient) SetVec4UniformReturns(result1 error) {
+	fake.SetVec4UniformStub = nil
+	fake.setVec4UniformReturns = struct {
 		result1 error
 	}{result1}
 }
 
-func (fake *FakeGraphicsClient) BindMat4x4Uniform(arg1 client.UniformLocation, arg2 math.Mat4x4) error {
-	fake.bindMat4x4UniformMutex.Lock()
-	fake.bindMat4x4UniformArgsForCall = append(fake.bindMat4x4UniformArgsForCall, struct {
+func (fake *FakeGraphicsClient) SetMat4x4Uniform(arg1 client.UniformLocation, arg2 []float32) error {
+	fake.setMat4x4UniformMutex.Lock()
+	fake.setMat4x4UniformArgsForCall = append(fake.setMat4x4UniformArgsForCall, struct {
 		arg1 client.UniformLocation
-		arg2 math.Mat4x4
+		arg2 []float32
 	}{arg1, arg2})
-	fake.bindMat4x4UniformMutex.Unlock()
-	if fake.BindMat4x4UniformStub != nil {
-		return fake.BindMat4x4UniformStub(arg1, arg2)
+	fake.setMat4x4UniformMutex.Unlock()
+	if fake.SetMat4x4UniformStub != nil {
+		return fake.SetMat4x4UniformStub(arg1, arg2)
 	} else {
-		return fake.bindMat4x4UniformReturns.result1
+		return fake.setMat4x4UniformReturns.result1
 	}
 }
 
-func (fake *FakeGraphicsClient) BindMat4x4UniformCallCount() int {
-	fake.bindMat4x4UniformMutex.RLock()
-	defer fake.bindMat4x4UniformMutex.RUnlock()
-	return len(fake.bindMat4x4UniformArgsForCall)
+func (fake *FakeGraphicsClient) SetMat4x4UniformCallCount() int {
+	fake.setMat4x4UniformMutex.RLock()
+	defer fake.setMat4x4UniformMutex.RUnlock()
+	return len(fake.setMat4x4UniformArgsForCall)
 }
 
-func (fake *FakeGraphicsClient) BindMat4x4UniformArgsForCall(i int) (client.UniformLocation, math.Mat4x4) {
-	fake.bindMat4x4UniformMutex.RLock()
-	defer fake.bindMat4x4UniformMutex.RUnlock()
-	return fake.bindMat4x4UniformArgsForCall[i].arg1, fake.bindMat4x4UniformArgsForCall[i].arg2
+func (fake *FakeGraphicsClient) SetMat4x4UniformArgsForCall(i int) (client.UniformLocation, []float32) {
+	fake.setMat4x4UniformMutex.RLock()
+	defer fake.setMat4x4UniformMutex.RUnlock()
+	return fake.setMat4x4UniformArgsForCall[i].arg1, fake.setMat4x4UniformArgsForCall[i].arg2
 }
 
-func (fake *FakeGraphicsClient) BindMat4x4UniformReturns(result1 error) {
-	fake.BindMat4x4UniformStub = nil
-	fake.bindMat4x4UniformReturns = struct {
+func (fake *FakeGraphicsClient) SetMat4x4UniformReturns(result1 error) {
+	fake.SetMat4x4UniformStub = nil
+	fake.setMat4x4UniformReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeGraphicsClient) SetSamplerUniform(arg1 client.UniformLocation, arg2 int) error {
+	fake.setSamplerUniformMutex.Lock()
+	fake.setSamplerUniformArgsForCall = append(fake.setSamplerUniformArgsForCall, struct {
+		arg1 client.UniformLocation
+		arg2 int
+	}{arg1, arg2})
+	fake.setSamplerUniformMutex.Unlock()
+	if fake.SetSamplerUniformStub != nil {
+		return fake.SetSamplerUniformStub(arg1, arg2)
+	} else {
+		return fake.setSamplerUniformReturns.result1
+	}
+}
+
+func (fake *FakeGraphicsClient) SetSamplerUniformCallCount() int {
+	fake.setSamplerUniformMutex.RLock()
+	defer fake.setSamplerUniformMutex.RUnlock()
+	return len(fake.setSamplerUniformArgsForCall)
+}
+
+func (fake *FakeGraphicsClient) SetSamplerUniformArgsForCall(i int) (client.UniformLocation, int) {
+	fake.setSamplerUniformMutex.RLock()
+	defer fake.setSamplerUniformMutex.RUnlock()
+	return fake.setSamplerUniformArgsForCall[i].arg1, fake.setSamplerUniformArgsForCall[i].arg2
+}
+
+func (fake *FakeGraphicsClient) SetSamplerUniformReturns(result1 error) {
+	fake.SetSamplerUniformStub = nil
+	fake.setSamplerUniformReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeGraphicsClient) Bind2DTexture(channel int, textureId client.TextureId) error {
+	fake.bind2DTextureMutex.Lock()
+	fake.bind2DTextureArgsForCall = append(fake.bind2DTextureArgsForCall, struct {
+		channel   int
+		textureId client.TextureId
+	}{channel, textureId})
+	fake.bind2DTextureMutex.Unlock()
+	if fake.Bind2DTextureStub != nil {
+		return fake.Bind2DTextureStub(channel, textureId)
+	} else {
+		return fake.bind2DTextureReturns.result1
+	}
+}
+
+func (fake *FakeGraphicsClient) Bind2DTextureCallCount() int {
+	fake.bind2DTextureMutex.RLock()
+	defer fake.bind2DTextureMutex.RUnlock()
+	return len(fake.bind2DTextureArgsForCall)
+}
+
+func (fake *FakeGraphicsClient) Bind2DTextureArgsForCall(i int) (int, client.TextureId) {
+	fake.bind2DTextureMutex.RLock()
+	defer fake.bind2DTextureMutex.RUnlock()
+	return fake.bind2DTextureArgsForCall[i].channel, fake.bind2DTextureArgsForCall[i].textureId
+}
+
+func (fake *FakeGraphicsClient) Bind2DTextureReturns(result1 error) {
+	fake.Bind2DTextureStub = nil
+	fake.bind2DTextureReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeGraphicsClient) BindCubeTexture(channel int, textureId client.TextureId) error {
+	fake.bindCubeTextureMutex.Lock()
+	fake.bindCubeTextureArgsForCall = append(fake.bindCubeTextureArgsForCall, struct {
+		channel   int
+		textureId client.TextureId
+	}{channel, textureId})
+	fake.bindCubeTextureMutex.Unlock()
+	if fake.BindCubeTextureStub != nil {
+		return fake.BindCubeTextureStub(channel, textureId)
+	} else {
+		return fake.bindCubeTextureReturns.result1
+	}
+}
+
+func (fake *FakeGraphicsClient) BindCubeTextureCallCount() int {
+	fake.bindCubeTextureMutex.RLock()
+	defer fake.bindCubeTextureMutex.RUnlock()
+	return len(fake.bindCubeTextureArgsForCall)
+}
+
+func (fake *FakeGraphicsClient) BindCubeTextureArgsForCall(i int) (int, client.TextureId) {
+	fake.bindCubeTextureMutex.RLock()
+	defer fake.bindCubeTextureMutex.RUnlock()
+	return fake.bindCubeTextureArgsForCall[i].channel, fake.bindCubeTextureArgsForCall[i].textureId
+}
+
+func (fake *FakeGraphicsClient) BindCubeTextureReturns(result1 error) {
+	fake.BindCubeTextureStub = nil
+	fake.bindCubeTextureReturns = struct {
 		result1 error
 	}{result1}
 }
@@ -719,6 +853,39 @@ func (fake *FakeGraphicsClient) DrawTrianglesArgsForCall(i int) (int, int) {
 func (fake *FakeGraphicsClient) DrawTrianglesReturns(result1 error) {
 	fake.DrawTrianglesStub = nil
 	fake.drawTrianglesReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeGraphicsClient) DrawLines(indexCount int, indexOffsetInBytes int) error {
+	fake.drawLinesMutex.Lock()
+	fake.drawLinesArgsForCall = append(fake.drawLinesArgsForCall, struct {
+		indexCount         int
+		indexOffsetInBytes int
+	}{indexCount, indexOffsetInBytes})
+	fake.drawLinesMutex.Unlock()
+	if fake.DrawLinesStub != nil {
+		return fake.DrawLinesStub(indexCount, indexOffsetInBytes)
+	} else {
+		return fake.drawLinesReturns.result1
+	}
+}
+
+func (fake *FakeGraphicsClient) DrawLinesCallCount() int {
+	fake.drawLinesMutex.RLock()
+	defer fake.drawLinesMutex.RUnlock()
+	return len(fake.drawLinesArgsForCall)
+}
+
+func (fake *FakeGraphicsClient) DrawLinesArgsForCall(i int) (int, int) {
+	fake.drawLinesMutex.RLock()
+	defer fake.drawLinesMutex.RUnlock()
+	return fake.drawLinesArgsForCall[i].indexCount, fake.drawLinesArgsForCall[i].indexOffsetInBytes
+}
+
+func (fake *FakeGraphicsClient) DrawLinesReturns(result1 error) {
+	fake.DrawLinesStub = nil
+	fake.drawLinesReturns = struct {
 		result1 error
 	}{result1}
 }

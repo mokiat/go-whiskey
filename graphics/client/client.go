@@ -7,5 +7,6 @@ type GraphicsClient interface {
 	BufferClient
 	AttributeClient
 	UniformClient
+	TextureClient
 	ElementClient
 }

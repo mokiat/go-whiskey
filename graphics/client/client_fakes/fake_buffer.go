@@ -8,6 +8,13 @@ import (
 )
 
 type FakeBufferClient struct {
+	CreateBufferStub        func() (client.BufferId, error)
+	createBufferMutex       sync.RWMutex
+	createBufferArgsForCall []struct{}
+	createBufferReturns struct {
+		result1 client.BufferId
+		result2 error
+	}
 	BindVertexBufferStub        func(id client.BufferId) error
 	bindVertexBufferMutex       sync.RWMutex
 	bindVertexBufferArgsForCall []struct {
@@ -24,6 +31,57 @@ type FakeBufferClient struct {
 	bindIndexBufferReturns struct {
 		result1 error
 	}
+	CreateVertexBufferDataStub        func(data []byte, usage client.BufferUsage) error
+	createVertexBufferDataMutex       sync.RWMutex
+	createVertexBufferDataArgsForCall []struct {
+		data  []byte
+		usage client.BufferUsage
+	}
+	createVertexBufferDataReturns struct {
+		result1 error
+	}
+	CreateIndexBufferDataStub        func(data []byte, usage client.BufferUsage) error
+	createIndexBufferDataMutex       sync.RWMutex
+	createIndexBufferDataArgsForCall []struct {
+		data  []byte
+		usage client.BufferUsage
+	}
+	createIndexBufferDataReturns struct {
+		result1 error
+	}
+	DeleteBufferStub        func(bufferId client.BufferId) error
+	deleteBufferMutex       sync.RWMutex
+	deleteBufferArgsForCall []struct {
+		bufferId client.BufferId
+	}
+	deleteBufferReturns struct {
+		result1 error
+	}
+}
+
+func (fake *FakeBufferClient) CreateBuffer() (client.BufferId, error) {
+	fake.createBufferMutex.Lock()
+	fake.createBufferArgsForCall = append(fake.createBufferArgsForCall, struct{}{})
+	fake.createBufferMutex.Unlock()
+	if fake.CreateBufferStub != nil {
+		return fake.CreateBufferStub()
+	} else {
+		return fake.createBufferReturns.result1, fake.createBufferReturns.result2
+	}
+}
+
+func (fake *FakeBufferClient) CreateBufferCallCount() int {
+	fake.createBufferMutex.RLock()
+	defer fake.createBufferMutex.RUnlock()
+	return len(fake.createBufferArgsForCall)
+}
+
+func (fake *FakeBufferClient) CreateBufferReturns(result1 client.BufferId, result2 error) {
+	fake.CreateBufferStub = nil
+	fake.createBufferReturns = struct {
+		result1 client.BufferId
+		result2 error
+	}{result1, result2}
 }
 
 func (fake *FakeBufferClient) BindVertexBuffer(id client.BufferId) error {
@@ -86,6 +144,104 @@ func (fake *FakeBufferClient) BindIndexBufferArgsForCall(i int) client.BufferId 
 func (fake *FakeBufferClient) BindIndexBufferReturns(result1 error) {
 	fake.BindIndexBufferStub = nil
 	fake.bindIndexBufferReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeBufferClient) CreateVertexBufferData(data []byte, usage client.BufferUsage) error {
+	fake.createVertexBufferDataMutex.Lock()
+	fake.createVertexBufferDataArgsForCall = append(fake.createVertexBufferDataArgsForCall, struct {
+		data  []byte
+		usage client.BufferUsage
+	}{data, usage})
+	fake.createVertexBufferDataMutex.Unlock()
+	if fake.CreateVertexBufferDataStub != nil {
+		return fake.CreateVertexBufferDataStub(data, usage)
+	} else {
+		return fake.createVertexBufferDataReturns.result1
+	}
+}
+
+func (fake *FakeBufferClient) CreateVertexBufferDataCallCount() int {
+	fake.createVertexBufferDataMutex.RLock()
+	defer fake.createVertexBufferDataMutex.RUnlock()
+	return len(fake.createVertexBufferDataArgsForCall)
+}
+
+func (fake *FakeBufferClient) CreateVertexBufferDataArgsForCall(i int) ([]byte, client.BufferUsage) {
+	fake.createVertexBufferDataMutex.RLock()
+	defer fake.createVertexBufferDataMutex.RUnlock()
+	return fake.createVertexBufferDataArgsForCall[i].data, fake.createVertexBufferDataArgsForCall[i].usage
+}
+
+func (fake *FakeBufferClient) CreateVertexBufferDataReturns(result1 error) {
+	fake.CreateVertexBufferDataStub = nil
+	fake.createVertexBufferDataReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeBufferClient) CreateIndexBufferData(data []byte, usage client.BufferUsage) error {
+	fake.createIndexBufferDataMutex.Lock()
+	fake.createIndexBufferDataArgsForCall = append(fake.createIndexBufferDataArgsForCall, struct {
+		data  []byte
+		usage client.BufferUsage
+	}{data, usage})
+	fake.createIndexBufferDataMutex.Unlock()
+	if fake.CreateIndexBufferDataStub != nil {
+		return fake.CreateIndexBufferDataStub(data, usage)
+	} else {
+		return fake.createIndexBufferDataReturns.result1
+	}
+}
+
+func (fake *FakeBufferClient) CreateIndexBufferDataCallCount() int {
+	fake.createIndexBufferDataMutex.RLock()
+	defer fake.createIndexBufferDataMutex.RUnlock()
+	return len(fake.createIndexBufferDataArgsForCall)
+}
+
+func (fake *FakeBufferClient) CreateIndexBufferDataArgsForCall(i int) ([]byte, client.BufferUsage) {
+	fake.createIndexBufferDataMutex.RLock()
+	defer fake.createIndexBufferDataMutex.RUnlock()
+	return fake.createIndexBufferDataArgsForCall[i].data, fake.createIndexBufferDataArgsForCall[i].usage
+}
+
+func (fake *FakeBufferClient) CreateIndexBufferDataReturns(result1 error) {
+	fake.CreateIndexBufferDataStub = nil
+	fake.createIndexBufferDataReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeBufferClient) DeleteBuffer(bufferId client.BufferId) error {
+	fake.deleteBufferMutex.Lock()
+	fake.deleteBufferArgsForCall = append(fake.deleteBufferArgsForCall, struct {
+		bufferId client.BufferId
+	}{bufferId})
+	fake.deleteBufferMutex.Unlock()
+	if fake.DeleteBufferStub != nil {
+		return fake.DeleteBufferStub(bufferId)
+	} else {
+		return fake.deleteBufferReturns.result1
+	}
+}
+
+func (fake *FakeBufferClient) DeleteBufferCallCount() int {
+	fake.deleteBufferMutex.RLock()
+	defer fake.deleteBufferMutex.RUnlock()
+	return len(fake.deleteBufferArgsForCall)
+}
+
+func (fake *FakeBufferClient) DeleteBufferArgsForCall(i int) client.BufferId {
+	fake.deleteBufferMutex.RLock()
+	defer fake.deleteBufferMutex.RUnlock()
+	return fake.deleteBufferArgsForCall[i].bufferId
+}
+
+func (fake *FakeBufferClient) DeleteBufferReturns(result1 error) {
+	fake.DeleteBufferStub = nil
+	fake.deleteBufferReturns = struct {
 		result1 error
 	}{result1}
 }

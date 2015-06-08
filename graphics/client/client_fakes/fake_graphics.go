@@ -87,6 +87,13 @@ type FakeGraphicsClient struct {
 	deleteProgramReturns struct {
 		result1 error
 	}
+	CreateBufferStub        func() (client.BufferId, error)
+	createBufferMutex       sync.RWMutex
+	createBufferArgsForCall []struct{}
+	createBufferReturns struct {
+		result1 client.BufferId
+		result2 error
+	}
 	BindVertexBufferStub        func(id client.BufferId) error
 	bindVertexBufferMutex       sync.RWMutex
 	bindVertexBufferArgsForCall []struct {
@@ -101,6 +108,32 @@ type FakeGraphicsClient struct {
 		id client.BufferId
 	}
 	bindIndexBufferReturns struct {
+		result1 error
+	}
+	CreateVertexBufferDataStub        func(data []byte, usage client.BufferUsage) error
+	createVertexBufferDataMutex       sync.RWMutex
+	createVertexBufferDataArgsForCall []struct {
+		data  []byte
+		usage client.BufferUsage
+	}
+	createVertexBufferDataReturns struct {
+		result1 error
+	}
+	CreateIndexBufferDataStub        func(data []byte, usage client.BufferUsage) error
+	createIndexBufferDataMutex       sync.RWMutex
+	createIndexBufferDataArgsForCall []struct {
+		data  []byte
+		usage client.BufferUsage
+	}
+	createIndexBufferDataReturns struct {
+		result1 error
+	}
+	DeleteBufferStub        func(bufferId client.BufferId) error
+	deleteBufferMutex       sync.RWMutex
+	deleteBufferArgsForCall []struct {
+		bufferId client.BufferId
+	}
+	deleteBufferReturns struct {
 		result1 error
 	}
 	EnableAttributeStub        func(location client.AttributeLocation) error
@@ -496,6 +529,31 @@ func (fake *FakeGraphicsClient) DeleteProgramReturns(result1 error) {
 	}{result1}
 }
 
+func (fake *FakeGraphicsClient) CreateBuffer() (client.BufferId, error) {
+	fake.createBufferMutex.Lock()
+	fake.createBufferArgsForCall = append(fake.createBufferArgsForCall, struct{}{})
+	fake.createBufferMutex.Unlock()
+	if fake.CreateBufferStub != nil {
+		return fake.CreateBufferStub()
+	} else {
+		return fake.createBufferReturns.result1, fake.createBufferReturns.result2
+	}
+}
+
+func (fake *FakeGraphicsClient) CreateBufferCallCount() int {
+	fake.createBufferMutex.RLock()
+	defer fake.createBufferMutex.RUnlock()
+	return len(fake.createBufferArgsForCall)
+}
+
+func (fake *FakeGraphicsClient) CreateBufferReturns(result1 client.BufferId, result2 error) {
+	fake.CreateBufferStub = nil
+	fake.createBufferReturns = struct {
+		result1 client.BufferId
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeGraphicsClient) BindVertexBuffer(id client.BufferId) error {
 	fake.bindVertexBufferMutex.Lock()
 	fake.bindVertexBufferArgsForCall = append(fake.bindVertexBufferArgsForCall, struct {
@@ -556,6 +614,104 @@ func (fake *FakeGraphicsClient) BindIndexBufferArgsForCall(i int) client.BufferI
 func (fake *FakeGraphicsClient) BindIndexBufferReturns(result1 error) {
 	fake.BindIndexBufferStub = nil
 	fake.bindIndexBufferReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeGraphicsClient) CreateVertexBufferData(data []byte, usage client.BufferUsage) error {
+	fake.createVertexBufferDataMutex.Lock()
+	fake.createVertexBufferDataArgsForCall = append(fake.createVertexBufferDataArgsForCall, struct {
+		data  []byte
+		usage client.BufferUsage
+	}{data, usage})
+	fake.createVertexBufferDataMutex.Unlock()
+	if fake.CreateVertexBufferDataStub != nil {
+		return fake.CreateVertexBufferDataStub(data, usage)
+	} else {
+		return fake.createVertexBufferDataReturns.result1
+	}
+}
+
+func (fake *FakeGraphicsClient) CreateVertexBufferDataCallCount() int {
+	fake.createVertexBufferDataMutex.RLock()
+	defer fake.createVertexBufferDataMutex.RUnlock()
+	return len(fake.createVertexBufferDataArgsForCall)
+}
+
+func (fake *FakeGraphicsClient) CreateVertexBufferDataArgsForCall(i int) ([]byte, client.BufferUsage) {
+	fake.createVertexBufferDataMutex.RLock()
+	defer fake.createVertexBufferDataMutex.RUnlock()
+	return fake.createVertexBufferDataArgsForCall[i].data, fake.createVertexBufferDataArgsForCall[i].usage
+}
+
+func (fake *FakeGraphicsClient) CreateVertexBufferDataReturns(result1 error) {
+	fake.CreateVertexBufferDataStub = nil
+	fake.createVertexBufferDataReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeGraphicsClient) CreateIndexBufferData(data []byte, usage client.BufferUsage) error {
+	fake.createIndexBufferDataMutex.Lock()
+	fake.createIndexBufferDataArgsForCall = append(fake.createIndexBufferDataArgsForCall, struct {
+		data  []byte
+		usage client.BufferUsage
+	}{data, usage})
+	fake.createIndexBufferDataMutex.Unlock()
+	if fake.CreateIndexBufferDataStub != nil {
+		return fake.CreateIndexBufferDataStub(data, usage)
+	} else {
+		return fake.createIndexBufferDataReturns.result1
+	}
+}
+
+func (fake *FakeGraphicsClient) CreateIndexBufferDataCallCount() int {
+	fake.createIndexBufferDataMutex.RLock()
+	defer fake.createIndexBufferDataMutex.RUnlock()
+	return len(fake.createIndexBufferDataArgsForCall)
+}
+
+func (fake *FakeGraphicsClient) CreateIndexBufferDataArgsForCall(i int) ([]byte, client.BufferUsage) {
+	fake.createIndexBufferDataMutex.RLock()
+	defer fake.createIndexBufferDataMutex.RUnlock()
+	return fake.createIndexBufferDataArgsForCall[i].data, fake.createIndexBufferDataArgsForCall[i].usage
+}
+
+func (fake *FakeGraphicsClient) CreateIndexBufferDataReturns(result1 error) {
+	fake.CreateIndexBufferDataStub = nil
+	fake.createIndexBufferDataReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeGraphicsClient) DeleteBuffer(bufferId client.BufferId) error {
+	fake.deleteBufferMutex.Lock()
+	fake.deleteBufferArgsForCall = append(fake.deleteBufferArgsForCall, struct {
+		bufferId client.BufferId
+	}{bufferId})
+	fake.deleteBufferMutex.Unlock()
+	if fake.DeleteBufferStub != nil {
+		return fake.DeleteBufferStub(bufferId)
+	} else {
+		return fake.deleteBufferReturns.result1
+	}
+}
+
+func (fake *FakeGraphicsClient) DeleteBufferCallCount() int {
+	fake.deleteBufferMutex.RLock()
+	defer fake.deleteBufferMutex.RUnlock()
+	return len(fake.deleteBufferArgsForCall)
+}
+
+func (fake *FakeGraphicsClient) DeleteBufferArgsForCall(i int) client.BufferId {
+	fake.deleteBufferMutex.RLock()
+	defer fake.deleteBufferMutex.RUnlock()
+	return fake.deleteBufferArgsForCall[i].bufferId
+}
+
+func (fake *FakeGraphicsClient) DeleteBufferReturns(result1 error) {
+	fake.DeleteBufferStub = nil
+	fake.deleteBufferReturns = struct {
 		result1 error
 	}{result1}
 }

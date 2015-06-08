@@ -11,13 +11,13 @@ type FakeQueue struct {
 	EmptyStub        func() bool
 	emptyMutex       sync.RWMutex
 	emptyArgsForCall []struct{}
-	emptyReturns     struct {
+	emptyReturns struct {
 		result1 bool
 	}
 	SizeStub        func() int
 	sizeMutex       sync.RWMutex
 	sizeArgsForCall []struct{}
-	sizeReturns     struct {
+	sizeReturns struct {
 		result1 int
 	}
 	PushStub        func(render.Item)
@@ -28,7 +28,7 @@ type FakeQueue struct {
 	PopStub        func() (render.Item, bool)
 	popMutex       sync.RWMutex
 	popArgsForCall []struct{}
-	popReturns     struct {
+	popReturns struct {
 		result1 render.Item
 		result2 bool
 	}

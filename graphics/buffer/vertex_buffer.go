@@ -113,7 +113,7 @@ func (b *vertexBuffer) Create(bufferClient client.BufferClient) error {
 	if err != nil {
 		return err
 	}
-	err = bufferClient.CreateVertexBufferData(b.Data().Content(), b.usage)
+	err = bufferClient.CreateVertexBufferData(b.data.Content(), b.usage)
 	if err != nil {
 		return err
 	}

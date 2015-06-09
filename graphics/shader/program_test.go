@@ -28,7 +28,7 @@ var _ = Describe("Program", func() {
 		fragmentShader = new(shader_fakes.FakeRemoteShader)
 		fragmentShaderId = 6767
 		fragmentShader.IdReturns(fragmentShaderId)
-		program = NewProgram(shaderClient, vertexShader, fragmentShader)
+		program = NewProgram(vertexShader, fragmentShader)
 	})
 
 	It("should not be nil", func() {
@@ -43,194 +43,144 @@ var _ = Describe("Program", func() {
 		Ω(program.FragmentShader()).Should(Equal(fragmentShader))
 	})
 
-	Describe("RemoteProgram", func() {
-		var remoteProgram RemoteProgram
+	It("has nil Id by default", func() {
+		Ω(program.Id()).Should(BeNil())
+	})
+
+	It("is not created by default", func() {
+		Ω(program.Created()).Should(BeFalse())
+	})
+
+	Describe("Creation", func() {
+		var programId client.ProgramId
+		var createErr error
+		var clientErr error
 
 		BeforeEach(func() {
-			remoteProgram = program.Remote()
+			programId = 543
+
+			clientErr = errors.New("Client error!")
+
+			vertexShader.CreatedReturns(true)
+			fragmentShader.CreatedReturns(true)
+
+			shaderClient.CreateProgramReturns(programId, nil)
+			shaderClient.AttachShaderToProgramReturns(nil)
+			shaderClient.LinkProgramReturns(nil)
 		})
 
-		itRemoteProgramHasNoId := func() {
-			It("has nil Id", func() {
-				Ω(remoteProgram.Id()).Should(BeNil())
+		JustBeforeEach(func() {
+			createErr = program.Create(shaderClient)
+		})
+
+		itCreationErrored := func() {
+			It("should return an error", func() {
+				Ω(createErr).Should(HaveOccurred())
 			})
 		}
 
-		itRemoteProgramIsNotCreated := func() {
-			It("is not created", func() {
-				Ω(remoteProgram.Created()).Should(BeFalse())
+		itCreationErroredWith := func(err *error) {
+			It("should return an error", func() {
+				Ω(createErr).Should(Equal(*err))
 			})
 		}
 
-		It("is not nil", func() {
-			Ω(remoteProgram).ShouldNot(BeNil())
+		Context("when client responds as expected", func() {
+			It("did not error on creation", func() {
+				Ω(createErr).ShouldNot(HaveOccurred())
+			})
+
+			It("has correct Id", func() {
+				Ω(program.Id()).Should(Equal(programId))
+			})
+
+			It("is created", func() {
+				Ω(program.Created()).Should(BeTrue())
+			})
+
+			It("made the proper calls to the client", func() {
+				Ω(shaderClient.CreateProgramCallCount()).Should(Equal(1))
+				Ω(shaderClient.AttachShaderToProgramCallCount()).Should(Equal(2))
+				argShaderId, argProgramId := shaderClient.AttachShaderToProgramArgsForCall(0)
+				Ω(argShaderId).Should(Equal(vertexShaderId))
+				Ω(argProgramId).Should(Equal(programId))
+				argShaderId, argProgramId = shaderClient.AttachShaderToProgramArgsForCall(1)
+				Ω(argShaderId).Should(Equal(fragmentShaderId))
+				Ω(argProgramId).Should(Equal(programId))
+				Ω(shaderClient.LinkProgramCallCount()).Should(Equal(1))
+			})
 		})
 
-		itRemoteProgramHasNoId()
-
-		itRemoteProgramIsNotCreated()
-
-		Describe("Creation", func() {
-			var programId client.ProgramId
-			var creationErr error
-			var clientErr error
-
+		Context("when vertex shader is not created", func() {
 			BeforeEach(func() {
-				programId = 543
-
-				clientErr = errors.New("Client error!")
-
-				vertexShader.CreatedReturns(true)
-				fragmentShader.CreatedReturns(true)
-
-				shaderClient.CreateProgramReturns(programId, nil)
-				shaderClient.AttachShaderToProgramReturns(nil)
-				shaderClient.LinkProgramReturns(nil)
+				vertexShader.CreatedReturns(false)
 			})
 
-			itRemoteProgramCreationErrored := func() {
-				It("should return an error", func() {
-					Ω(creationErr).Should(HaveOccurred())
-				})
-			}
+			itCreationErrored()
+		})
 
-			itRemoteProgramCreationErroredWith := func(err *error) {
-				It("should return an error", func() {
-					Ω(creationErr).Should(Equal(*err))
-				})
-			}
+		Context("when fragment shader is not created", func() {
+			BeforeEach(func() {
+				fragmentShader.CreatedReturns(false)
+			})
+
+			itCreationErrored()
+		})
+
+		Context("when program cannot be allocated", func() {
+			BeforeEach(func() {
+				shaderClient.CreateProgramReturns(nil, clientErr)
+			})
+
+			itCreationErroredWith(&clientErr)
+		})
+
+		Context("when shader cannot be attached", func() {
+			BeforeEach(func() {
+				shaderClient.AttachShaderToProgramReturns(clientErr)
+			})
+
+			itCreationErroredWith(&clientErr)
+		})
+
+		Context("when program cannot be linked", func() {
+			BeforeEach(func() {
+				shaderClient.LinkProgramReturns(clientErr)
+			})
+
+			itCreationErroredWith(&clientErr)
+		})
+
+		Describe("Remote Deletion", func() {
+			var deleteErr error
 
 			JustBeforeEach(func() {
-				creationErr = remoteProgram.Create()
+				deleteErr = program.Delete(shaderClient)
 			})
 
 			Context("when client responds as expected", func() {
-				It("did not error on creation", func() {
-					Ω(creationErr).ShouldNot(HaveOccurred())
+				It("did not error on delete", func() {
+					Ω(deleteErr).ShouldNot(HaveOccurred())
 				})
 
-				It("has correct Id", func() {
-					Ω(remoteProgram.Id()).Should(Equal(programId))
+				It("has a nil Id", func() {
+					Ω(program.Id()).Should(BeNil())
 				})
 
-				It("is created", func() {
-					Ω(remoteProgram.Created()).Should(BeTrue())
-				})
-
-				It("made the proper calls to the client", func() {
-					Ω(shaderClient.CreateProgramCallCount()).Should(Equal(1))
-					Ω(shaderClient.AttachShaderToProgramCallCount()).Should(Equal(2))
-					argShaderId, argProgramId := shaderClient.AttachShaderToProgramArgsForCall(0)
-					Ω(argShaderId).Should(Equal(vertexShaderId))
+				It("made the proper calls to the facade", func() {
+					Ω(shaderClient.DeleteProgramCallCount()).Should(Equal(1))
+					argProgramId := shaderClient.DeleteProgramArgsForCall(0)
 					Ω(argProgramId).Should(Equal(programId))
-					argShaderId, argProgramId = shaderClient.AttachShaderToProgramArgsForCall(1)
-					Ω(argShaderId).Should(Equal(fragmentShaderId))
-					Ω(argProgramId).Should(Equal(programId))
-					Ω(shaderClient.LinkProgramCallCount()).Should(Equal(1))
 				})
 			})
 
-			Context("when vertex shader is not created", func() {
+			Context("when client responds as expected", func() {
 				BeforeEach(func() {
-					vertexShader.CreatedReturns(false)
+					shaderClient.DeleteProgramReturns(clientErr)
 				})
 
-				itRemoteProgramCreationErrored()
-			})
-
-			Context("when fragment shader is not created", func() {
-				BeforeEach(func() {
-					fragmentShader.CreatedReturns(false)
-				})
-
-				itRemoteProgramCreationErrored()
-			})
-
-			Context("when program cannot be allocated", func() {
-				BeforeEach(func() {
-					shaderClient.CreateProgramReturns(nil, clientErr)
-				})
-
-				itRemoteProgramCreationErroredWith(&clientErr)
-			})
-
-			Context("when shader cannot be attached", func() {
-				BeforeEach(func() {
-					shaderClient.AttachShaderToProgramReturns(clientErr)
-				})
-
-				itRemoteProgramCreationErroredWith(&clientErr)
-			})
-
-			Context("when program cannot be linked", func() {
-				BeforeEach(func() {
-					shaderClient.LinkProgramReturns(clientErr)
-				})
-
-				itRemoteProgramCreationErroredWith(&clientErr)
-			})
-
-			Describe("Usage", func() {
-				var usageErr error
-
-				JustBeforeEach(func() {
-					usageErr = remoteProgram.Use()
-				})
-
-				Context("when client responds as expected", func() {
-					It("did not error on use", func() {
-						Ω(usageErr).ShouldNot(HaveOccurred())
-					})
-
-					It("made the proper calls to the client", func() {
-						Ω(shaderClient.UseProgramCallCount()).Should(Equal(1))
-						argProgramId := shaderClient.UseProgramArgsForCall(0)
-						Ω(argProgramId).Should(Equal(programId))
-					})
-				})
-
-				Context("when program cannot be used", func() {
-					BeforeEach(func() {
-						shaderClient.UseProgramReturns(clientErr)
-					})
-
-					It("errored on use", func() {
-						Ω(usageErr).Should(Equal(clientErr))
-					})
-				})
-			})
-
-			Describe("Remote Deletion", func() {
-				var deletionErr error
-
-				JustBeforeEach(func() {
-					deletionErr = remoteProgram.Delete()
-				})
-
-				Context("when client responds as expected", func() {
-					It("did not error on delete", func() {
-						Ω(deletionErr).ShouldNot(HaveOccurred())
-					})
-
-					itRemoteProgramHasNoId()
-
-					itRemoteProgramIsNotCreated()
-
-					It("made the proper calls to the facade", func() {
-						Ω(shaderClient.DeleteProgramCallCount()).Should(Equal(1))
-						argProgramId := shaderClient.DeleteProgramArgsForCall(0)
-						Ω(argProgramId).Should(Equal(programId))
-					})
-				})
-
-				Context("when client responds as expected", func() {
-					BeforeEach(func() {
-						shaderClient.DeleteProgramReturns(clientErr)
-					})
-
-					It("errored on delete", func() {
-						Ω(deletionErr).Should(Equal(clientErr))
-					})
+				It("errored on delete", func() {
+					Ω(deleteErr).Should(Equal(clientErr))
 				})
 			})
 		})

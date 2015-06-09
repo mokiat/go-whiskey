@@ -2,44 +2,58 @@ package shader
 
 import "github.com/momchil-atanasov/go-whiskey/graphics/client"
 
+//go:generate counterfeiter -o shader_fakes/fake_shader_data.go ./ ShaderData
+
+type ShaderData interface {
+	SetSourceCode(string)
+	SourceCode() string
+}
+
+func NewShaderData() ShaderData {
+	return &shaderData{}
+}
+
+type shaderData struct {
+	sourceCode string
+}
+
+func (d *shaderData) SetSourceCode(sourceCode string) {
+	d.sourceCode = sourceCode
+}
+
+func (d *shaderData) SourceCode() string {
+	return d.sourceCode
+}
+
 //go:generate counterfeiter -o shader_fakes/fake_shader.go ./ Shader
 
 type Shader interface {
-	SourceCode() string
-	Remote() RemoteShader
-}
-
-//go:generate counterfeiter -o shader_fakes/fake_remote_shader.go ./ RemoteShader
-
-type RemoteShader interface {
+	Data() ShaderData
 	Id() client.ShaderId
 	Created() bool
-	Create() error
-	Delete() error
+	Create(client.ShaderClient) error
+	Delete(client.ShaderClient) error
 }
 
-func NewVertexShader(shaderClient client.ShaderClient, sourceCode string) Shader {
+func NewVertexShader(data ShaderData) Shader {
 	return &vertexShader{
 		shader: shader{
-			shaderClient: shaderClient,
-			sourceCode:   sourceCode,
+			data: data,
 		},
 	}
 }
 
-func NewFragmentShader(shaderClient client.ShaderClient, sourceCode string) Shader {
+func NewFragmentShader(data ShaderData) Shader {
 	return &fragmentShader{
 		shader: shader{
-			shaderClient: shaderClient,
-			sourceCode:   sourceCode,
+			data: data,
 		},
 	}
 }
 
 type shader struct {
-	shaderClient client.ShaderClient
-	sourceCode   string
-	id           client.ShaderId
+	id   client.ShaderId
+	data ShaderData
 }
 
 type vertexShader struct {
@@ -50,16 +64,8 @@ type fragmentShader struct {
 	shader
 }
 
-func (s *shader) SourceCode() string {
-	return s.sourceCode
-}
-
-func (s *vertexShader) Remote() RemoteShader {
-	return s
-}
-
-func (s *fragmentShader) Remote() RemoteShader {
-	return s
+func (s *shader) Data() ShaderData {
+	return s.data
 }
 
 func (s *shader) Id() client.ShaderId {
@@ -70,42 +76,42 @@ func (s *shader) Created() bool {
 	return s.id != nil
 }
 
-func (s *vertexShader) Create() error {
+func (s *vertexShader) Create(shaderClient client.ShaderClient) error {
 	var err error
-	s.id, err = s.shaderClient.CreateVertexShader()
+	s.id, err = shaderClient.CreateVertexShader()
 	if err != nil {
 		return err
 	}
-	err = s.shaderClient.SetShaderSourceCode(s.id, s.sourceCode)
+	err = shaderClient.SetShaderSourceCode(s.id, s.data.SourceCode())
 	if err != nil {
 		return err
 	}
-	err = s.shaderClient.CompileShader(s.id)
+	err = shaderClient.CompileShader(s.id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *fragmentShader) Create() error {
+func (s *fragmentShader) Create(shaderClient client.ShaderClient) error {
 	var err error
-	s.id, err = s.shaderClient.CreateFragmentShader()
+	s.id, err = shaderClient.CreateFragmentShader()
 	if err != nil {
 		return err
 	}
-	err = s.shaderClient.SetShaderSourceCode(s.id, s.sourceCode)
+	err = shaderClient.SetShaderSourceCode(s.id, s.data.SourceCode())
 	if err != nil {
 		return err
 	}
-	err = s.shaderClient.CompileShader(s.id)
+	err = shaderClient.CompileShader(s.id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *shader) Delete() error {
-	err := s.shaderClient.DeleteShader(s.id)
+func (s *shader) Delete(shaderClient client.ShaderClient) error {
+	err := shaderClient.DeleteShader(s.id)
 	if err != nil {
 		return err
 	}

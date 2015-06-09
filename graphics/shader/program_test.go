@@ -15,17 +15,17 @@ import (
 var _ = Describe("Program", func() {
 	var shaderClient *client_fakes.FakeShaderClient
 	var vertexShaderId client.ShaderId
-	var vertexShader *shader_fakes.FakeRemoteShader
+	var vertexShader *shader_fakes.FakeShader
 	var fragmentShaderId client.ShaderId
-	var fragmentShader *shader_fakes.FakeRemoteShader
+	var fragmentShader *shader_fakes.FakeShader
 	var program Program
 
 	BeforeEach(func() {
 		shaderClient = new(client_fakes.FakeShaderClient)
-		vertexShader = new(shader_fakes.FakeRemoteShader)
+		vertexShader = new(shader_fakes.FakeShader)
 		vertexShaderId = 8989
 		vertexShader.IdReturns(vertexShaderId)
-		fragmentShader = new(shader_fakes.FakeRemoteShader)
+		fragmentShader = new(shader_fakes.FakeShader)
 		fragmentShaderId = 6767
 		fragmentShader.IdReturns(fragmentShaderId)
 		program = NewProgram(vertexShader, fragmentShader)

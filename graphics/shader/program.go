@@ -9,15 +9,15 @@ import (
 //go:generate counterfeiter -o shader_fakes/fake_program.go ./ Program
 
 type Program interface {
-	VertexShader() RemoteShader
-	FragmentShader() RemoteShader
+	VertexShader() Shader
+	FragmentShader() Shader
 	Id() client.ProgramId
 	Created() bool
 	Create(client.ShaderClient) error
 	Delete(client.ShaderClient) error
 }
 
-func NewProgram(vertexShader, fragmentShader RemoteShader) Program {
+func NewProgram(vertexShader, fragmentShader Shader) Program {
 	return &program{
 		vertexShader:   vertexShader,
 		fragmentShader: fragmentShader,
@@ -26,15 +26,15 @@ func NewProgram(vertexShader, fragmentShader RemoteShader) Program {
 
 type program struct {
 	id             client.ProgramId
-	vertexShader   RemoteShader
-	fragmentShader RemoteShader
+	vertexShader   Shader
+	fragmentShader Shader
 }
 
-func (p *program) VertexShader() RemoteShader {
+func (p *program) VertexShader() Shader {
 	return p.vertexShader
 }
 
-func (p *program) FragmentShader() RemoteShader {
+func (p *program) FragmentShader() Shader {
 	return p.fragmentShader
 }
 

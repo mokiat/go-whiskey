@@ -9,17 +9,17 @@ import (
 )
 
 type FakeProgram struct {
-	VertexShaderStub        func() shader.RemoteShader
+	VertexShaderStub        func() shader.Shader
 	vertexShaderMutex       sync.RWMutex
 	vertexShaderArgsForCall []struct{}
 	vertexShaderReturns struct {
-		result1 shader.RemoteShader
+		result1 shader.Shader
 	}
-	FragmentShaderStub        func() shader.RemoteShader
+	FragmentShaderStub        func() shader.Shader
 	fragmentShaderMutex       sync.RWMutex
 	fragmentShaderArgsForCall []struct{}
 	fragmentShaderReturns struct {
-		result1 shader.RemoteShader
+		result1 shader.Shader
 	}
 	IdStub        func() client.ProgramId
 	idMutex       sync.RWMutex
@@ -51,7 +51,7 @@ type FakeProgram struct {
 	}
 }
 
-func (fake *FakeProgram) VertexShader() shader.RemoteShader {
+func (fake *FakeProgram) VertexShader() shader.Shader {
 	fake.vertexShaderMutex.Lock()
 	fake.vertexShaderArgsForCall = append(fake.vertexShaderArgsForCall, struct{}{})
 	fake.vertexShaderMutex.Unlock()
@@ -68,14 +68,14 @@ func (fake *FakeProgram) VertexShaderCallCount() int {
 	return len(fake.vertexShaderArgsForCall)
 }
 
-func (fake *FakeProgram) VertexShaderReturns(result1 shader.RemoteShader) {
+func (fake *FakeProgram) VertexShaderReturns(result1 shader.Shader) {
 	fake.VertexShaderStub = nil
 	fake.vertexShaderReturns = struct {
-		result1 shader.RemoteShader
+		result1 shader.Shader
 	}{result1}
 }
 
-func (fake *FakeProgram) FragmentShader() shader.RemoteShader {
+func (fake *FakeProgram) FragmentShader() shader.Shader {
 	fake.fragmentShaderMutex.Lock()
 	fake.fragmentShaderArgsForCall = append(fake.fragmentShaderArgsForCall, struct{}{})
 	fake.fragmentShaderMutex.Unlock()
@@ -92,10 +92,10 @@ func (fake *FakeProgram) FragmentShaderCallCount() int {
 	return len(fake.fragmentShaderArgsForCall)
 }
 
-func (fake *FakeProgram) FragmentShaderReturns(result1 shader.RemoteShader) {
+func (fake *FakeProgram) FragmentShaderReturns(result1 shader.Shader) {
 	fake.FragmentShaderStub = nil
 	fake.fragmentShaderReturns = struct {
-		result1 shader.RemoteShader
+		result1 shader.Shader
 	}{result1}
 }
 

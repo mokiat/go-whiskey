@@ -11,98 +11,113 @@ import (
 	. "github.com/onsi/gomega"
 )
 
+var _ = Describe("ShaderData", func() {
+	var data ShaderData
+
+	BeforeEach(func() {
+		data = NewShaderData()
+	})
+
+	It("is not nil", func() {
+		Ω(data).ShouldNot(BeNil())
+	})
+
+	It("has no source code by default", func() {
+		Ω(data.SourceCode()).Should(BeEmpty())
+	})
+
+	It("is possible to set source code", func() {
+		source := "#source"
+		data.SetSourceCode(source)
+		Ω(data.SourceCode()).Should(Equal(source))
+	})
+})
+
 var _ = Describe("Shader", func() {
 	const sourceCode = "#version 100 ..."
-	var shaderId client.ShaderId
-	var shaderCreateErr error
-	var shaderDeleteErr error
-	var shaderAllocationErr error
-	var shaderSourceAssignmentErr error
-	var shaderCompilationErr error
-	var shaderDeletionErr error
 
 	var shaderClient *client_fakes.FakeShaderClient
+	var shaderId client.ShaderId
+	var createErr error
+	var shaderDeleteErr error
+	var clientErr error
+	var data ShaderData
 	var shader Shader
-	var remoteShader RemoteShader
 
 	BeforeEach(func() {
 		shaderClient = new(client_fakes.FakeShaderClient)
+
 		shaderId = 123
-		shaderAllocationErr = errors.New("Could not allocate shader.")
-		shaderSourceAssignmentErr = errors.New("Could not assign source code to shader.")
-		shaderCompilationErr = errors.New("Could not compile shader.")
-		shaderDeletionErr = errors.New("Could not delete shader.")
+
+		clientErr = errors.New("Client operation failed!")
+
+		data = NewShaderData()
+		data.SetSourceCode(sourceCode)
 	})
 
-	itShaderIsNotNil := func() {
+	itIsNotNil := func() {
 		It("is not nil", func() {
 			Ω(shader).ShouldNot(BeNil())
 		})
 	}
 
-	itShaderHasSourceCodeGetter := func() {
-		It("is possible to get source code", func() {
-			Ω(shader.SourceCode()).Should(Equal(sourceCode))
+	itIsPossibleToGetData := func() {
+		It("is possible to get data", func() {
+			Ω(shader.Data()).Should(Equal(data))
 		})
 	}
 
-	itRemoteShaderIsNotNil := func() {
-		It("is not nil", func() {
-			Ω(remoteShader).ShouldNot(BeNil())
-		})
-	}
-
-	itRemoteShaderHasNoId := func() {
+	itHasNoId := func() {
 		It("has no Id set", func() {
-			Ω(remoteShader.Id()).Should(BeNil())
+			Ω(shader.Id()).Should(BeNil())
 		})
 	}
 
-	itRemoteShaderIsNotCreated := func() {
+	itIsNotCreated := func() {
 		It("is not created", func() {
-			Ω(remoteShader.Created()).Should(BeFalse())
+			Ω(shader.Created()).Should(BeFalse())
 		})
 	}
 
-	itRemoteShaderIsCreated := func() {
-		It("is created remotely", func() {
-			Ω(remoteShader.Created()).Should(BeTrue())
+	itIsCreated := func() {
+		It("is created", func() {
+			Ω(shader.Created()).Should(BeTrue())
 		})
 	}
 
-	itRemoteShaderHasCorrectId := func() {
+	itHasCorrectId := func() {
 		It("has the proper Id", func() {
-			Ω(remoteShader.Id()).Should(Equal(shaderId))
+			Ω(shader.Id()).Should(Equal(shaderId))
 		})
 	}
 
-	itRemoteShaderCreationDidNotError := func() {
+	itCreateDidNotError := func() {
 		It("did not error on creation", func() {
-			Ω(shaderCreateErr).ShouldNot(HaveOccurred())
+			Ω(createErr).ShouldNot(HaveOccurred())
 		})
 	}
 
-	itRemoteShaderCreationErrored := func(expectedErr *error) {
+	itCreateErroredWith := func(expectedErr *error) {
 		It("did error on creation", func() {
-			Ω(shaderCreateErr).Should(Equal(*expectedErr))
+			Ω(createErr).Should(Equal(*expectedErr))
 		})
 	}
 
-	itRemoteShaderHasMadeTheProperDeletionCalls := func() {
-		It("has made the preper calls to the client", func() {
+	itMadeTheProperDeletionCalls := func() {
+		It("made the preper calls to the client", func() {
 			Ω(shaderClient.DeleteShaderCallCount()).Should(Equal(1))
 			argShaderId := shaderClient.DeleteShaderArgsForCall(0)
 			Ω(argShaderId).Should(Equal(shaderId))
 		})
 	}
 
-	itRemoteShaderDeletionDidNotError := func() {
+	itDeleteDidNotError := func() {
 		It("did not error on deletion", func() {
 			Ω(shaderDeleteErr).ShouldNot(HaveOccurred())
 		})
 	}
 
-	itRemoteShaderDeletionErrored := func(expectedErr *error) {
+	itDeleteErroredWith := func(expectedErr *error) {
 		It("did error on deletion", func() {
 			Ω(shaderDeleteErr).Should(Equal(*expectedErr))
 		})
@@ -110,99 +125,93 @@ var _ = Describe("Shader", func() {
 
 	Describe("VertexShader", func() {
 		BeforeEach(func() {
-			shader = NewVertexShader(shaderClient, sourceCode)
+			shader = NewVertexShader(data)
 		})
 
-		itShaderIsNotNil()
+		itIsNotNil()
 
-		itShaderHasSourceCodeGetter()
+		itIsPossibleToGetData()
 
-		Describe("RemoteVertexShader", func() {
+		itHasNoId()
+
+		itIsNotCreated()
+
+		Describe("Creation", func() {
 			BeforeEach(func() {
-				remoteShader = shader.Remote()
+				shaderClient.CreateVertexShaderReturns(shaderId, nil)
+				shaderClient.CompileShaderReturns(nil)
 			})
 
-			itRemoteShaderIsNotNil()
+			JustBeforeEach(func() {
+				createErr = shader.Create(shaderClient)
+			})
 
-			itRemoteShaderHasNoId()
+			Context("when client returns no errors", func() {
+				itIsCreated()
 
-			itRemoteShaderIsNotCreated()
+				itHasCorrectId()
 
-			Describe("Creation", func() {
+				itCreateDidNotError()
+
+				It("made the proper calls to the client", func() {
+					Ω(shaderClient.CreateVertexShaderCallCount()).Should(Equal(1))
+					Ω(shaderClient.SetShaderSourceCodeCallCount()).Should(Equal(1))
+					argShaderId, argShaderSource := shaderClient.SetShaderSourceCodeArgsForCall(0)
+					Ω(argShaderId).Should(Equal(shaderId))
+					Ω(argShaderSource).Should(Equal(sourceCode))
+					Ω(shaderClient.CompileShaderCallCount()).Should(Equal(1))
+					argShaderId = shaderClient.CompileShaderArgsForCall(0)
+					Ω(argShaderId).Should(Equal(shaderId))
+				})
+			})
+
+			Context("when a shader could not be allocated", func() {
 				BeforeEach(func() {
-					shaderClient.CreateVertexShaderReturns(shaderId, nil)
-					shaderClient.CompileShaderReturns(nil)
+					shaderClient.CreateVertexShaderReturns(nil, clientErr)
 				})
 
+				itHasNoId()
+
+				itIsNotCreated()
+
+				itCreateErroredWith(&clientErr)
+			})
+
+			Context("when shader source could not be assigned", func() {
+				BeforeEach(func() {
+					shaderClient.SetShaderSourceCodeReturns(clientErr)
+				})
+
+				itCreateErroredWith(&clientErr)
+			})
+
+			Context("when shader could not be compiled", func() {
+				BeforeEach(func() {
+					shaderClient.CompileShaderReturns(clientErr)
+				})
+
+				itCreateErroredWith(&clientErr)
+			})
+
+			Describe("Deletion", func() {
 				JustBeforeEach(func() {
-					shaderCreateErr = remoteShader.Create()
+					shaderDeleteErr = shader.Delete(shaderClient)
 				})
 
-				Context("when no client returns no errors", func() {
-					itRemoteShaderIsCreated()
+				itHasNoId()
 
-					itRemoteShaderHasCorrectId()
+				itIsNotCreated()
 
-					itRemoteShaderCreationDidNotError()
+				itDeleteDidNotError()
 
-					It("made the proper calls to the client", func() {
-						Ω(shaderClient.CreateVertexShaderCallCount()).Should(Equal(1))
-						Ω(shaderClient.SetShaderSourceCodeCallCount()).Should(Equal(1))
-						argShaderId, argShaderSource := shaderClient.SetShaderSourceCodeArgsForCall(0)
-						Ω(argShaderId).Should(Equal(shaderId))
-						Ω(argShaderSource).Should(Equal(sourceCode))
-						Ω(shaderClient.CompileShaderCallCount()).Should(Equal(1))
-						argShaderId = shaderClient.CompileShaderArgsForCall(0)
-						Ω(argShaderId).Should(Equal(shaderId))
-					})
-				})
+				itMadeTheProperDeletionCalls()
 
-				Context("when a shader could not be allocated", func() {
+				Context("when shader could not be deleted", func() {
 					BeforeEach(func() {
-						shaderClient.CreateVertexShaderReturns(nil, shaderAllocationErr)
+						shaderClient.DeleteShaderReturns(clientErr)
 					})
 
-					itRemoteShaderHasNoId()
-
-					itRemoteShaderIsNotCreated()
-
-					itRemoteShaderCreationErrored(&shaderAllocationErr)
-				})
-
-				Context("when shader source could not be assigned", func() {
-					BeforeEach(func() {
-						shaderClient.SetShaderSourceCodeReturns(shaderSourceAssignmentErr)
-					})
-
-					itRemoteShaderCreationErrored(&shaderSourceAssignmentErr)
-				})
-
-				Context("when shader could not be compiled", func() {
-					BeforeEach(func() {
-						shaderClient.CompileShaderReturns(shaderCompilationErr)
-					})
-
-					itRemoteShaderCreationErrored(&shaderCompilationErr)
-				})
-
-				Describe("Remote Deletion", func() {
-					JustBeforeEach(func() {
-						shaderDeleteErr = remoteShader.Delete()
-					})
-
-					itRemoteShaderHasNoId()
-
-					itRemoteShaderIsNotCreated()
-
-					itRemoteShaderHasMadeTheProperDeletionCalls()
-
-					Context("when shader could not be deleted", func() {
-						BeforeEach(func() {
-							shaderClient.DeleteShaderReturns(shaderDeletionErr)
-						})
-
-						itRemoteShaderDeletionErrored(&shaderDeleteErr)
-					})
+					itDeleteErroredWith(&clientErr)
 				})
 			})
 		})
@@ -210,101 +219,93 @@ var _ = Describe("Shader", func() {
 
 	Describe("FragmentShader", func() {
 		BeforeEach(func() {
-			shader = NewFragmentShader(shaderClient, sourceCode)
+			shader = NewFragmentShader(data)
 		})
 
-		itShaderIsNotNil()
+		itIsNotNil()
 
-		itShaderHasSourceCodeGetter()
+		itIsPossibleToGetData()
 
-		Describe("RemoteFragmentShader", func() {
+		itHasNoId()
+
+		itIsNotCreated()
+
+		Describe("Creation", func() {
 			BeforeEach(func() {
-				remoteShader = shader.Remote()
+				shaderClient.CreateFragmentShaderReturns(shaderId, nil)
+				shaderClient.CompileShaderReturns(nil)
 			})
 
-			itRemoteShaderIsNotNil()
+			JustBeforeEach(func() {
+				createErr = shader.Create(shaderClient)
+			})
 
-			itRemoteShaderHasNoId()
+			Context("when client returns no errors", func() {
+				itIsCreated()
 
-			itRemoteShaderIsNotCreated()
+				itHasCorrectId()
 
-			Describe("Creation", func() {
+				itCreateDidNotError()
+
+				It("made the proper calls to the client", func() {
+					Ω(shaderClient.CreateFragmentShaderCallCount()).Should(Equal(1))
+					Ω(shaderClient.SetShaderSourceCodeCallCount()).Should(Equal(1))
+					argShaderId, argShaderSource := shaderClient.SetShaderSourceCodeArgsForCall(0)
+					Ω(argShaderId).Should(Equal(shaderId))
+					Ω(argShaderSource).Should(Equal(sourceCode))
+					Ω(shaderClient.CompileShaderCallCount()).Should(Equal(1))
+					argShaderId = shaderClient.CompileShaderArgsForCall(0)
+					Ω(argShaderId).Should(Equal(shaderId))
+				})
+			})
+
+			Context("when a shader could not be allocated", func() {
 				BeforeEach(func() {
-					shaderClient.CreateFragmentShaderReturns(shaderId, nil)
-					shaderClient.CompileShaderReturns(nil)
+					shaderClient.CreateFragmentShaderReturns(nil, clientErr)
 				})
 
+				itHasNoId()
+
+				itIsNotCreated()
+
+				itCreateErroredWith(&clientErr)
+			})
+
+			Context("when shader source could not be assigned", func() {
+				BeforeEach(func() {
+					shaderClient.SetShaderSourceCodeReturns(clientErr)
+				})
+
+				itCreateErroredWith(&clientErr)
+			})
+
+			Context("when shader could not be compiled", func() {
+				BeforeEach(func() {
+					shaderClient.CompileShaderReturns(clientErr)
+				})
+
+				itCreateErroredWith(&clientErr)
+			})
+
+			Describe("Deletion", func() {
 				JustBeforeEach(func() {
-					shaderCreateErr = remoteShader.Create()
+					shaderDeleteErr = shader.Delete(shaderClient)
 				})
 
-				Context("when no client returns no errors", func() {
-					itRemoteShaderIsCreated()
+				itHasNoId()
 
-					itRemoteShaderHasCorrectId()
+				itIsNotCreated()
 
-					itRemoteShaderCreationDidNotError()
+				itDeleteDidNotError()
 
-					It("made the proper calls to the client", func() {
-						Ω(shaderClient.CreateFragmentShaderCallCount()).Should(Equal(1))
-						Ω(shaderClient.SetShaderSourceCodeCallCount()).Should(Equal(1))
-						argShaderId, argShaderSource := shaderClient.SetShaderSourceCodeArgsForCall(0)
-						Ω(argShaderId).Should(Equal(shaderId))
-						Ω(argShaderSource).Should(Equal(sourceCode))
-						Ω(shaderClient.CompileShaderCallCount()).Should(Equal(1))
-						argShaderId = shaderClient.CompileShaderArgsForCall(0)
-						Ω(argShaderId).Should(Equal(shaderId))
-					})
-				})
+				itMadeTheProperDeletionCalls()
 
-				Context("when a shader could not be allocated", func() {
+				Context("when shader could not be deleted", func() {
 					BeforeEach(func() {
-						shaderClient.CreateFragmentShaderReturns(nil, shaderAllocationErr)
+						shaderClient.DeleteShaderReturns(clientErr)
 					})
 
-					itRemoteShaderHasNoId()
-
-					itRemoteShaderIsNotCreated()
-
-					itRemoteShaderCreationErrored(&shaderAllocationErr)
-				})
-
-				Context("when shader source could not be assigned", func() {
-					BeforeEach(func() {
-						shaderClient.SetShaderSourceCodeReturns(shaderSourceAssignmentErr)
-					})
-
-					itRemoteShaderCreationErrored(&shaderSourceAssignmentErr)
-				})
-
-				Context("when shader could not be compiled", func() {
-					BeforeEach(func() {
-						shaderClient.CompileShaderReturns(shaderCompilationErr)
-					})
-
-					itRemoteShaderCreationErrored(&shaderCompilationErr)
-				})
-
-				Describe("Deletion", func() {
-					JustBeforeEach(func() {
-						shaderDeleteErr = remoteShader.Delete()
-					})
-
-					itRemoteShaderHasNoId()
-
-					itRemoteShaderIsNotCreated()
-
-					itRemoteShaderDeletionDidNotError()
-
-					itRemoteShaderHasMadeTheProperDeletionCalls()
-
-					Context("when shader could not be deleted", func() {
-						BeforeEach(func() {
-							shaderClient.DeleteShaderReturns(shaderDeletionErr)
-						})
-
-						itRemoteShaderDeletionErrored(&shaderDeleteErr)
-					})
+					itDeleteErroredWith(&clientErr)
 				})
 			})
 		})

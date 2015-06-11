@@ -1,6 +1,6 @@
 package client
 
-type UniformLocation interface{}
+type Uniform string
 
 type UniformType int
 
@@ -28,10 +28,13 @@ const (
 	SamplerCubeUniformType
 )
 
+type UniformLocation interface{}
+
 type UniformDeclaration struct {
-	Name  string
-	Type  UniformType
-	Count int
+	Id       Uniform
+	Type     UniformType
+	Count    int
+	Location UniformLocation
 }
 
 //go:generate counterfeiter -o client_fakes/fake_uniform.go ./ UniformClient

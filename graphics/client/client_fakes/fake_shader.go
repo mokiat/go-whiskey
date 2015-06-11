@@ -71,6 +71,14 @@ type FakeShaderClient struct {
 	linkProgramReturns struct {
 		result1 error
 	}
+	GetProgramAttributesStub        func(client.ProgramId) []client.AttributeDeclaration
+	getProgramAttributesMutex       sync.RWMutex
+	getProgramAttributesArgsForCall []struct {
+		arg1 client.ProgramId
+	}
+	getProgramAttributesReturns struct {
+		result1 []client.AttributeDeclaration
+	}
 	GetProgramUniformsStub        func(client.ProgramId) []client.UniformDeclaration
 	getProgramUniformsMutex       sync.RWMutex
 	getProgramUniformsArgsForCall []struct {
@@ -331,6 +339,38 @@ func (fake *FakeShaderClient) LinkProgramReturns(result1 error) {
 	fake.LinkProgramStub = nil
 	fake.linkProgramReturns = struct {
 		result1 error
+	}{result1}
+}
+
+func (fake *FakeShaderClient) GetProgramAttributes(arg1 client.ProgramId) []client.AttributeDeclaration {
+	fake.getProgramAttributesMutex.Lock()
+	fake.getProgramAttributesArgsForCall = append(fake.getProgramAttributesArgsForCall, struct {
+		arg1 client.ProgramId
+	}{arg1})
+	fake.getProgramAttributesMutex.Unlock()
+	if fake.GetProgramAttributesStub != nil {
+		return fake.GetProgramAttributesStub(arg1)
+	} else {
+		return fake.getProgramAttributesReturns.result1
+	}
+}
+
+func (fake *FakeShaderClient) GetProgramAttributesCallCount() int {
+	fake.getProgramAttributesMutex.RLock()
+	defer fake.getProgramAttributesMutex.RUnlock()
+	return len(fake.getProgramAttributesArgsForCall)
+}
+
+func (fake *FakeShaderClient) GetProgramAttributesArgsForCall(i int) client.ProgramId {
+	fake.getProgramAttributesMutex.RLock()
+	defer fake.getProgramAttributesMutex.RUnlock()
+	return fake.getProgramAttributesArgsForCall[i].arg1
+}
+
+func (fake *FakeShaderClient) GetProgramAttributesReturns(result1 []client.AttributeDeclaration) {
+	fake.GetProgramAttributesStub = nil
+	fake.getProgramAttributesReturns = struct {
+		result1 []client.AttributeDeclaration
 	}{result1}
 }
 

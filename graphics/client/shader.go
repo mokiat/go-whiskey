@@ -15,6 +15,7 @@ type ShaderClient interface {
 	CreateProgram() (ProgramId, error)
 	AttachShaderToProgram(shaderId ShaderId, programId ProgramId) error
 	LinkProgram(ProgramId) error
+	GetProgramAttributes(ProgramId) []AttributeDeclaration
 	GetProgramUniforms(ProgramId) []UniformDeclaration
 	UseProgram(ProgramId) error
 	DeleteProgram(ProgramId) error

@@ -71,6 +71,14 @@ type FakeGraphicsClient struct {
 	linkProgramReturns struct {
 		result1 error
 	}
+	GetProgramUniformsStub        func(client.ProgramId) []client.UniformDeclaration
+	getProgramUniformsMutex       sync.RWMutex
+	getProgramUniformsArgsForCall []struct {
+		arg1 client.ProgramId
+	}
+	getProgramUniformsReturns struct {
+		result1 []client.UniformDeclaration
+	}
 	UseProgramStub        func(client.ProgramId) error
 	useProgramMutex       sync.RWMutex
 	useProgramArgsForCall []struct {
@@ -462,6 +470,38 @@ func (fake *FakeGraphicsClient) LinkProgramReturns(result1 error) {
 	fake.LinkProgramStub = nil
 	fake.linkProgramReturns = struct {
 		result1 error
+	}{result1}
+}
+
+func (fake *FakeGraphicsClient) GetProgramUniforms(arg1 client.ProgramId) []client.UniformDeclaration {
+	fake.getProgramUniformsMutex.Lock()
+	fake.getProgramUniformsArgsForCall = append(fake.getProgramUniformsArgsForCall, struct {
+		arg1 client.ProgramId
+	}{arg1})
+	fake.getProgramUniformsMutex.Unlock()
+	if fake.GetProgramUniformsStub != nil {
+		return fake.GetProgramUniformsStub(arg1)
+	} else {
+		return fake.getProgramUniformsReturns.result1
+	}
+}
+
+func (fake *FakeGraphicsClient) GetProgramUniformsCallCount() int {
+	fake.getProgramUniformsMutex.RLock()
+	defer fake.getProgramUniformsMutex.RUnlock()
+	return len(fake.getProgramUniformsArgsForCall)
+}
+
+func (fake *FakeGraphicsClient) GetProgramUniformsArgsForCall(i int) client.ProgramId {
+	fake.getProgramUniformsMutex.RLock()
+	defer fake.getProgramUniformsMutex.RUnlock()
+	return fake.getProgramUniformsArgsForCall[i].arg1
+}
+
+func (fake *FakeGraphicsClient) GetProgramUniformsReturns(result1 []client.UniformDeclaration) {
+	fake.GetProgramUniformsStub = nil
+	fake.getProgramUniformsReturns = struct {
+		result1 []client.UniformDeclaration
 	}{result1}
 }
 

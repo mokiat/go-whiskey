@@ -23,33 +23,34 @@ type EntityManager interface {
 // NewEntityManager creates a new EntityManager instance.
 func NewEntityManager() EntityManager {
 	return &entityManager{
-		entityMap: NewDynamicEntityMap(),
+		entityMap: make(map[Entity]entityDescriptor),
 	}
 }
 
 type entityManager struct {
-	idCounter uint16
-	entityMap EntityMap
+	idCounter int
+	entityMap map[Entity]entityDescriptor
 }
 
 func (m *entityManager) CreateEntity() Entity {
 	m.idCounter++
-	entity := Entity{
-		Id:      EntityId(m.idCounter),
-		Version: 0,
-	}
-	m.entityMap.Put(entity.Id, EntityDescriptor{})
+	entity := Entity(m.idCounter)
+	m.entityMap[entity] = entityDescriptor{}
 	return entity
 }
 
 func (m *entityManager) HasEntity(entity Entity) bool {
-	return m.entityMap.Has(entity.Id)
+	_, contains := m.entityMap[entity]
+	return contains
 }
 
 func (m *entityManager) DeleteEntity(entity Entity) {
-	m.entityMap.Delete(entity.Id)
+	delete(m.entityMap, entity)
 }
 
 func (m *entityManager) DeleteAllEntities() {
-	m.entityMap.Clear()
+	m.entityMap = make(map[Entity]entityDescriptor)
+}
+
+type entityDescriptor struct {
 }

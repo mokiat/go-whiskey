@@ -11,7 +11,7 @@ type FakeEntityManager struct {
 	CreateEntityStub        func() ecs.Entity
 	createEntityMutex       sync.RWMutex
 	createEntityArgsForCall []struct{}
-	createEntityReturns     struct {
+	createEntityReturns struct {
 		result1 ecs.Entity
 	}
 	HasEntityStub        func(ecs.Entity) bool

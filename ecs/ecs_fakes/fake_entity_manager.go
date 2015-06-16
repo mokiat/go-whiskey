@@ -30,6 +30,37 @@ type FakeEntityManager struct {
 	DeleteAllEntitiesStub        func()
 	deleteAllEntitiesMutex       sync.RWMutex
 	deleteAllEntitiesArgsForCall []struct{}
+	AddEntityComponentStub        func(ecs.Entity, ecs.ComponentType, interface{})
+	addEntityComponentMutex       sync.RWMutex
+	addEntityComponentArgsForCall []struct {
+		arg1 ecs.Entity
+		arg2 ecs.ComponentType
+		arg3 interface{}
+	}
+	EntityHasComponentStub        func(ecs.Entity, ecs.ComponentType) bool
+	entityHasComponentMutex       sync.RWMutex
+	entityHasComponentArgsForCall []struct {
+		arg1 ecs.Entity
+		arg2 ecs.ComponentType
+	}
+	entityHasComponentReturns struct {
+		result1 bool
+	}
+	EntityComponentStub        func(ecs.Entity, ecs.ComponentType) interface{}
+	entityComponentMutex       sync.RWMutex
+	entityComponentArgsForCall []struct {
+		arg1 ecs.Entity
+		arg2 ecs.ComponentType
+	}
+	entityComponentReturns struct {
+		result1 interface{}
+	}
+	RemoveEntityComponentStub        func(ecs.Entity, ecs.ComponentType)
+	removeEntityComponentMutex       sync.RWMutex
+	removeEntityComponentArgsForCall []struct {
+		arg1 ecs.Entity
+		arg2 ecs.ComponentType
+	}
 }
 
 func (fake *FakeEntityManager) CreateEntity() ecs.Entity {
@@ -124,6 +155,121 @@ func (fake *FakeEntityManager) DeleteAllEntitiesCallCount() int {
 	fake.deleteAllEntitiesMutex.RLock()
 	defer fake.deleteAllEntitiesMutex.RUnlock()
 	return len(fake.deleteAllEntitiesArgsForCall)
+}
+
+func (fake *FakeEntityManager) AddEntityComponent(arg1 ecs.Entity, arg2 ecs.ComponentType, arg3 interface{}) {
+	fake.addEntityComponentMutex.Lock()
+	fake.addEntityComponentArgsForCall = append(fake.addEntityComponentArgsForCall, struct {
+		arg1 ecs.Entity
+		arg2 ecs.ComponentType
+		arg3 interface{}
+	}{arg1, arg2, arg3})
+	fake.addEntityComponentMutex.Unlock()
+	if fake.AddEntityComponentStub != nil {
+		fake.AddEntityComponentStub(arg1, arg2, arg3)
+	}
+}
+
+func (fake *FakeEntityManager) AddEntityComponentCallCount() int {
+	fake.addEntityComponentMutex.RLock()
+	defer fake.addEntityComponentMutex.RUnlock()
+	return len(fake.addEntityComponentArgsForCall)
+}
+
+func (fake *FakeEntityManager) AddEntityComponentArgsForCall(i int) (ecs.Entity, ecs.ComponentType, interface{}) {
+	fake.addEntityComponentMutex.RLock()
+	defer fake.addEntityComponentMutex.RUnlock()
+	return fake.addEntityComponentArgsForCall[i].arg1, fake.addEntityComponentArgsForCall[i].arg2, fake.addEntityComponentArgsForCall[i].arg3
+}
+
+func (fake *FakeEntityManager) EntityHasComponent(arg1 ecs.Entity, arg2 ecs.ComponentType) bool {
+	fake.entityHasComponentMutex.Lock()
+	fake.entityHasComponentArgsForCall = append(fake.entityHasComponentArgsForCall, struct {
+		arg1 ecs.Entity
+		arg2 ecs.ComponentType
+	}{arg1, arg2})
+	fake.entityHasComponentMutex.Unlock()
+	if fake.EntityHasComponentStub != nil {
+		return fake.EntityHasComponentStub(arg1, arg2)
+	} else {
+		return fake.entityHasComponentReturns.result1
+	}
+}
+
+func (fake *FakeEntityManager) EntityHasComponentCallCount() int {
+	fake.entityHasComponentMutex.RLock()
+	defer fake.entityHasComponentMutex.RUnlock()
+	return len(fake.entityHasComponentArgsForCall)
+}
+
+func (fake *FakeEntityManager) EntityHasComponentArgsForCall(i int) (ecs.Entity, ecs.ComponentType) {
+	fake.entityHasComponentMutex.RLock()
+	defer fake.entityHasComponentMutex.RUnlock()
+	return fake.entityHasComponentArgsForCall[i].arg1, fake.entityHasComponentArgsForCall[i].arg2
+}
+
+func (fake *FakeEntityManager) EntityHasComponentReturns(result1 bool) {
+	fake.EntityHasComponentStub = nil
+	fake.entityHasComponentReturns = struct {
+		result1 bool
+	}{result1}
+}
+
+func (fake *FakeEntityManager) EntityComponent(arg1 ecs.Entity, arg2 ecs.ComponentType) interface{} {
+	fake.entityComponentMutex.Lock()
+	fake.entityComponentArgsForCall = append(fake.entityComponentArgsForCall, struct {
+		arg1 ecs.Entity
+		arg2 ecs.ComponentType
+	}{arg1, arg2})
+	fake.entityComponentMutex.Unlock()
+	if fake.EntityComponentStub != nil {
+		return fake.EntityComponentStub(arg1, arg2)
+	} else {
+		return fake.entityComponentReturns.result1
+	}
+}
+
+func (fake *FakeEntityManager) EntityComponentCallCount() int {
+	fake.entityComponentMutex.RLock()
+	defer fake.entityComponentMutex.RUnlock()
+	return len(fake.entityComponentArgsForCall)
+}
+
+func (fake *FakeEntityManager) EntityComponentArgsForCall(i int) (ecs.Entity, ecs.ComponentType) {
+	fake.entityComponentMutex.RLock()
+	defer fake.entityComponentMutex.RUnlock()
+	return fake.entityComponentArgsForCall[i].arg1, fake.entityComponentArgsForCall[i].arg2
+}
+
+func (fake *FakeEntityManager) EntityComponentReturns(result1 interface{}) {
+	fake.EntityComponentStub = nil
+	fake.entityComponentReturns = struct {
+		result1 interface{}
+	}{result1}
+}
+
+func (fake *FakeEntityManager) RemoveEntityComponent(arg1 ecs.Entity, arg2 ecs.ComponentType) {
+	fake.removeEntityComponentMutex.Lock()
+	fake.removeEntityComponentArgsForCall = append(fake.removeEntityComponentArgsForCall, struct {
+		arg1 ecs.Entity
+		arg2 ecs.ComponentType
+	}{arg1, arg2})
+	fake.removeEntityComponentMutex.Unlock()
+	if fake.RemoveEntityComponentStub != nil {
+		fake.RemoveEntityComponentStub(arg1, arg2)
+	}
+}
+
+func (fake *FakeEntityManager) RemoveEntityComponentCallCount() int {
+	fake.removeEntityComponentMutex.RLock()
+	defer fake.removeEntityComponentMutex.RUnlock()
+	return len(fake.removeEntityComponentArgsForCall)
+}
+
+func (fake *FakeEntityManager) RemoveEntityComponentArgsForCall(i int) (ecs.Entity, ecs.ComponentType) {
+	fake.removeEntityComponentMutex.RLock()
+	defer fake.removeEntityComponentMutex.RUnlock()
+	return fake.removeEntityComponentArgsForCall[i].arg1, fake.removeEntityComponentArgsForCall[i].arg2
 }
 
 var _ ecs.EntityManager = new(FakeEntityManager)

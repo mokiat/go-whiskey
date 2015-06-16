@@ -18,6 +18,22 @@ type EntityManager interface {
 	// DeleteAllEntities deletes all existing Entity objects managed by this
 	// EntityManager.
 	DeleteAllEntities()
+
+	// AddEntityComponent adds a component of the specified type
+	// to the specified entity
+	AddEntityComponent(Entity, ComponentType, interface{})
+
+	// EntityHasComponent checks whether the specified entity has a
+	// component of the specified type
+	EntityHasComponent(Entity, ComponentType) bool
+
+	// EntityComponent returns the component of the specified type contained
+	// by the specified entity
+	EntityComponent(Entity, ComponentType) interface{}
+
+	// RemoveEntityComponent removes the component of the specified type from
+	// the specified entity
+	RemoveEntityComponent(Entity, ComponentType)
 }
 
 // NewEntityManager creates a new EntityManager instance.
@@ -35,7 +51,9 @@ type entityManager struct {
 func (m *entityManager) CreateEntity() Entity {
 	m.idCounter++
 	entity := Entity(m.idCounter)
-	m.entityMap[entity] = entityDescriptor{}
+	m.entityMap[entity] = entityDescriptor{
+		Components: make(map[ComponentType]interface{}),
+	}
 	return entity
 }
 
@@ -52,5 +70,27 @@ func (m *entityManager) DeleteAllEntities() {
 	m.entityMap = make(map[Entity]entityDescriptor)
 }
 
+func (m *entityManager) AddEntityComponent(entity Entity, compType ComponentType, component interface{}) {
+	descriptor := m.entityMap[entity]
+	descriptor.Components[compType] = component
+}
+
+func (m *entityManager) EntityHasComponent(entity Entity, compType ComponentType) bool {
+	descriptor := m.entityMap[entity]
+	_, contains := descriptor.Components[compType]
+	return contains
+}
+
+func (m *entityManager) EntityComponent(entity Entity, compType ComponentType) interface{} {
+	descriptor := m.entityMap[entity]
+	return descriptor.Components[compType]
+}
+
+func (m *entityManager) RemoveEntityComponent(entity Entity, compType ComponentType) {
+	descriptor := m.entityMap[entity]
+	delete(descriptor.Components, compType)
+}
+
 type entityDescriptor struct {
+	Components map[ComponentType]interface{}
 }

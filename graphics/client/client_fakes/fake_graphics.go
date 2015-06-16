@@ -71,21 +71,23 @@ type FakeGraphicsClient struct {
 	linkProgramReturns struct {
 		result1 error
 	}
-	GetProgramAttributesStub        func(client.ProgramId) []client.AttributeDeclaration
+	GetProgramAttributesStub        func(client.ProgramId) ([]client.AttributeDeclaration, error)
 	getProgramAttributesMutex       sync.RWMutex
 	getProgramAttributesArgsForCall []struct {
 		arg1 client.ProgramId
 	}
 	getProgramAttributesReturns struct {
 		result1 []client.AttributeDeclaration
+		result2 error
 	}
-	GetProgramUniformsStub        func(client.ProgramId) []client.UniformDeclaration
+	GetProgramUniformsStub        func(client.ProgramId) ([]client.UniformDeclaration, error)
 	getProgramUniformsMutex       sync.RWMutex
 	getProgramUniformsArgsForCall []struct {
 		arg1 client.ProgramId
 	}
 	getProgramUniformsReturns struct {
 		result1 []client.UniformDeclaration
+		result2 error
 	}
 	UseProgramStub        func(client.ProgramId) error
 	useProgramMutex       sync.RWMutex
@@ -481,7 +483,7 @@ func (fake *FakeGraphicsClient) LinkProgramReturns(result1 error) {
 	}{result1}
 }
 
-func (fake *FakeGraphicsClient) GetProgramAttributes(arg1 client.ProgramId) []client.AttributeDeclaration {
+func (fake *FakeGraphicsClient) GetProgramAttributes(arg1 client.ProgramId) ([]client.AttributeDeclaration, error) {
 	fake.getProgramAttributesMutex.Lock()
 	fake.getProgramAttributesArgsForCall = append(fake.getProgramAttributesArgsForCall, struct {
 		arg1 client.ProgramId
@@ -490,7 +492,7 @@ func (fake *FakeGraphicsClient) GetProgramAttributes(arg1 client.ProgramId) []cl
 	if fake.GetProgramAttributesStub != nil {
 		return fake.GetProgramAttributesStub(arg1)
 	} else {
-		return fake.getProgramAttributesReturns.result1
+		return fake.getProgramAttributesReturns.result1, fake.getProgramAttributesReturns.result2
 	}
 }
 
@@ -506,14 +508,15 @@ func (fake *FakeGraphicsClient) GetProgramAttributesArgsForCall(i int) client.Pr
 	return fake.getProgramAttributesArgsForCall[i].arg1
 }
 
-func (fake *FakeGraphicsClient) GetProgramAttributesReturns(result1 []client.AttributeDeclaration) {
+func (fake *FakeGraphicsClient) GetProgramAttributesReturns(result1 []client.AttributeDeclaration, result2 error) {
 	fake.GetProgramAttributesStub = nil
 	fake.getProgramAttributesReturns = struct {
 		result1 []client.AttributeDeclaration
-	}{result1}
+		result2 error
+	}{result1, result2}
 }
 
-func (fake *FakeGraphicsClient) GetProgramUniforms(arg1 client.ProgramId) []client.UniformDeclaration {
+func (fake *FakeGraphicsClient) GetProgramUniforms(arg1 client.ProgramId) ([]client.UniformDeclaration, error) {
 	fake.getProgramUniformsMutex.Lock()
 	fake.getProgramUniformsArgsForCall = append(fake.getProgramUniformsArgsForCall, struct {
 		arg1 client.ProgramId
@@ -522,7 +525,7 @@ func (fake *FakeGraphicsClient) GetProgramUniforms(arg1 client.ProgramId) []clie
 	if fake.GetProgramUniformsStub != nil {
 		return fake.GetProgramUniformsStub(arg1)
 	} else {
-		return fake.getProgramUniformsReturns.result1
+		return fake.getProgramUniformsReturns.result1, fake.getProgramUniformsReturns.result2
 	}
 }
 
@@ -538,11 +541,12 @@ func (fake *FakeGraphicsClient) GetProgramUniformsArgsForCall(i int) client.Prog
 	return fake.getProgramUniformsArgsForCall[i].arg1
 }
 
-func (fake *FakeGraphicsClient) GetProgramUniformsReturns(result1 []client.UniformDeclaration) {
+func (fake *FakeGraphicsClient) GetProgramUniformsReturns(result1 []client.UniformDeclaration, result2 error) {
 	fake.GetProgramUniformsStub = nil
 	fake.getProgramUniformsReturns = struct {
 		result1 []client.UniformDeclaration
-	}{result1}
+		result2 error
+	}{result1, result2}
 }
 
 func (fake *FakeGraphicsClient) UseProgram(arg1 client.ProgramId) error {

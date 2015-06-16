@@ -55,6 +55,12 @@ var _ = Describe("Program", func() {
 		var programId client.ProgramId
 		var createErr error
 		var clientErr error
+		var firstUniformDeclaration client.UniformDeclaration
+		var secondUniformDeclaration client.UniformDeclaration
+		var thirdUniformDeclaration client.UniformDeclaration
+		var firstAttributeDeclaration client.AttributeDeclaration
+		var secondAttributeDeclaration client.AttributeDeclaration
+		var thirdAttributeDeclaration client.AttributeDeclaration
 
 		BeforeEach(func() {
 			programId = 543
@@ -67,6 +73,38 @@ var _ = Describe("Program", func() {
 			shaderClient.CreateProgramReturns(programId, nil)
 			shaderClient.AttachShaderToProgramReturns(nil)
 			shaderClient.LinkProgramReturns(nil)
+
+			firstUniformDeclaration = client.UniformDeclaration{
+				Id: client.Uniform("a"),
+			}
+			secondUniformDeclaration = client.UniformDeclaration{
+				Id: client.Uniform("b"),
+			}
+			thirdUniformDeclaration = client.UniformDeclaration{
+				Id: client.Uniform("c"),
+			}
+			unsortedUniformDeclarations := []client.UniformDeclaration{
+				thirdUniformDeclaration,
+				firstUniformDeclaration,
+				secondUniformDeclaration,
+			}
+			shaderClient.GetProgramUniformsReturns(unsortedUniformDeclarations, nil)
+
+			firstAttributeDeclaration = client.AttributeDeclaration{
+				Id: client.Attribute("a"),
+			}
+			secondAttributeDeclaration = client.AttributeDeclaration{
+				Id: client.Attribute("b"),
+			}
+			thirdAttributeDeclaration = client.AttributeDeclaration{
+				Id: client.Attribute("c"),
+			}
+			unsortedAttributeDeclarations := []client.AttributeDeclaration{
+				secondAttributeDeclaration,
+				thirdAttributeDeclaration,
+				firstAttributeDeclaration,
+			}
+			shaderClient.GetProgramAttributesReturns(unsortedAttributeDeclarations, nil)
 		})
 
 		JustBeforeEach(func() {
@@ -98,6 +136,46 @@ var _ = Describe("Program", func() {
 				Ω(program.Created()).Should(BeTrue())
 			})
 
+			It("has all uniform entries in sorted order", func() {
+				entries := program.UniformDeclarations()
+				Ω(entries).Should(Equal([]client.UniformDeclaration{
+					firstUniformDeclaration,
+					secondUniformDeclaration,
+					thirdUniformDeclaration,
+				}))
+			})
+
+			It("is possible to find existing uniform declaration", func() {
+				declaration, found := program.UniformDeclaration(client.Uniform("b"))
+				Ω(found).Should(BeTrue())
+				Ω(declaration).Should(Equal(secondUniformDeclaration))
+			})
+
+			It("is impossible to find unexisting uniform declaration", func() {
+				_, found := program.UniformDeclaration(client.Uniform("missing"))
+				Ω(found).Should(BeFalse())
+			})
+
+			It("has all attribute entries in sorted order", func() {
+				entries := program.AttributeDeclarations()
+				Ω(entries).Should(Equal([]client.AttributeDeclaration{
+					firstAttributeDeclaration,
+					secondAttributeDeclaration,
+					thirdAttributeDeclaration,
+				}))
+			})
+
+			It("is possible to find existing attribute declaration", func() {
+				declaration, found := program.AttributeDeclaration(client.Attribute("b"))
+				Ω(found).Should(BeTrue())
+				Ω(declaration).Should(Equal(secondAttributeDeclaration))
+			})
+
+			It("is impossible to find unexisting attribute declaration", func() {
+				_, found := program.AttributeDeclaration(client.Attribute("missing"))
+				Ω(found).Should(BeFalse())
+			})
+
 			It("made the proper calls to the client", func() {
 				Ω(shaderClient.CreateProgramCallCount()).Should(Equal(1))
 				Ω(shaderClient.AttachShaderToProgramCallCount()).Should(Equal(2))
@@ -108,6 +186,12 @@ var _ = Describe("Program", func() {
 				Ω(argShaderId).Should(Equal(fragmentShaderId))
 				Ω(argProgramId).Should(Equal(programId))
 				Ω(shaderClient.LinkProgramCallCount()).Should(Equal(1))
+				Ω(shaderClient.GetProgramUniformsCallCount()).Should(Equal(1))
+				argProgramId = shaderClient.GetProgramUniformsArgsForCall(0)
+				Ω(argProgramId).Should(Equal(programId))
+				Ω(shaderClient.GetProgramAttributesCallCount()).Should(Equal(1))
+				argProgramId = shaderClient.GetProgramAttributesArgsForCall(0)
+				Ω(argProgramId).Should(Equal(programId))
 			})
 		})
 
@@ -146,6 +230,22 @@ var _ = Describe("Program", func() {
 		Context("when program cannot be linked", func() {
 			BeforeEach(func() {
 				shaderClient.LinkProgramReturns(clientErr)
+			})
+
+			itCreationErroredWith(&clientErr)
+		})
+
+		Context("when uniforms cannot be discovered", func() {
+			BeforeEach(func() {
+				shaderClient.GetProgramUniformsReturns(nil, clientErr)
+			})
+
+			itCreationErroredWith(&clientErr)
+		})
+
+		Context("when attributes cannot be discovered", func() {
+			BeforeEach(func() {
+				shaderClient.GetProgramAttributesReturns(nil, clientErr)
 			})
 
 			itCreationErroredWith(&clientErr)

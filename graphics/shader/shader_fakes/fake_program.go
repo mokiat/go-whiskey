@@ -27,6 +27,36 @@ type FakeProgram struct {
 	idReturns struct {
 		result1 client.ProgramId
 	}
+	UniformDeclarationsStub        func() []client.UniformDeclaration
+	uniformDeclarationsMutex       sync.RWMutex
+	uniformDeclarationsArgsForCall []struct{}
+	uniformDeclarationsReturns struct {
+		result1 []client.UniformDeclaration
+	}
+	UniformDeclarationStub        func(client.Uniform) (client.UniformDeclaration, bool)
+	uniformDeclarationMutex       sync.RWMutex
+	uniformDeclarationArgsForCall []struct {
+		arg1 client.Uniform
+	}
+	uniformDeclarationReturns struct {
+		result1 client.UniformDeclaration
+		result2 bool
+	}
+	AttributeDeclarationsStub        func() []client.AttributeDeclaration
+	attributeDeclarationsMutex       sync.RWMutex
+	attributeDeclarationsArgsForCall []struct{}
+	attributeDeclarationsReturns struct {
+		result1 []client.AttributeDeclaration
+	}
+	AttributeDeclarationStub        func(client.Attribute) (client.AttributeDeclaration, bool)
+	attributeDeclarationMutex       sync.RWMutex
+	attributeDeclarationArgsForCall []struct {
+		arg1 client.Attribute
+	}
+	attributeDeclarationReturns struct {
+		result1 client.AttributeDeclaration
+		result2 bool
+	}
 	CreatedStub        func() bool
 	createdMutex       sync.RWMutex
 	createdArgsForCall []struct{}
@@ -121,6 +151,120 @@ func (fake *FakeProgram) IdReturns(result1 client.ProgramId) {
 	fake.idReturns = struct {
 		result1 client.ProgramId
 	}{result1}
+}
+
+func (fake *FakeProgram) UniformDeclarations() []client.UniformDeclaration {
+	fake.uniformDeclarationsMutex.Lock()
+	fake.uniformDeclarationsArgsForCall = append(fake.uniformDeclarationsArgsForCall, struct{}{})
+	fake.uniformDeclarationsMutex.Unlock()
+	if fake.UniformDeclarationsStub != nil {
+		return fake.UniformDeclarationsStub()
+	} else {
+		return fake.uniformDeclarationsReturns.result1
+	}
+}
+
+func (fake *FakeProgram) UniformDeclarationsCallCount() int {
+	fake.uniformDeclarationsMutex.RLock()
+	defer fake.uniformDeclarationsMutex.RUnlock()
+	return len(fake.uniformDeclarationsArgsForCall)
+}
+
+func (fake *FakeProgram) UniformDeclarationsReturns(result1 []client.UniformDeclaration) {
+	fake.UniformDeclarationsStub = nil
+	fake.uniformDeclarationsReturns = struct {
+		result1 []client.UniformDeclaration
+	}{result1}
+}
+
+func (fake *FakeProgram) UniformDeclaration(arg1 client.Uniform) (client.UniformDeclaration, bool) {
+	fake.uniformDeclarationMutex.Lock()
+	fake.uniformDeclarationArgsForCall = append(fake.uniformDeclarationArgsForCall, struct {
+		arg1 client.Uniform
+	}{arg1})
+	fake.uniformDeclarationMutex.Unlock()
+	if fake.UniformDeclarationStub != nil {
+		return fake.UniformDeclarationStub(arg1)
+	} else {
+		return fake.uniformDeclarationReturns.result1, fake.uniformDeclarationReturns.result2
+	}
+}
+
+func (fake *FakeProgram) UniformDeclarationCallCount() int {
+	fake.uniformDeclarationMutex.RLock()
+	defer fake.uniformDeclarationMutex.RUnlock()
+	return len(fake.uniformDeclarationArgsForCall)
+}
+
+func (fake *FakeProgram) UniformDeclarationArgsForCall(i int) client.Uniform {
+	fake.uniformDeclarationMutex.RLock()
+	defer fake.uniformDeclarationMutex.RUnlock()
+	return fake.uniformDeclarationArgsForCall[i].arg1
+}
+
+func (fake *FakeProgram) UniformDeclarationReturns(result1 client.UniformDeclaration, result2 bool) {
+	fake.UniformDeclarationStub = nil
+	fake.uniformDeclarationReturns = struct {
+		result1 client.UniformDeclaration
+		result2 bool
+	}{result1, result2}
+}
+
+func (fake *FakeProgram) AttributeDeclarations() []client.AttributeDeclaration {
+	fake.attributeDeclarationsMutex.Lock()
+	fake.attributeDeclarationsArgsForCall = append(fake.attributeDeclarationsArgsForCall, struct{}{})
+	fake.attributeDeclarationsMutex.Unlock()
+	if fake.AttributeDeclarationsStub != nil {
+		return fake.AttributeDeclarationsStub()
+	} else {
+		return fake.attributeDeclarationsReturns.result1
+	}
+}
+
+func (fake *FakeProgram) AttributeDeclarationsCallCount() int {
+	fake.attributeDeclarationsMutex.RLock()
+	defer fake.attributeDeclarationsMutex.RUnlock()
+	return len(fake.attributeDeclarationsArgsForCall)
+}
+
+func (fake *FakeProgram) AttributeDeclarationsReturns(result1 []client.AttributeDeclaration) {
+	fake.AttributeDeclarationsStub = nil
+	fake.attributeDeclarationsReturns = struct {
+		result1 []client.AttributeDeclaration
+	}{result1}
+}
+
+func (fake *FakeProgram) AttributeDeclaration(arg1 client.Attribute) (client.AttributeDeclaration, bool) {
+	fake.attributeDeclarationMutex.Lock()
+	fake.attributeDeclarationArgsForCall = append(fake.attributeDeclarationArgsForCall, struct {
+		arg1 client.Attribute
+	}{arg1})
+	fake.attributeDeclarationMutex.Unlock()
+	if fake.AttributeDeclarationStub != nil {
+		return fake.AttributeDeclarationStub(arg1)
+	} else {
+		return fake.attributeDeclarationReturns.result1, fake.attributeDeclarationReturns.result2
+	}
+}
+
+func (fake *FakeProgram) AttributeDeclarationCallCount() int {
+	fake.attributeDeclarationMutex.RLock()
+	defer fake.attributeDeclarationMutex.RUnlock()
+	return len(fake.attributeDeclarationArgsForCall)
+}
+
+func (fake *FakeProgram) AttributeDeclarationArgsForCall(i int) client.Attribute {
+	fake.attributeDeclarationMutex.RLock()
+	defer fake.attributeDeclarationMutex.RUnlock()
+	return fake.attributeDeclarationArgsForCall[i].arg1
+}
+
+func (fake *FakeProgram) AttributeDeclarationReturns(result1 client.AttributeDeclaration, result2 bool) {
+	fake.AttributeDeclarationStub = nil
+	fake.attributeDeclarationReturns = struct {
+		result1 client.AttributeDeclaration
+		result2 bool
+	}{result1, result2}
 }
 
 func (fake *FakeProgram) Created() bool {

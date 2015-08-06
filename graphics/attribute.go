@@ -1,5 +1,13 @@
 package graphics
 
+type AttributeName int
+
+const (
+	Coords AttributeName = iota
+	TexCoords
+	Normals
+)
+
 //go:generate gostub AttributeArray
 
 // AttributeArray represents a single feature (e.g. position, normal,

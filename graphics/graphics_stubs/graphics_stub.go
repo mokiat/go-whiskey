@@ -9,27 +9,53 @@ import (
 )
 
 type GraphicsStub struct {
-	CreateFloat2AttributeArrayStub        func(arg1 int) (result1 alias1.Float2AttributeArray)
+	CreateFloat2AttributeArrayStub        func(arg1 int) (result1 alias1.Float2AttributeArray, result2 error)
 	createFloat2AttributeArrayMutex       sync.RWMutex
 	createFloat2AttributeArrayArgsForCall []struct {
 		arg1 int
 	}
 	createFloat2AttributeArrayReturns struct {
 		result1 alias1.Float2AttributeArray
+		result2 error
 	}
-	CreateFloat3AttributeArrayStub        func(arg1 int) (result1 alias1.Float3AttributeArray)
+	CreateFloat3AttributeArrayStub        func(arg1 int) (result1 alias1.Float3AttributeArray, result2 error)
 	createFloat3AttributeArrayMutex       sync.RWMutex
 	createFloat3AttributeArrayArgsForCall []struct {
 		arg1 int
 	}
 	createFloat3AttributeArrayReturns struct {
 		result1 alias1.Float3AttributeArray
+		result2 error
+	}
+	CreateIndexArrayStub        func(arg1 int) (result1 alias1.IndexArray, result2 error)
+	createIndexArrayMutex       sync.RWMutex
+	createIndexArrayArgsForCall []struct {
+		arg1 int
+	}
+	createIndexArrayReturns struct {
+		result1 alias1.IndexArray
+		result2 error
+	}
+	CreateMaterialStub        func() (result1 alias1.Material, result2 error)
+	createMaterialMutex       sync.RWMutex
+	createMaterialArgsForCall []struct {
+	}
+	createMaterialReturns struct {
+		result1 alias1.Material
+		result2 error
+	}
+	RendererStub        func() (result1 alias1.Renderer)
+	rendererMutex       sync.RWMutex
+	rendererArgsForCall []struct {
+	}
+	rendererReturns struct {
+		result1 alias1.Renderer
 	}
 }
 
 var _ alias1.Graphics = new(GraphicsStub)
 
-func (stub *GraphicsStub) CreateFloat2AttributeArray(arg1 int) alias1.Float2AttributeArray {
+func (stub *GraphicsStub) CreateFloat2AttributeArray(arg1 int) (alias1.Float2AttributeArray, error) {
 	stub.createFloat2AttributeArrayMutex.Lock()
 	defer stub.createFloat2AttributeArrayMutex.Unlock()
 	stub.createFloat2AttributeArrayArgsForCall = append(stub.createFloat2AttributeArrayArgsForCall, struct {
@@ -38,7 +64,7 @@ func (stub *GraphicsStub) CreateFloat2AttributeArray(arg1 int) alias1.Float2Attr
 	if stub.CreateFloat2AttributeArrayStub != nil {
 		return stub.CreateFloat2AttributeArrayStub(arg1)
 	} else {
-		return stub.createFloat2AttributeArrayReturns.result1
+		return stub.createFloat2AttributeArrayReturns.result1, stub.createFloat2AttributeArrayReturns.result2
 	}
 }
 func (stub *GraphicsStub) CreateFloat2AttributeArrayCallCount() int {
@@ -51,14 +77,15 @@ func (stub *GraphicsStub) CreateFloat2AttributeArrayArgsForCall(index int) int {
 	defer stub.createFloat2AttributeArrayMutex.RUnlock()
 	return stub.createFloat2AttributeArrayArgsForCall[index].arg1
 }
-func (stub *GraphicsStub) CreateFloat2AttributeArrayReturns(result1 alias1.Float2AttributeArray) {
+func (stub *GraphicsStub) CreateFloat2AttributeArrayReturns(result1 alias1.Float2AttributeArray, result2 error) {
 	stub.createFloat2AttributeArrayMutex.Lock()
 	defer stub.createFloat2AttributeArrayMutex.Unlock()
 	stub.createFloat2AttributeArrayReturns = struct {
 		result1 alias1.Float2AttributeArray
-	}{result1}
+		result2 error
+	}{result1, result2}
 }
-func (stub *GraphicsStub) CreateFloat3AttributeArray(arg1 int) alias1.Float3AttributeArray {
+func (stub *GraphicsStub) CreateFloat3AttributeArray(arg1 int) (alias1.Float3AttributeArray, error) {
 	stub.createFloat3AttributeArrayMutex.Lock()
 	defer stub.createFloat3AttributeArrayMutex.Unlock()
 	stub.createFloat3AttributeArrayArgsForCall = append(stub.createFloat3AttributeArrayArgsForCall, struct {
@@ -67,7 +94,7 @@ func (stub *GraphicsStub) CreateFloat3AttributeArray(arg1 int) alias1.Float3Attr
 	if stub.CreateFloat3AttributeArrayStub != nil {
 		return stub.CreateFloat3AttributeArrayStub(arg1)
 	} else {
-		return stub.createFloat3AttributeArrayReturns.result1
+		return stub.createFloat3AttributeArrayReturns.result1, stub.createFloat3AttributeArrayReturns.result2
 	}
 }
 func (stub *GraphicsStub) CreateFloat3AttributeArrayCallCount() int {
@@ -80,10 +107,88 @@ func (stub *GraphicsStub) CreateFloat3AttributeArrayArgsForCall(index int) int {
 	defer stub.createFloat3AttributeArrayMutex.RUnlock()
 	return stub.createFloat3AttributeArrayArgsForCall[index].arg1
 }
-func (stub *GraphicsStub) CreateFloat3AttributeArrayReturns(result1 alias1.Float3AttributeArray) {
+func (stub *GraphicsStub) CreateFloat3AttributeArrayReturns(result1 alias1.Float3AttributeArray, result2 error) {
 	stub.createFloat3AttributeArrayMutex.Lock()
 	defer stub.createFloat3AttributeArrayMutex.Unlock()
 	stub.createFloat3AttributeArrayReturns = struct {
 		result1 alias1.Float3AttributeArray
+		result2 error
+	}{result1, result2}
+}
+func (stub *GraphicsStub) CreateIndexArray(arg1 int) (alias1.IndexArray, error) {
+	stub.createIndexArrayMutex.Lock()
+	defer stub.createIndexArrayMutex.Unlock()
+	stub.createIndexArrayArgsForCall = append(stub.createIndexArrayArgsForCall, struct {
+		arg1 int
+	}{arg1})
+	if stub.CreateIndexArrayStub != nil {
+		return stub.CreateIndexArrayStub(arg1)
+	} else {
+		return stub.createIndexArrayReturns.result1, stub.createIndexArrayReturns.result2
+	}
+}
+func (stub *GraphicsStub) CreateIndexArrayCallCount() int {
+	stub.createIndexArrayMutex.RLock()
+	defer stub.createIndexArrayMutex.RUnlock()
+	return len(stub.createIndexArrayArgsForCall)
+}
+func (stub *GraphicsStub) CreateIndexArrayArgsForCall(index int) int {
+	stub.createIndexArrayMutex.RLock()
+	defer stub.createIndexArrayMutex.RUnlock()
+	return stub.createIndexArrayArgsForCall[index].arg1
+}
+func (stub *GraphicsStub) CreateIndexArrayReturns(result1 alias1.IndexArray, result2 error) {
+	stub.createIndexArrayMutex.Lock()
+	defer stub.createIndexArrayMutex.Unlock()
+	stub.createIndexArrayReturns = struct {
+		result1 alias1.IndexArray
+		result2 error
+	}{result1, result2}
+}
+func (stub *GraphicsStub) CreateMaterial() (alias1.Material, error) {
+	stub.createMaterialMutex.Lock()
+	defer stub.createMaterialMutex.Unlock()
+	stub.createMaterialArgsForCall = append(stub.createMaterialArgsForCall, struct {
+	}{})
+	if stub.CreateMaterialStub != nil {
+		return stub.CreateMaterialStub()
+	} else {
+		return stub.createMaterialReturns.result1, stub.createMaterialReturns.result2
+	}
+}
+func (stub *GraphicsStub) CreateMaterialCallCount() int {
+	stub.createMaterialMutex.RLock()
+	defer stub.createMaterialMutex.RUnlock()
+	return len(stub.createMaterialArgsForCall)
+}
+func (stub *GraphicsStub) CreateMaterialReturns(result1 alias1.Material, result2 error) {
+	stub.createMaterialMutex.Lock()
+	defer stub.createMaterialMutex.Unlock()
+	stub.createMaterialReturns = struct {
+		result1 alias1.Material
+		result2 error
+	}{result1, result2}
+}
+func (stub *GraphicsStub) Renderer() alias1.Renderer {
+	stub.rendererMutex.Lock()
+	defer stub.rendererMutex.Unlock()
+	stub.rendererArgsForCall = append(stub.rendererArgsForCall, struct {
+	}{})
+	if stub.RendererStub != nil {
+		return stub.RendererStub()
+	} else {
+		return stub.rendererReturns.result1
+	}
+}
+func (stub *GraphicsStub) RendererCallCount() int {
+	stub.rendererMutex.RLock()
+	defer stub.rendererMutex.RUnlock()
+	return len(stub.rendererArgsForCall)
+}
+func (stub *GraphicsStub) RendererReturns(result1 alias1.Renderer) {
+	stub.rendererMutex.Lock()
+	defer stub.rendererMutex.Unlock()
+	stub.rendererReturns = struct {
+		result1 alias1.Renderer
 	}{result1}
 }

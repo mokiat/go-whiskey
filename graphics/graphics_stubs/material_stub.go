@@ -9,6 +9,7 @@ import (
 )
 
 type MaterialStub struct {
+	StubGUID                      int
 	EnableDiffuseColorStub        func(arg1 bool)
 	enableDiffuseColorMutex       sync.RWMutex
 	enableDiffuseColorArgsForCall []struct {

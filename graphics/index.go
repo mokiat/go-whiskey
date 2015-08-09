@@ -1,9 +1,11 @@
 package graphics
 
-type ElementType int
+type SequenceType int
 
 const (
-	Triangles ElementType = iota
+	Triangles SequenceType = iota
+	TriangleFan
+	TriangleStrip
 	Lines
 )
 

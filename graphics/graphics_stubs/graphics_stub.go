@@ -9,6 +9,7 @@ import (
 )
 
 type GraphicsStub struct {
+	StubGUID                              int
 	CreateFloat2AttributeArrayStub        func(arg1 int) (result1 alias1.Float2AttributeArray, result2 error)
 	createFloat2AttributeArrayMutex       sync.RWMutex
 	createFloat2AttributeArrayArgsForCall []struct {
@@ -25,6 +26,22 @@ type GraphicsStub struct {
 	}
 	createFloat3AttributeArrayReturns struct {
 		result1 alias1.Float3AttributeArray
+		result2 error
+	}
+	CreateFloat4UniformStub        func() (result1 alias1.Float4Uniform, result2 error)
+	createFloat4UniformMutex       sync.RWMutex
+	createFloat4UniformArgsForCall []struct {
+	}
+	createFloat4UniformReturns struct {
+		result1 alias1.Float4Uniform
+		result2 error
+	}
+	CreateFloat4x4UniformStub        func() (result1 alias1.Float4x4Uniform, result2 error)
+	createFloat4x4UniformMutex       sync.RWMutex
+	createFloat4x4UniformArgsForCall []struct {
+	}
+	createFloat4x4UniformReturns struct {
+		result1 alias1.Float4x4Uniform
 		result2 error
 	}
 	CreateIndexArrayStub        func(arg1 int) (result1 alias1.IndexArray, result2 error)
@@ -112,6 +129,54 @@ func (stub *GraphicsStub) CreateFloat3AttributeArrayReturns(result1 alias1.Float
 	defer stub.createFloat3AttributeArrayMutex.Unlock()
 	stub.createFloat3AttributeArrayReturns = struct {
 		result1 alias1.Float3AttributeArray
+		result2 error
+	}{result1, result2}
+}
+func (stub *GraphicsStub) CreateFloat4Uniform() (alias1.Float4Uniform, error) {
+	stub.createFloat4UniformMutex.Lock()
+	defer stub.createFloat4UniformMutex.Unlock()
+	stub.createFloat4UniformArgsForCall = append(stub.createFloat4UniformArgsForCall, struct {
+	}{})
+	if stub.CreateFloat4UniformStub != nil {
+		return stub.CreateFloat4UniformStub()
+	} else {
+		return stub.createFloat4UniformReturns.result1, stub.createFloat4UniformReturns.result2
+	}
+}
+func (stub *GraphicsStub) CreateFloat4UniformCallCount() int {
+	stub.createFloat4UniformMutex.RLock()
+	defer stub.createFloat4UniformMutex.RUnlock()
+	return len(stub.createFloat4UniformArgsForCall)
+}
+func (stub *GraphicsStub) CreateFloat4UniformReturns(result1 alias1.Float4Uniform, result2 error) {
+	stub.createFloat4UniformMutex.Lock()
+	defer stub.createFloat4UniformMutex.Unlock()
+	stub.createFloat4UniformReturns = struct {
+		result1 alias1.Float4Uniform
+		result2 error
+	}{result1, result2}
+}
+func (stub *GraphicsStub) CreateFloat4x4Uniform() (alias1.Float4x4Uniform, error) {
+	stub.createFloat4x4UniformMutex.Lock()
+	defer stub.createFloat4x4UniformMutex.Unlock()
+	stub.createFloat4x4UniformArgsForCall = append(stub.createFloat4x4UniformArgsForCall, struct {
+	}{})
+	if stub.CreateFloat4x4UniformStub != nil {
+		return stub.CreateFloat4x4UniformStub()
+	} else {
+		return stub.createFloat4x4UniformReturns.result1, stub.createFloat4x4UniformReturns.result2
+	}
+}
+func (stub *GraphicsStub) CreateFloat4x4UniformCallCount() int {
+	stub.createFloat4x4UniformMutex.RLock()
+	defer stub.createFloat4x4UniformMutex.RUnlock()
+	return len(stub.createFloat4x4UniformArgsForCall)
+}
+func (stub *GraphicsStub) CreateFloat4x4UniformReturns(result1 alias1.Float4x4Uniform, result2 error) {
+	stub.createFloat4x4UniformMutex.Lock()
+	defer stub.createFloat4x4UniformMutex.Unlock()
+	stub.createFloat4x4UniformReturns = struct {
+		result1 alias1.Float4x4Uniform
 		result2 error
 	}{result1, result2}
 }

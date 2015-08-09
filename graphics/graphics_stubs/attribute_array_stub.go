@@ -9,6 +9,7 @@ import (
 )
 
 type AttributeArrayStub struct {
+	StubGUID        int
 	SizeStub        func() (result1 int)
 	sizeMutex       sync.RWMutex
 	sizeArgsForCall []struct {

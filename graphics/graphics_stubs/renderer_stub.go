@@ -6,10 +6,10 @@ import (
 	sync "sync"
 
 	alias1 "github.com/momchil-atanasov/go-whiskey/graphics"
-	alias2 "github.com/momchil-atanasov/go-whiskey/math"
 )
 
 type RendererStub struct {
+	StubGUID              int
 	InitializeStub        func() (result1 error)
 	initializeMutex       sync.RWMutex
 	initializeArgsForCall []struct {
@@ -22,35 +22,23 @@ type RendererStub struct {
 	useMaterialArgsForCall []struct {
 		arg1 alias1.Material
 	}
-	BindFloat2AttributeArrayStub        func(arg1 alias1.AttributeName, arg2 alias1.Float2AttributeArray)
-	bindFloat2AttributeArrayMutex       sync.RWMutex
-	bindFloat2AttributeArrayArgsForCall []struct {
+	BindAttributeStub        func(arg1 alias1.AttributeName, arg2 alias1.AttributeArray)
+	bindAttributeMutex       sync.RWMutex
+	bindAttributeArgsForCall []struct {
 		arg1 alias1.AttributeName
-		arg2 alias1.Float2AttributeArray
+		arg2 alias1.AttributeArray
 	}
-	BindFloat3AttributeArrayStub        func(arg1 alias1.AttributeName, arg2 alias1.Float3AttributeArray)
-	bindFloat3AttributeArrayMutex       sync.RWMutex
-	bindFloat3AttributeArrayArgsForCall []struct {
-		arg1 alias1.AttributeName
-		arg2 alias1.Float3AttributeArray
-	}
-	BindFloat4x4UniformStub        func(arg1 alias1.UniformName, arg2 alias2.Mat4x4)
-	bindFloat4x4UniformMutex       sync.RWMutex
-	bindFloat4x4UniformArgsForCall []struct {
+	BindUniformStub        func(arg1 alias1.UniformName, arg2 alias1.Uniform)
+	bindUniformMutex       sync.RWMutex
+	bindUniformArgsForCall []struct {
 		arg1 alias1.UniformName
-		arg2 alias2.Mat4x4
+		arg2 alias1.Uniform
 	}
-	BindFloat4UniformStub        func(arg1 alias1.UniformName, arg2 alias2.Vec4)
-	bindFloat4UniformMutex       sync.RWMutex
-	bindFloat4UniformArgsForCall []struct {
-		arg1 alias1.UniformName
-		arg2 alias2.Vec4
-	}
-	RenderStub        func(arg1 alias1.ElementType, arg2 alias1.IndexArray)
+	RenderStub        func(arg1 alias1.IndexArray, arg2 alias1.SequenceType)
 	renderMutex       sync.RWMutex
 	renderArgsForCall []struct {
-		arg1 alias1.ElementType
-		arg2 alias1.IndexArray
+		arg1 alias1.IndexArray
+		arg2 alias1.SequenceType
 	}
 	FlushStub        func() (result1 error)
 	flushMutex       sync.RWMutex
@@ -106,96 +94,54 @@ func (stub *RendererStub) UseMaterialArgsForCall(index int) alias1.Material {
 	defer stub.useMaterialMutex.RUnlock()
 	return stub.useMaterialArgsForCall[index].arg1
 }
-func (stub *RendererStub) BindFloat2AttributeArray(arg1 alias1.AttributeName, arg2 alias1.Float2AttributeArray) {
-	stub.bindFloat2AttributeArrayMutex.Lock()
-	defer stub.bindFloat2AttributeArrayMutex.Unlock()
-	stub.bindFloat2AttributeArrayArgsForCall = append(stub.bindFloat2AttributeArrayArgsForCall, struct {
+func (stub *RendererStub) BindAttribute(arg1 alias1.AttributeName, arg2 alias1.AttributeArray) {
+	stub.bindAttributeMutex.Lock()
+	defer stub.bindAttributeMutex.Unlock()
+	stub.bindAttributeArgsForCall = append(stub.bindAttributeArgsForCall, struct {
 		arg1 alias1.AttributeName
-		arg2 alias1.Float2AttributeArray
+		arg2 alias1.AttributeArray
 	}{arg1, arg2})
-	if stub.BindFloat2AttributeArrayStub != nil {
-		stub.BindFloat2AttributeArrayStub(arg1, arg2)
+	if stub.BindAttributeStub != nil {
+		stub.BindAttributeStub(arg1, arg2)
 	}
 }
-func (stub *RendererStub) BindFloat2AttributeArrayCallCount() int {
-	stub.bindFloat2AttributeArrayMutex.RLock()
-	defer stub.bindFloat2AttributeArrayMutex.RUnlock()
-	return len(stub.bindFloat2AttributeArrayArgsForCall)
+func (stub *RendererStub) BindAttributeCallCount() int {
+	stub.bindAttributeMutex.RLock()
+	defer stub.bindAttributeMutex.RUnlock()
+	return len(stub.bindAttributeArgsForCall)
 }
-func (stub *RendererStub) BindFloat2AttributeArrayArgsForCall(index int) (alias1.AttributeName, alias1.Float2AttributeArray) {
-	stub.bindFloat2AttributeArrayMutex.RLock()
-	defer stub.bindFloat2AttributeArrayMutex.RUnlock()
-	return stub.bindFloat2AttributeArrayArgsForCall[index].arg1, stub.bindFloat2AttributeArrayArgsForCall[index].arg2
+func (stub *RendererStub) BindAttributeArgsForCall(index int) (alias1.AttributeName, alias1.AttributeArray) {
+	stub.bindAttributeMutex.RLock()
+	defer stub.bindAttributeMutex.RUnlock()
+	return stub.bindAttributeArgsForCall[index].arg1, stub.bindAttributeArgsForCall[index].arg2
 }
-func (stub *RendererStub) BindFloat3AttributeArray(arg1 alias1.AttributeName, arg2 alias1.Float3AttributeArray) {
-	stub.bindFloat3AttributeArrayMutex.Lock()
-	defer stub.bindFloat3AttributeArrayMutex.Unlock()
-	stub.bindFloat3AttributeArrayArgsForCall = append(stub.bindFloat3AttributeArrayArgsForCall, struct {
-		arg1 alias1.AttributeName
-		arg2 alias1.Float3AttributeArray
-	}{arg1, arg2})
-	if stub.BindFloat3AttributeArrayStub != nil {
-		stub.BindFloat3AttributeArrayStub(arg1, arg2)
-	}
-}
-func (stub *RendererStub) BindFloat3AttributeArrayCallCount() int {
-	stub.bindFloat3AttributeArrayMutex.RLock()
-	defer stub.bindFloat3AttributeArrayMutex.RUnlock()
-	return len(stub.bindFloat3AttributeArrayArgsForCall)
-}
-func (stub *RendererStub) BindFloat3AttributeArrayArgsForCall(index int) (alias1.AttributeName, alias1.Float3AttributeArray) {
-	stub.bindFloat3AttributeArrayMutex.RLock()
-	defer stub.bindFloat3AttributeArrayMutex.RUnlock()
-	return stub.bindFloat3AttributeArrayArgsForCall[index].arg1, stub.bindFloat3AttributeArrayArgsForCall[index].arg2
-}
-func (stub *RendererStub) BindFloat4x4Uniform(arg1 alias1.UniformName, arg2 alias2.Mat4x4) {
-	stub.bindFloat4x4UniformMutex.Lock()
-	defer stub.bindFloat4x4UniformMutex.Unlock()
-	stub.bindFloat4x4UniformArgsForCall = append(stub.bindFloat4x4UniformArgsForCall, struct {
+func (stub *RendererStub) BindUniform(arg1 alias1.UniformName, arg2 alias1.Uniform) {
+	stub.bindUniformMutex.Lock()
+	defer stub.bindUniformMutex.Unlock()
+	stub.bindUniformArgsForCall = append(stub.bindUniformArgsForCall, struct {
 		arg1 alias1.UniformName
-		arg2 alias2.Mat4x4
+		arg2 alias1.Uniform
 	}{arg1, arg2})
-	if stub.BindFloat4x4UniformStub != nil {
-		stub.BindFloat4x4UniformStub(arg1, arg2)
+	if stub.BindUniformStub != nil {
+		stub.BindUniformStub(arg1, arg2)
 	}
 }
-func (stub *RendererStub) BindFloat4x4UniformCallCount() int {
-	stub.bindFloat4x4UniformMutex.RLock()
-	defer stub.bindFloat4x4UniformMutex.RUnlock()
-	return len(stub.bindFloat4x4UniformArgsForCall)
+func (stub *RendererStub) BindUniformCallCount() int {
+	stub.bindUniformMutex.RLock()
+	defer stub.bindUniformMutex.RUnlock()
+	return len(stub.bindUniformArgsForCall)
 }
-func (stub *RendererStub) BindFloat4x4UniformArgsForCall(index int) (alias1.UniformName, alias2.Mat4x4) {
-	stub.bindFloat4x4UniformMutex.RLock()
-	defer stub.bindFloat4x4UniformMutex.RUnlock()
-	return stub.bindFloat4x4UniformArgsForCall[index].arg1, stub.bindFloat4x4UniformArgsForCall[index].arg2
+func (stub *RendererStub) BindUniformArgsForCall(index int) (alias1.UniformName, alias1.Uniform) {
+	stub.bindUniformMutex.RLock()
+	defer stub.bindUniformMutex.RUnlock()
+	return stub.bindUniformArgsForCall[index].arg1, stub.bindUniformArgsForCall[index].arg2
 }
-func (stub *RendererStub) BindFloat4Uniform(arg1 alias1.UniformName, arg2 alias2.Vec4) {
-	stub.bindFloat4UniformMutex.Lock()
-	defer stub.bindFloat4UniformMutex.Unlock()
-	stub.bindFloat4UniformArgsForCall = append(stub.bindFloat4UniformArgsForCall, struct {
-		arg1 alias1.UniformName
-		arg2 alias2.Vec4
-	}{arg1, arg2})
-	if stub.BindFloat4UniformStub != nil {
-		stub.BindFloat4UniformStub(arg1, arg2)
-	}
-}
-func (stub *RendererStub) BindFloat4UniformCallCount() int {
-	stub.bindFloat4UniformMutex.RLock()
-	defer stub.bindFloat4UniformMutex.RUnlock()
-	return len(stub.bindFloat4UniformArgsForCall)
-}
-func (stub *RendererStub) BindFloat4UniformArgsForCall(index int) (alias1.UniformName, alias2.Vec4) {
-	stub.bindFloat4UniformMutex.RLock()
-	defer stub.bindFloat4UniformMutex.RUnlock()
-	return stub.bindFloat4UniformArgsForCall[index].arg1, stub.bindFloat4UniformArgsForCall[index].arg2
-}
-func (stub *RendererStub) Render(arg1 alias1.ElementType, arg2 alias1.IndexArray) {
+func (stub *RendererStub) Render(arg1 alias1.IndexArray, arg2 alias1.SequenceType) {
 	stub.renderMutex.Lock()
 	defer stub.renderMutex.Unlock()
 	stub.renderArgsForCall = append(stub.renderArgsForCall, struct {
-		arg1 alias1.ElementType
-		arg2 alias1.IndexArray
+		arg1 alias1.IndexArray
+		arg2 alias1.SequenceType
 	}{arg1, arg2})
 	if stub.RenderStub != nil {
 		stub.RenderStub(arg1, arg2)
@@ -206,7 +152,7 @@ func (stub *RendererStub) RenderCallCount() int {
 	defer stub.renderMutex.RUnlock()
 	return len(stub.renderArgsForCall)
 }
-func (stub *RendererStub) RenderArgsForCall(index int) (alias1.ElementType, alias1.IndexArray) {
+func (stub *RendererStub) RenderArgsForCall(index int) (alias1.IndexArray, alias1.SequenceType) {
 	stub.renderMutex.RLock()
 	defer stub.renderMutex.RUnlock()
 	return stub.renderArgsForCall[index].arg1, stub.renderArgsForCall[index].arg2

@@ -8,6 +8,6 @@ type Graphics interface {
 	CreateFloat4Uniform() (Float4Uniform, error)
 	CreateFloat4x4Uniform() (Float4x4Uniform, error)
 	CreateIndexArray(size int) (IndexArray, error)
-	CreateMaterial() (Material, error)
+	CreateMaterial(MaterialDefinition) (Material, error)
 	Renderer() Renderer
 }

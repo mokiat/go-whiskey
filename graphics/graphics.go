@@ -83,19 +83,19 @@ type Graphics interface {
 
 	// UseMaterial indicates to the Rendering pipeline that the specified
 	// material should be used for future render operations.
-	UseMaterial(Material)
+	UseMaterial(Material) error
 
 	// BindAttribute binds the specified attribute array to the specified
 	// attribute bind name
-	BindAttribute(AttributeName, AttributeArray)
+	BindAttribute(AttributeName, AttributeArray) error
 
 	// BindUniform binds the specified uniform to the specified uniform
 	// bind name
-	BindUniform(UniformName, Uniform)
+	BindUniform(UniformName, Uniform) error
 
 	// BindTexture binds the specified texture to the specified texture
 	// bind name
-	BindTexture(TextureName, Texture)
+	BindTexture(TextureName, Texture) error
 
 	// Render schedule a shape to be rendered. The actual rendering will
 	// take place during the next call to Flush.
@@ -104,7 +104,7 @@ type Graphics interface {
 	// The offset and count parameters specify and offset relative to
 	// the start of the IndexArray and a number of indices to be used
 	// for the rendering of the shape.
-	Render(sequence SequenceType, array IndexArray, offset, count int)
+	Render(sequence SequenceType, array IndexArray, offset, count int) error
 
 	// Flush triggers the rendering pipeline to draw all of the scheduled
 	// shapes via the Render call to be rendered to the screen.

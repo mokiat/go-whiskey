@@ -142,36 +142,51 @@ type GraphicsStub struct {
 	destroyReturns struct {
 		result1 error
 	}
-	UseMaterialStub        func(arg1 alias1.Material)
+	UseMaterialStub        func(arg1 alias1.Material) (result1 error)
 	useMaterialMutex       sync.RWMutex
 	useMaterialArgsForCall []struct {
 		arg1 alias1.Material
 	}
-	BindAttributeStub        func(arg1 alias1.AttributeName, arg2 alias1.AttributeArray)
+	useMaterialReturns struct {
+		result1 error
+	}
+	BindAttributeStub        func(arg1 alias1.AttributeName, arg2 alias1.AttributeArray) (result1 error)
 	bindAttributeMutex       sync.RWMutex
 	bindAttributeArgsForCall []struct {
 		arg1 alias1.AttributeName
 		arg2 alias1.AttributeArray
 	}
-	BindUniformStub        func(arg1 alias1.UniformName, arg2 alias1.Uniform)
+	bindAttributeReturns struct {
+		result1 error
+	}
+	BindUniformStub        func(arg1 alias1.UniformName, arg2 alias1.Uniform) (result1 error)
 	bindUniformMutex       sync.RWMutex
 	bindUniformArgsForCall []struct {
 		arg1 alias1.UniformName
 		arg2 alias1.Uniform
 	}
-	BindTextureStub        func(arg1 alias1.TextureName, arg2 alias1.Texture)
+	bindUniformReturns struct {
+		result1 error
+	}
+	BindTextureStub        func(arg1 alias1.TextureName, arg2 alias1.Texture) (result1 error)
 	bindTextureMutex       sync.RWMutex
 	bindTextureArgsForCall []struct {
 		arg1 alias1.TextureName
 		arg2 alias1.Texture
 	}
-	RenderStub        func(arg1 alias1.SequenceType, arg2 alias1.IndexArray, arg3 int, arg4 int)
+	bindTextureReturns struct {
+		result1 error
+	}
+	RenderStub        func(arg1 alias1.SequenceType, arg2 alias1.IndexArray, arg3 int, arg4 int) (result1 error)
 	renderMutex       sync.RWMutex
 	renderArgsForCall []struct {
 		arg1 alias1.SequenceType
 		arg2 alias1.IndexArray
 		arg3 int
 		arg4 int
+	}
+	renderReturns struct {
+		result1 error
 	}
 	FlushStub        func() (result1 error)
 	flushMutex       sync.RWMutex
@@ -627,14 +642,16 @@ func (stub *GraphicsStub) DestroyReturns(result1 error) {
 		result1 error
 	}{result1}
 }
-func (stub *GraphicsStub) UseMaterial(arg1 alias1.Material) {
+func (stub *GraphicsStub) UseMaterial(arg1 alias1.Material) error {
 	stub.useMaterialMutex.Lock()
 	defer stub.useMaterialMutex.Unlock()
 	stub.useMaterialArgsForCall = append(stub.useMaterialArgsForCall, struct {
 		arg1 alias1.Material
 	}{arg1})
 	if stub.UseMaterialStub != nil {
-		stub.UseMaterialStub(arg1)
+		return stub.UseMaterialStub(arg1)
+	} else {
+		return stub.useMaterialReturns.result1
 	}
 }
 func (stub *GraphicsStub) UseMaterialCallCount() int {
@@ -647,7 +664,14 @@ func (stub *GraphicsStub) UseMaterialArgsForCall(index int) alias1.Material {
 	defer stub.useMaterialMutex.RUnlock()
 	return stub.useMaterialArgsForCall[index].arg1
 }
-func (stub *GraphicsStub) BindAttribute(arg1 alias1.AttributeName, arg2 alias1.AttributeArray) {
+func (stub *GraphicsStub) UseMaterialReturns(result1 error) {
+	stub.useMaterialMutex.Lock()
+	defer stub.useMaterialMutex.Unlock()
+	stub.useMaterialReturns = struct {
+		result1 error
+	}{result1}
+}
+func (stub *GraphicsStub) BindAttribute(arg1 alias1.AttributeName, arg2 alias1.AttributeArray) error {
 	stub.bindAttributeMutex.Lock()
 	defer stub.bindAttributeMutex.Unlock()
 	stub.bindAttributeArgsForCall = append(stub.bindAttributeArgsForCall, struct {
@@ -655,7 +679,9 @@ func (stub *GraphicsStub) BindAttribute(arg1 alias1.AttributeName, arg2 alias1.A
 		arg2 alias1.AttributeArray
 	}{arg1, arg2})
 	if stub.BindAttributeStub != nil {
-		stub.BindAttributeStub(arg1, arg2)
+		return stub.BindAttributeStub(arg1, arg2)
+	} else {
+		return stub.bindAttributeReturns.result1
 	}
 }
 func (stub *GraphicsStub) BindAttributeCallCount() int {
@@ -668,7 +694,14 @@ func (stub *GraphicsStub) BindAttributeArgsForCall(index int) (alias1.AttributeN
 	defer stub.bindAttributeMutex.RUnlock()
 	return stub.bindAttributeArgsForCall[index].arg1, stub.bindAttributeArgsForCall[index].arg2
 }
-func (stub *GraphicsStub) BindUniform(arg1 alias1.UniformName, arg2 alias1.Uniform) {
+func (stub *GraphicsStub) BindAttributeReturns(result1 error) {
+	stub.bindAttributeMutex.Lock()
+	defer stub.bindAttributeMutex.Unlock()
+	stub.bindAttributeReturns = struct {
+		result1 error
+	}{result1}
+}
+func (stub *GraphicsStub) BindUniform(arg1 alias1.UniformName, arg2 alias1.Uniform) error {
 	stub.bindUniformMutex.Lock()
 	defer stub.bindUniformMutex.Unlock()
 	stub.bindUniformArgsForCall = append(stub.bindUniformArgsForCall, struct {
@@ -676,7 +709,9 @@ func (stub *GraphicsStub) BindUniform(arg1 alias1.UniformName, arg2 alias1.Unifo
 		arg2 alias1.Uniform
 	}{arg1, arg2})
 	if stub.BindUniformStub != nil {
-		stub.BindUniformStub(arg1, arg2)
+		return stub.BindUniformStub(arg1, arg2)
+	} else {
+		return stub.bindUniformReturns.result1
 	}
 }
 func (stub *GraphicsStub) BindUniformCallCount() int {
@@ -689,7 +724,14 @@ func (stub *GraphicsStub) BindUniformArgsForCall(index int) (alias1.UniformName,
 	defer stub.bindUniformMutex.RUnlock()
 	return stub.bindUniformArgsForCall[index].arg1, stub.bindUniformArgsForCall[index].arg2
 }
-func (stub *GraphicsStub) BindTexture(arg1 alias1.TextureName, arg2 alias1.Texture) {
+func (stub *GraphicsStub) BindUniformReturns(result1 error) {
+	stub.bindUniformMutex.Lock()
+	defer stub.bindUniformMutex.Unlock()
+	stub.bindUniformReturns = struct {
+		result1 error
+	}{result1}
+}
+func (stub *GraphicsStub) BindTexture(arg1 alias1.TextureName, arg2 alias1.Texture) error {
 	stub.bindTextureMutex.Lock()
 	defer stub.bindTextureMutex.Unlock()
 	stub.bindTextureArgsForCall = append(stub.bindTextureArgsForCall, struct {
@@ -697,7 +739,9 @@ func (stub *GraphicsStub) BindTexture(arg1 alias1.TextureName, arg2 alias1.Textu
 		arg2 alias1.Texture
 	}{arg1, arg2})
 	if stub.BindTextureStub != nil {
-		stub.BindTextureStub(arg1, arg2)
+		return stub.BindTextureStub(arg1, arg2)
+	} else {
+		return stub.bindTextureReturns.result1
 	}
 }
 func (stub *GraphicsStub) BindTextureCallCount() int {
@@ -710,7 +754,14 @@ func (stub *GraphicsStub) BindTextureArgsForCall(index int) (alias1.TextureName,
 	defer stub.bindTextureMutex.RUnlock()
 	return stub.bindTextureArgsForCall[index].arg1, stub.bindTextureArgsForCall[index].arg2
 }
-func (stub *GraphicsStub) Render(arg1 alias1.SequenceType, arg2 alias1.IndexArray, arg3 int, arg4 int) {
+func (stub *GraphicsStub) BindTextureReturns(result1 error) {
+	stub.bindTextureMutex.Lock()
+	defer stub.bindTextureMutex.Unlock()
+	stub.bindTextureReturns = struct {
+		result1 error
+	}{result1}
+}
+func (stub *GraphicsStub) Render(arg1 alias1.SequenceType, arg2 alias1.IndexArray, arg3 int, arg4 int) error {
 	stub.renderMutex.Lock()
 	defer stub.renderMutex.Unlock()
 	stub.renderArgsForCall = append(stub.renderArgsForCall, struct {
@@ -720,7 +771,9 @@ func (stub *GraphicsStub) Render(arg1 alias1.SequenceType, arg2 alias1.IndexArra
 		arg4 int
 	}{arg1, arg2, arg3, arg4})
 	if stub.RenderStub != nil {
-		stub.RenderStub(arg1, arg2, arg3, arg4)
+		return stub.RenderStub(arg1, arg2, arg3, arg4)
+	} else {
+		return stub.renderReturns.result1
 	}
 }
 func (stub *GraphicsStub) RenderCallCount() int {
@@ -732,6 +785,13 @@ func (stub *GraphicsStub) RenderArgsForCall(index int) (alias1.SequenceType, ali
 	stub.renderMutex.RLock()
 	defer stub.renderMutex.RUnlock()
 	return stub.renderArgsForCall[index].arg1, stub.renderArgsForCall[index].arg2, stub.renderArgsForCall[index].arg3, stub.renderArgsForCall[index].arg4
+}
+func (stub *GraphicsStub) RenderReturns(result1 error) {
+	stub.renderMutex.Lock()
+	defer stub.renderMutex.Unlock()
+	stub.renderReturns = struct {
+		result1 error
+	}{result1}
 }
 func (stub *GraphicsStub) Flush() error {
 	stub.flushMutex.Lock()

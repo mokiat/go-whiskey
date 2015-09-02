@@ -36,10 +36,30 @@ const (
 	SpecularColor
 )
 
+//go:generate gostub Uniform
+
 // Uniform represents a configuration that is global
 // for a whole mesh structure
 type Uniform interface {
 }
+
+//go:generate gostub Float3Uniform
+
+// Float3Uniform represents a uniform that has three
+// float components
+type Float3Uniform interface {
+	Uniform
+
+	// SetValue configures this uniform to the specified
+	// vector of three float values
+	SetValue(math.Vec3)
+
+	// Value returns the current vector that is set
+	// to this uniform
+	Value() math.Vec3
+}
+
+//go:generate gostub Float4Uniform
 
 // Float4Uniform represents a uniform that has four
 // float components
@@ -54,6 +74,8 @@ type Float4Uniform interface {
 	// to this uniform
 	Value() math.Vec4
 }
+
+//go:generate gostub Float4x4Uniform
 
 // Float4x4Uniform represents a uniform that is a
 // matrix of four by four dimension

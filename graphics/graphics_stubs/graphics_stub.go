@@ -165,11 +165,13 @@ type GraphicsStub struct {
 		arg1 alias1.TextureName
 		arg2 alias1.Texture
 	}
-	RenderStub        func(arg1 alias1.SequenceType, arg2 alias1.IndexArray)
+	RenderStub        func(arg1 alias1.SequenceType, arg2 alias1.IndexArray, arg3 int, arg4 int)
 	renderMutex       sync.RWMutex
 	renderArgsForCall []struct {
 		arg1 alias1.SequenceType
 		arg2 alias1.IndexArray
+		arg3 int
+		arg4 int
 	}
 	FlushStub        func() (result1 error)
 	flushMutex       sync.RWMutex
@@ -708,15 +710,17 @@ func (stub *GraphicsStub) BindTextureArgsForCall(index int) (alias1.TextureName,
 	defer stub.bindTextureMutex.RUnlock()
 	return stub.bindTextureArgsForCall[index].arg1, stub.bindTextureArgsForCall[index].arg2
 }
-func (stub *GraphicsStub) Render(arg1 alias1.SequenceType, arg2 alias1.IndexArray) {
+func (stub *GraphicsStub) Render(arg1 alias1.SequenceType, arg2 alias1.IndexArray, arg3 int, arg4 int) {
 	stub.renderMutex.Lock()
 	defer stub.renderMutex.Unlock()
 	stub.renderArgsForCall = append(stub.renderArgsForCall, struct {
 		arg1 alias1.SequenceType
 		arg2 alias1.IndexArray
-	}{arg1, arg2})
+		arg3 int
+		arg4 int
+	}{arg1, arg2, arg3, arg4})
 	if stub.RenderStub != nil {
-		stub.RenderStub(arg1, arg2)
+		stub.RenderStub(arg1, arg2, arg3, arg4)
 	}
 }
 func (stub *GraphicsStub) RenderCallCount() int {
@@ -724,10 +728,10 @@ func (stub *GraphicsStub) RenderCallCount() int {
 	defer stub.renderMutex.RUnlock()
 	return len(stub.renderArgsForCall)
 }
-func (stub *GraphicsStub) RenderArgsForCall(index int) (alias1.SequenceType, alias1.IndexArray) {
+func (stub *GraphicsStub) RenderArgsForCall(index int) (alias1.SequenceType, alias1.IndexArray, int, int) {
 	stub.renderMutex.RLock()
 	defer stub.renderMutex.RUnlock()
-	return stub.renderArgsForCall[index].arg1, stub.renderArgsForCall[index].arg2
+	return stub.renderArgsForCall[index].arg1, stub.renderArgsForCall[index].arg2, stub.renderArgsForCall[index].arg3, stub.renderArgsForCall[index].arg4
 }
 func (stub *GraphicsStub) Flush() error {
 	stub.flushMutex.Lock()

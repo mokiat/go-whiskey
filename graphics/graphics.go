@@ -101,7 +101,10 @@ type Graphics interface {
 	// take place during the next call to Flush.
 	// The IndexArray parameter can be nil in which case the vertices
 	// will be consumed from the attribute arrays directly in order.
-	Render(SequenceType, IndexArray)
+	// The offset and count parameters specify and offset relative to
+	// the start of the IndexArray and a number of indices to be used
+	// for the rendering of the shape.
+	Render(sequence SequenceType, array IndexArray, offset, count int)
 
 	// Flush triggers the rendering pipeline to draw all of the scheduled
 	// shapes via the Render call to be rendered to the screen.

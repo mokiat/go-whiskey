@@ -1,6 +1,6 @@
 package ecs
 
-//go:generate counterfeiter -o ecs_fakes/fake_entity_manager.go ./ EntityManager
+//go:generate gostub EntityManager
 
 // EntityManager manages the lifecycle of all Entity object in the game.
 type EntityManager interface {

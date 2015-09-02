@@ -34,6 +34,12 @@ type RendererStub struct {
 		arg1 alias1.UniformName
 		arg2 alias1.Uniform
 	}
+	BindTextureStub        func(arg1 alias1.TextureName, arg2 alias1.Texture)
+	bindTextureMutex       sync.RWMutex
+	bindTextureArgsForCall []struct {
+		arg1 alias1.TextureName
+		arg2 alias1.Texture
+	}
 	RenderStub        func(arg1 alias1.IndexArray, arg2 alias1.SequenceType)
 	renderMutex       sync.RWMutex
 	renderArgsForCall []struct {
@@ -135,6 +141,27 @@ func (stub *RendererStub) BindUniformArgsForCall(index int) (alias1.UniformName,
 	stub.bindUniformMutex.RLock()
 	defer stub.bindUniformMutex.RUnlock()
 	return stub.bindUniformArgsForCall[index].arg1, stub.bindUniformArgsForCall[index].arg2
+}
+func (stub *RendererStub) BindTexture(arg1 alias1.TextureName, arg2 alias1.Texture) {
+	stub.bindTextureMutex.Lock()
+	defer stub.bindTextureMutex.Unlock()
+	stub.bindTextureArgsForCall = append(stub.bindTextureArgsForCall, struct {
+		arg1 alias1.TextureName
+		arg2 alias1.Texture
+	}{arg1, arg2})
+	if stub.BindTextureStub != nil {
+		stub.BindTextureStub(arg1, arg2)
+	}
+}
+func (stub *RendererStub) BindTextureCallCount() int {
+	stub.bindTextureMutex.RLock()
+	defer stub.bindTextureMutex.RUnlock()
+	return len(stub.bindTextureArgsForCall)
+}
+func (stub *RendererStub) BindTextureArgsForCall(index int) (alias1.TextureName, alias1.Texture) {
+	stub.bindTextureMutex.RLock()
+	defer stub.bindTextureMutex.RUnlock()
+	return stub.bindTextureArgsForCall[index].arg1, stub.bindTextureArgsForCall[index].arg2
 }
 func (stub *RendererStub) Render(arg1 alias1.IndexArray, arg2 alias1.SequenceType) {
 	stub.renderMutex.Lock()

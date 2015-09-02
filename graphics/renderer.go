@@ -7,6 +7,7 @@ type Renderer interface {
 	UseMaterial(Material)
 	BindAttribute(AttributeName, AttributeArray)
 	BindUniform(UniformName, Uniform)
+	BindTexture(TextureName, Texture)
 	Render(IndexArray, SequenceType)
 	Flush() error
 }

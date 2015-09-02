@@ -53,6 +53,25 @@ type GraphicsStub struct {
 		result1 alias1.IndexArray
 		result2 error
 	}
+	CreateFlatTextureStub        func(arg1 int, arg2 int) (result1 alias1.FlatTexture, result2 error)
+	createFlatTextureMutex       sync.RWMutex
+	createFlatTextureArgsForCall []struct {
+		arg1 int
+		arg2 int
+	}
+	createFlatTextureReturns struct {
+		result1 alias1.FlatTexture
+		result2 error
+	}
+	CreateCubeTextureStub        func(arg1 int) (result1 alias1.CubeTexture, result2 error)
+	createCubeTextureMutex       sync.RWMutex
+	createCubeTextureArgsForCall []struct {
+		arg1 int
+	}
+	createCubeTextureReturns struct {
+		result1 alias1.CubeTexture
+		result2 error
+	}
 	CreateMaterialStub        func(arg1 alias1.MaterialDefinition) (result1 alias1.Material, result2 error)
 	createMaterialMutex       sync.RWMutex
 	createMaterialArgsForCall []struct {
@@ -61,6 +80,14 @@ type GraphicsStub struct {
 	createMaterialReturns struct {
 		result1 alias1.Material
 		result2 error
+	}
+	DeleteTextureStub        func(arg1 alias1.Texture) (result1 error)
+	deleteTextureMutex       sync.RWMutex
+	deleteTextureArgsForCall []struct {
+		arg1 alias1.Texture
+	}
+	deleteTextureReturns struct {
+		result1 error
 	}
 	RendererStub        func() (result1 alias1.Renderer)
 	rendererMutex       sync.RWMutex
@@ -211,6 +238,67 @@ func (stub *GraphicsStub) CreateIndexArrayReturns(result1 alias1.IndexArray, res
 		result2 error
 	}{result1, result2}
 }
+func (stub *GraphicsStub) CreateFlatTexture(arg1 int, arg2 int) (alias1.FlatTexture, error) {
+	stub.createFlatTextureMutex.Lock()
+	defer stub.createFlatTextureMutex.Unlock()
+	stub.createFlatTextureArgsForCall = append(stub.createFlatTextureArgsForCall, struct {
+		arg1 int
+		arg2 int
+	}{arg1, arg2})
+	if stub.CreateFlatTextureStub != nil {
+		return stub.CreateFlatTextureStub(arg1, arg2)
+	} else {
+		return stub.createFlatTextureReturns.result1, stub.createFlatTextureReturns.result2
+	}
+}
+func (stub *GraphicsStub) CreateFlatTextureCallCount() int {
+	stub.createFlatTextureMutex.RLock()
+	defer stub.createFlatTextureMutex.RUnlock()
+	return len(stub.createFlatTextureArgsForCall)
+}
+func (stub *GraphicsStub) CreateFlatTextureArgsForCall(index int) (int, int) {
+	stub.createFlatTextureMutex.RLock()
+	defer stub.createFlatTextureMutex.RUnlock()
+	return stub.createFlatTextureArgsForCall[index].arg1, stub.createFlatTextureArgsForCall[index].arg2
+}
+func (stub *GraphicsStub) CreateFlatTextureReturns(result1 alias1.FlatTexture, result2 error) {
+	stub.createFlatTextureMutex.Lock()
+	defer stub.createFlatTextureMutex.Unlock()
+	stub.createFlatTextureReturns = struct {
+		result1 alias1.FlatTexture
+		result2 error
+	}{result1, result2}
+}
+func (stub *GraphicsStub) CreateCubeTexture(arg1 int) (alias1.CubeTexture, error) {
+	stub.createCubeTextureMutex.Lock()
+	defer stub.createCubeTextureMutex.Unlock()
+	stub.createCubeTextureArgsForCall = append(stub.createCubeTextureArgsForCall, struct {
+		arg1 int
+	}{arg1})
+	if stub.CreateCubeTextureStub != nil {
+		return stub.CreateCubeTextureStub(arg1)
+	} else {
+		return stub.createCubeTextureReturns.result1, stub.createCubeTextureReturns.result2
+	}
+}
+func (stub *GraphicsStub) CreateCubeTextureCallCount() int {
+	stub.createCubeTextureMutex.RLock()
+	defer stub.createCubeTextureMutex.RUnlock()
+	return len(stub.createCubeTextureArgsForCall)
+}
+func (stub *GraphicsStub) CreateCubeTextureArgsForCall(index int) int {
+	stub.createCubeTextureMutex.RLock()
+	defer stub.createCubeTextureMutex.RUnlock()
+	return stub.createCubeTextureArgsForCall[index].arg1
+}
+func (stub *GraphicsStub) CreateCubeTextureReturns(result1 alias1.CubeTexture, result2 error) {
+	stub.createCubeTextureMutex.Lock()
+	defer stub.createCubeTextureMutex.Unlock()
+	stub.createCubeTextureReturns = struct {
+		result1 alias1.CubeTexture
+		result2 error
+	}{result1, result2}
+}
 func (stub *GraphicsStub) CreateMaterial(arg1 alias1.MaterialDefinition) (alias1.Material, error) {
 	stub.createMaterialMutex.Lock()
 	defer stub.createMaterialMutex.Unlock()
@@ -240,6 +328,35 @@ func (stub *GraphicsStub) CreateMaterialReturns(result1 alias1.Material, result2
 		result1 alias1.Material
 		result2 error
 	}{result1, result2}
+}
+func (stub *GraphicsStub) DeleteTexture(arg1 alias1.Texture) error {
+	stub.deleteTextureMutex.Lock()
+	defer stub.deleteTextureMutex.Unlock()
+	stub.deleteTextureArgsForCall = append(stub.deleteTextureArgsForCall, struct {
+		arg1 alias1.Texture
+	}{arg1})
+	if stub.DeleteTextureStub != nil {
+		return stub.DeleteTextureStub(arg1)
+	} else {
+		return stub.deleteTextureReturns.result1
+	}
+}
+func (stub *GraphicsStub) DeleteTextureCallCount() int {
+	stub.deleteTextureMutex.RLock()
+	defer stub.deleteTextureMutex.RUnlock()
+	return len(stub.deleteTextureArgsForCall)
+}
+func (stub *GraphicsStub) DeleteTextureArgsForCall(index int) alias1.Texture {
+	stub.deleteTextureMutex.RLock()
+	defer stub.deleteTextureMutex.RUnlock()
+	return stub.deleteTextureArgsForCall[index].arg1
+}
+func (stub *GraphicsStub) DeleteTextureReturns(result1 error) {
+	stub.deleteTextureMutex.Lock()
+	defer stub.deleteTextureMutex.Unlock()
+	stub.deleteTextureReturns = struct {
+		result1 error
+	}{result1}
 }
 func (stub *GraphicsStub) Renderer() alias1.Renderer {
 	stub.rendererMutex.Lock()

@@ -1,10 +1,20 @@
 package graphics
 
+// AttributeName is an enumeration the specifies the different possible
+// binding targets for an attribute.
 type AttributeName int
 
 const (
+	// Coords specifies that the attribute array will be used
+	// to specify the coordinates of the vertices
 	Coords AttributeName = iota
+
+	// TexCoords specifies that the attribute array will be used
+	// to specify the texture coordinates of the vertices
 	TexCoords
+
+	// Normals specifies that the attribute array will be used
+	// to specify the normals of the vertices
 	Normals
 )
 

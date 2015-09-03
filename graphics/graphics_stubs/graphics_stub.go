@@ -53,6 +53,14 @@ type GraphicsStub struct {
 	deleteIndexArrayReturns struct {
 		result1 error
 	}
+	CreateFloat3UniformStub        func() (result1 alias1.Float3Uniform, result2 error)
+	createFloat3UniformMutex       sync.RWMutex
+	createFloat3UniformArgsForCall []struct {
+	}
+	createFloat3UniformReturns struct {
+		result1 alias1.Float3Uniform
+		result2 error
+	}
 	CreateFloat4UniformStub        func() (result1 alias1.Float4Uniform, result2 error)
 	createFloat4UniformMutex       sync.RWMutex
 	createFloat4UniformArgsForCall []struct {
@@ -346,6 +354,30 @@ func (stub *GraphicsStub) DeleteIndexArrayReturns(result1 error) {
 	stub.deleteIndexArrayReturns = struct {
 		result1 error
 	}{result1}
+}
+func (stub *GraphicsStub) CreateFloat3Uniform() (alias1.Float3Uniform, error) {
+	stub.createFloat3UniformMutex.Lock()
+	defer stub.createFloat3UniformMutex.Unlock()
+	stub.createFloat3UniformArgsForCall = append(stub.createFloat3UniformArgsForCall, struct {
+	}{})
+	if stub.CreateFloat3UniformStub != nil {
+		return stub.CreateFloat3UniformStub()
+	} else {
+		return stub.createFloat3UniformReturns.result1, stub.createFloat3UniformReturns.result2
+	}
+}
+func (stub *GraphicsStub) CreateFloat3UniformCallCount() int {
+	stub.createFloat3UniformMutex.RLock()
+	defer stub.createFloat3UniformMutex.RUnlock()
+	return len(stub.createFloat3UniformArgsForCall)
+}
+func (stub *GraphicsStub) CreateFloat3UniformReturns(result1 alias1.Float3Uniform, result2 error) {
+	stub.createFloat3UniformMutex.Lock()
+	defer stub.createFloat3UniformMutex.Unlock()
+	stub.createFloat3UniformReturns = struct {
+		result1 alias1.Float3Uniform
+		result2 error
+	}{result1, result2}
 }
 func (stub *GraphicsStub) CreateFloat4Uniform() (alias1.Float4Uniform, error) {
 	stub.createFloat4UniformMutex.Lock()

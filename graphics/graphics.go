@@ -28,6 +28,9 @@ type Graphics interface {
 	// it might get reused.
 	DeleteIndexArray(IndexArray) error
 
+	// CreateFloat3Uniform creates a new Float3Uniform
+	CreateFloat3Uniform() (Float3Uniform, error)
+
 	// CreateFloat4Uniform creates a new Float4Uniform
 	CreateFloat4Uniform() (Float4Uniform, error)
 

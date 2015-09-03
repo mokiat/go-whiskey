@@ -55,7 +55,7 @@ type Graphics interface {
 	// CreateMaterial creates a new Material based off of the
 	// specified MaterialDefinition.
 	// Keep in mind that this is a costly operation.
-	CreateMaterial(MaterialDefinition) (Material, error)
+	CreateMaterial(Definition) (Material, error)
 
 	// DeleteMaterial deletes the specified Material.
 	// Users should no longer keep a hold of the Material as

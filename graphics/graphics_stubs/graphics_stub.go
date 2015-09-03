@@ -104,10 +104,10 @@ type GraphicsStub struct {
 	deleteTextureReturns struct {
 		result1 error
 	}
-	CreateMaterialStub        func(arg1 alias1.MaterialDefinition) (result1 alias1.Material, result2 error)
+	CreateMaterialStub        func(arg1 alias1.Definition) (result1 alias1.Material, result2 error)
 	createMaterialMutex       sync.RWMutex
 	createMaterialArgsForCall []struct {
-		arg1 alias1.MaterialDefinition
+		arg1 alias1.Definition
 	}
 	createMaterialReturns struct {
 		result1 alias1.Material
@@ -514,11 +514,11 @@ func (stub *GraphicsStub) DeleteTextureReturns(result1 error) {
 		result1 error
 	}{result1}
 }
-func (stub *GraphicsStub) CreateMaterial(arg1 alias1.MaterialDefinition) (alias1.Material, error) {
+func (stub *GraphicsStub) CreateMaterial(arg1 alias1.Definition) (alias1.Material, error) {
 	stub.createMaterialMutex.Lock()
 	defer stub.createMaterialMutex.Unlock()
 	stub.createMaterialArgsForCall = append(stub.createMaterialArgsForCall, struct {
-		arg1 alias1.MaterialDefinition
+		arg1 alias1.Definition
 	}{arg1})
 	if stub.CreateMaterialStub != nil {
 		return stub.CreateMaterialStub(arg1)
@@ -531,7 +531,7 @@ func (stub *GraphicsStub) CreateMaterialCallCount() int {
 	defer stub.createMaterialMutex.RUnlock()
 	return len(stub.createMaterialArgsForCall)
 }
-func (stub *GraphicsStub) CreateMaterialArgsForCall(index int) alias1.MaterialDefinition {
+func (stub *GraphicsStub) CreateMaterialArgsForCall(index int) alias1.Definition {
 	stub.createMaterialMutex.RLock()
 	defer stub.createMaterialMutex.RUnlock()
 	return stub.createMaterialArgsForCall[index].arg1

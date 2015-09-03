@@ -6,8 +6,8 @@ import (
 	alias1 "github.com/momchil-atanasov/go-whiskey/graphics"
 )
 
-type MechanismStub struct {
+type MaterialMechanismStub struct {
 	StubGUID int
 }
 
-var _ alias1.Mechanism = new(MechanismStub)
+var _ alias1.MaterialMechanism = new(MaterialMechanismStub)

@@ -112,10 +112,10 @@ type GraphicsStub struct {
 	deleteTextureReturns struct {
 		result1 error
 	}
-	CreateMaterialStub        func(arg1 alias1.Definition) (result1 alias1.Material, result2 error)
+	CreateMaterialStub        func(arg1 alias1.MaterialDefinition) (result1 alias1.Material, result2 error)
 	createMaterialMutex       sync.RWMutex
 	createMaterialArgsForCall []struct {
-		arg1 alias1.Definition
+		arg1 alias1.MaterialDefinition
 	}
 	createMaterialReturns struct {
 		result1 alias1.Material
@@ -150,10 +150,11 @@ type GraphicsStub struct {
 	destroyReturns struct {
 		result1 error
 	}
-	UseMaterialStub        func(arg1 alias1.Material) (result1 error)
+	UseMaterialStub        func(arg1 alias1.Material, arg2 alias1.MaterialFilter) (result1 error)
 	useMaterialMutex       sync.RWMutex
 	useMaterialArgsForCall []struct {
 		arg1 alias1.Material
+		arg2 alias1.MaterialFilter
 	}
 	useMaterialReturns struct {
 		result1 error
@@ -546,11 +547,11 @@ func (stub *GraphicsStub) DeleteTextureReturns(result1 error) {
 		result1 error
 	}{result1}
 }
-func (stub *GraphicsStub) CreateMaterial(arg1 alias1.Definition) (alias1.Material, error) {
+func (stub *GraphicsStub) CreateMaterial(arg1 alias1.MaterialDefinition) (alias1.Material, error) {
 	stub.createMaterialMutex.Lock()
 	defer stub.createMaterialMutex.Unlock()
 	stub.createMaterialArgsForCall = append(stub.createMaterialArgsForCall, struct {
-		arg1 alias1.Definition
+		arg1 alias1.MaterialDefinition
 	}{arg1})
 	if stub.CreateMaterialStub != nil {
 		return stub.CreateMaterialStub(arg1)
@@ -563,7 +564,7 @@ func (stub *GraphicsStub) CreateMaterialCallCount() int {
 	defer stub.createMaterialMutex.RUnlock()
 	return len(stub.createMaterialArgsForCall)
 }
-func (stub *GraphicsStub) CreateMaterialArgsForCall(index int) alias1.Definition {
+func (stub *GraphicsStub) CreateMaterialArgsForCall(index int) alias1.MaterialDefinition {
 	stub.createMaterialMutex.RLock()
 	defer stub.createMaterialMutex.RUnlock()
 	return stub.createMaterialArgsForCall[index].arg1
@@ -674,14 +675,15 @@ func (stub *GraphicsStub) DestroyReturns(result1 error) {
 		result1 error
 	}{result1}
 }
-func (stub *GraphicsStub) UseMaterial(arg1 alias1.Material) error {
+func (stub *GraphicsStub) UseMaterial(arg1 alias1.Material, arg2 alias1.MaterialFilter) error {
 	stub.useMaterialMutex.Lock()
 	defer stub.useMaterialMutex.Unlock()
 	stub.useMaterialArgsForCall = append(stub.useMaterialArgsForCall, struct {
 		arg1 alias1.Material
-	}{arg1})
+		arg2 alias1.MaterialFilter
+	}{arg1, arg2})
 	if stub.UseMaterialStub != nil {
-		return stub.UseMaterialStub(arg1)
+		return stub.UseMaterialStub(arg1, arg2)
 	} else {
 		return stub.useMaterialReturns.result1
 	}
@@ -691,10 +693,10 @@ func (stub *GraphicsStub) UseMaterialCallCount() int {
 	defer stub.useMaterialMutex.RUnlock()
 	return len(stub.useMaterialArgsForCall)
 }
-func (stub *GraphicsStub) UseMaterialArgsForCall(index int) alias1.Material {
+func (stub *GraphicsStub) UseMaterialArgsForCall(index int) (alias1.Material, alias1.MaterialFilter) {
 	stub.useMaterialMutex.RLock()
 	defer stub.useMaterialMutex.RUnlock()
-	return stub.useMaterialArgsForCall[index].arg1
+	return stub.useMaterialArgsForCall[index].arg1, stub.useMaterialArgsForCall[index].arg2
 }
 func (stub *GraphicsStub) UseMaterialReturns(result1 error) {
 	stub.useMaterialMutex.Lock()

@@ -58,7 +58,7 @@ type Graphics interface {
 	// CreateMaterial creates a new Material based off of the
 	// specified MaterialDefinition.
 	// Keep in mind that this is a costly operation.
-	CreateMaterial(Definition) (Material, error)
+	CreateMaterial(MaterialDefinition) (Material, error)
 
 	// DeleteMaterial deletes the specified Material.
 	// Users should no longer keep a hold of the Material as
@@ -86,7 +86,7 @@ type Graphics interface {
 
 	// UseMaterial indicates to the Rendering pipeline that the specified
 	// material should be used for future render operations.
-	UseMaterial(Material) error
+	UseMaterial(Material, MaterialFilter) error
 
 	// BindAttribute binds the specified attribute array to the specified
 	// attribute bind name

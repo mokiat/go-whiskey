@@ -85,7 +85,7 @@ type PhongMaterialMechanism struct {
 type MaterialDefinition struct {
 
 	// Techniques lists all techniques that can be used for this material
-	Techniques []*MaterialTechnique
+	Techniques []MaterialTechnique
 }
 
 //go:generate gostub Material

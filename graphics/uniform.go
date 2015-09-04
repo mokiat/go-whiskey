@@ -34,6 +34,18 @@ const (
 	// SpecularColor specifies that the uniform will be used
 	// as a specular color
 	SpecularColor
+
+	// LightPosition specifies the position of a light source
+	// in world space
+	LightPosition
+
+	// LightDirection specifies the direction of the light source
+	// in world space
+	LightDirection
+
+	// LightDiffuseColor specifies the diffuse color of the light
+	// source
+	LightDiffuseColor
 )
 
 //go:generate gostub Uniform

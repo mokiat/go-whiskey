@@ -100,14 +100,17 @@ type Graphics interface {
 	// bind name
 	BindTexture(TextureName, Texture) error
 
+	// BindIndices binds the specified indices to be used for the construction
+	// of the mesh. If this command is not called, then the attributes will
+	// be iterated directly instead.
+	BindIndices(array IndexArray) error
+
 	// Render schedule a shape to be rendered. The actual rendering will
 	// take place during the next call to Flush.
-	// The IndexArray parameter can be nil in which case the vertices
-	// will be consumed from the attribute arrays directly in order.
 	// The offset and count parameters specify and offset relative to
 	// the start of the IndexArray and a number of indices to be used
 	// for the rendering of the shape.
-	Render(sequence SequenceType, array IndexArray, offset, count int) error
+	Render(sequence SequenceType, offset, count int) error
 
 	// Flush triggers the rendering pipeline to draw all of the scheduled
 	// shapes via the Render call to be rendered to the screen.

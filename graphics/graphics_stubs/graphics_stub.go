@@ -186,13 +186,20 @@ type GraphicsStub struct {
 	bindTextureReturns struct {
 		result1 error
 	}
-	RenderStub        func(arg1 alias1.SequenceType, arg2 alias1.IndexArray, arg3 int, arg4 int) (result1 error)
+	BindIndicesStub        func(arg1 alias1.IndexArray) (result1 error)
+	bindIndicesMutex       sync.RWMutex
+	bindIndicesArgsForCall []struct {
+		arg1 alias1.IndexArray
+	}
+	bindIndicesReturns struct {
+		result1 error
+	}
+	RenderStub        func(arg1 alias1.SequenceType, arg2 int, arg3 int) (result1 error)
 	renderMutex       sync.RWMutex
 	renderArgsForCall []struct {
 		arg1 alias1.SequenceType
-		arg2 alias1.IndexArray
+		arg2 int
 		arg3 int
-		arg4 int
 	}
 	renderReturns struct {
 		result1 error
@@ -795,17 +802,45 @@ func (stub *GraphicsStub) BindTextureReturns(result1 error) {
 		result1 error
 	}{result1}
 }
-func (stub *GraphicsStub) Render(arg1 alias1.SequenceType, arg2 alias1.IndexArray, arg3 int, arg4 int) error {
+func (stub *GraphicsStub) BindIndices(arg1 alias1.IndexArray) error {
+	stub.bindIndicesMutex.Lock()
+	defer stub.bindIndicesMutex.Unlock()
+	stub.bindIndicesArgsForCall = append(stub.bindIndicesArgsForCall, struct {
+		arg1 alias1.IndexArray
+	}{arg1})
+	if stub.BindIndicesStub != nil {
+		return stub.BindIndicesStub(arg1)
+	} else {
+		return stub.bindIndicesReturns.result1
+	}
+}
+func (stub *GraphicsStub) BindIndicesCallCount() int {
+	stub.bindIndicesMutex.RLock()
+	defer stub.bindIndicesMutex.RUnlock()
+	return len(stub.bindIndicesArgsForCall)
+}
+func (stub *GraphicsStub) BindIndicesArgsForCall(index int) alias1.IndexArray {
+	stub.bindIndicesMutex.RLock()
+	defer stub.bindIndicesMutex.RUnlock()
+	return stub.bindIndicesArgsForCall[index].arg1
+}
+func (stub *GraphicsStub) BindIndicesReturns(result1 error) {
+	stub.bindIndicesMutex.Lock()
+	defer stub.bindIndicesMutex.Unlock()
+	stub.bindIndicesReturns = struct {
+		result1 error
+	}{result1}
+}
+func (stub *GraphicsStub) Render(arg1 alias1.SequenceType, arg2 int, arg3 int) error {
 	stub.renderMutex.Lock()
 	defer stub.renderMutex.Unlock()
 	stub.renderArgsForCall = append(stub.renderArgsForCall, struct {
 		arg1 alias1.SequenceType
-		arg2 alias1.IndexArray
+		arg2 int
 		arg3 int
-		arg4 int
-	}{arg1, arg2, arg3, arg4})
+	}{arg1, arg2, arg3})
 	if stub.RenderStub != nil {
-		return stub.RenderStub(arg1, arg2, arg3, arg4)
+		return stub.RenderStub(arg1, arg2, arg3)
 	} else {
 		return stub.renderReturns.result1
 	}
@@ -815,10 +850,10 @@ func (stub *GraphicsStub) RenderCallCount() int {
 	defer stub.renderMutex.RUnlock()
 	return len(stub.renderArgsForCall)
 }
-func (stub *GraphicsStub) RenderArgsForCall(index int) (alias1.SequenceType, alias1.IndexArray, int, int) {
+func (stub *GraphicsStub) RenderArgsForCall(index int) (alias1.SequenceType, int, int) {
 	stub.renderMutex.RLock()
 	defer stub.renderMutex.RUnlock()
-	return stub.renderArgsForCall[index].arg1, stub.renderArgsForCall[index].arg2, stub.renderArgsForCall[index].arg3, stub.renderArgsForCall[index].arg4
+	return stub.renderArgsForCall[index].arg1, stub.renderArgsForCall[index].arg2, stub.renderArgsForCall[index].arg3
 }
 func (stub *GraphicsStub) RenderReturns(result1 error) {
 	stub.renderMutex.Lock()

@@ -7,12 +7,12 @@ type MaterialFeatureMask uint64
 
 const (
 	// NoFeatures represents an empty MaterialFeatureMask
-	NoFeatures MaterialFeatureMask = 1 << iota
+	NoFeatures MaterialFeatureMask = 0
 
 	// MeshSkinning indicates that the data necessary for
 	// mesh joint transformation will be provided or is required
 	// depending on the usage of this flag.
-	MeshSkinning
+	MeshSkinning MaterialFeatureMask = 1 << iota
 
 	// DiffuseMapping indicates that the data necessary for
 	// mapping a diffuse texture on top of a mesh will be provided

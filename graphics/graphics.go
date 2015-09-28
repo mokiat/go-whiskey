@@ -65,6 +65,11 @@ type Graphics interface {
 	// it might get reused.
 	DeleteMaterial(Material) error
 
+	// CreateLayer creates a new render Layer.
+	// The order in which you call this method is the order in which
+	// the layers will be rendered.
+	CreateLayer() (Layer, error)
+
 	// Invalidate notifies the graphics engine that the
 	// graphics context was lost and that the engine needs to prepare to
 	// initialize all resources during the next Initialize call
@@ -84,9 +89,20 @@ type Graphics interface {
 	// from a specific thread.
 	Destroy() error
 
+	// UseLayer configures the layer to be used for any Render calls to
+	// follow.
+	UseLayer(Layer)
+
 	// UseMaterial indicates to the Rendering pipeline that the specified
 	// material should be used for future render operations.
 	UseMaterial(Material, MaterialFilter) error
+
+	// UseDepth allows you to sort items to be rendered through a
+	// depth aspect.
+	// Note: Using this configuration would override the optimization
+	// sorting that is performed via the render ending and could lead
+	// to poor performance if misused.
+	UseDepth(depth int)
 
 	// BindAttribute binds the specified attribute array to the specified
 	// attribute bind name

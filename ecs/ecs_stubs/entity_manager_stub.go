@@ -65,6 +65,14 @@ type EntityManagerStub struct {
 		arg1 alias1.Entity
 		arg2 alias1.ComponentType
 	}
+	SearchStub        func(arg1 alias1.Query) (result1 []alias1.Entity)
+	searchMutex       sync.RWMutex
+	searchArgsForCall []struct {
+		arg1 alias1.Query
+	}
+	searchReturns struct {
+		result1 []alias1.Entity
+	}
 }
 
 var _ alias1.EntityManager = new(EntityManagerStub)
@@ -257,4 +265,33 @@ func (stub *EntityManagerStub) RemoveEntityComponentArgsForCall(index int) (alia
 	stub.removeEntityComponentMutex.RLock()
 	defer stub.removeEntityComponentMutex.RUnlock()
 	return stub.removeEntityComponentArgsForCall[index].arg1, stub.removeEntityComponentArgsForCall[index].arg2
+}
+func (stub *EntityManagerStub) Search(arg1 alias1.Query) []alias1.Entity {
+	stub.searchMutex.Lock()
+	defer stub.searchMutex.Unlock()
+	stub.searchArgsForCall = append(stub.searchArgsForCall, struct {
+		arg1 alias1.Query
+	}{arg1})
+	if stub.SearchStub != nil {
+		return stub.SearchStub(arg1)
+	} else {
+		return stub.searchReturns.result1
+	}
+}
+func (stub *EntityManagerStub) SearchCallCount() int {
+	stub.searchMutex.RLock()
+	defer stub.searchMutex.RUnlock()
+	return len(stub.searchArgsForCall)
+}
+func (stub *EntityManagerStub) SearchArgsForCall(index int) alias1.Query {
+	stub.searchMutex.RLock()
+	defer stub.searchMutex.RUnlock()
+	return stub.searchArgsForCall[index].arg1
+}
+func (stub *EntityManagerStub) SearchReturns(result1 []alias1.Entity) {
+	stub.searchMutex.Lock()
+	defer stub.searchMutex.Unlock()
+	stub.searchReturns = struct {
+		result1 []alias1.Entity
+	}{result1}
 }

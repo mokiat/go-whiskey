@@ -129,6 +129,14 @@ type GraphicsStub struct {
 	deleteMaterialReturns struct {
 		result1 error
 	}
+	CreateLayerStub        func() (result1 alias1.Layer, result2 error)
+	createLayerMutex       sync.RWMutex
+	createLayerArgsForCall []struct {
+	}
+	createLayerReturns struct {
+		result1 alias1.Layer
+		result2 error
+	}
 	InvalidateStub        func() (result1 error)
 	invalidateMutex       sync.RWMutex
 	invalidateArgsForCall []struct {
@@ -150,6 +158,11 @@ type GraphicsStub struct {
 	destroyReturns struct {
 		result1 error
 	}
+	UseLayerStub        func(arg1 alias1.Layer)
+	useLayerMutex       sync.RWMutex
+	useLayerArgsForCall []struct {
+		arg1 alias1.Layer
+	}
 	UseMaterialStub        func(arg1 alias1.Material, arg2 alias1.MaterialFilter) (result1 error)
 	useMaterialMutex       sync.RWMutex
 	useMaterialArgsForCall []struct {
@@ -158,6 +171,11 @@ type GraphicsStub struct {
 	}
 	useMaterialReturns struct {
 		result1 error
+	}
+	UseDepthStub        func(arg1 int)
+	useDepthMutex       sync.RWMutex
+	useDepthArgsForCall []struct {
+		arg1 int
 	}
 	BindAttributeStub        func(arg1 alias1.AttributeName, arg2 alias1.AttributeArray) (result1 error)
 	bindAttributeMutex       sync.RWMutex
@@ -613,6 +631,30 @@ func (stub *GraphicsStub) DeleteMaterialReturns(result1 error) {
 		result1 error
 	}{result1}
 }
+func (stub *GraphicsStub) CreateLayer() (alias1.Layer, error) {
+	stub.createLayerMutex.Lock()
+	defer stub.createLayerMutex.Unlock()
+	stub.createLayerArgsForCall = append(stub.createLayerArgsForCall, struct {
+	}{})
+	if stub.CreateLayerStub != nil {
+		return stub.CreateLayerStub()
+	} else {
+		return stub.createLayerReturns.result1, stub.createLayerReturns.result2
+	}
+}
+func (stub *GraphicsStub) CreateLayerCallCount() int {
+	stub.createLayerMutex.RLock()
+	defer stub.createLayerMutex.RUnlock()
+	return len(stub.createLayerArgsForCall)
+}
+func (stub *GraphicsStub) CreateLayerReturns(result1 alias1.Layer, result2 error) {
+	stub.createLayerMutex.Lock()
+	defer stub.createLayerMutex.Unlock()
+	stub.createLayerReturns = struct {
+		result1 alias1.Layer
+		result2 error
+	}{result1, result2}
+}
 func (stub *GraphicsStub) Invalidate() error {
 	stub.invalidateMutex.Lock()
 	defer stub.invalidateMutex.Unlock()
@@ -682,6 +724,26 @@ func (stub *GraphicsStub) DestroyReturns(result1 error) {
 		result1 error
 	}{result1}
 }
+func (stub *GraphicsStub) UseLayer(arg1 alias1.Layer) {
+	stub.useLayerMutex.Lock()
+	defer stub.useLayerMutex.Unlock()
+	stub.useLayerArgsForCall = append(stub.useLayerArgsForCall, struct {
+		arg1 alias1.Layer
+	}{arg1})
+	if stub.UseLayerStub != nil {
+		stub.UseLayerStub(arg1)
+	}
+}
+func (stub *GraphicsStub) UseLayerCallCount() int {
+	stub.useLayerMutex.RLock()
+	defer stub.useLayerMutex.RUnlock()
+	return len(stub.useLayerArgsForCall)
+}
+func (stub *GraphicsStub) UseLayerArgsForCall(index int) alias1.Layer {
+	stub.useLayerMutex.RLock()
+	defer stub.useLayerMutex.RUnlock()
+	return stub.useLayerArgsForCall[index].arg1
+}
 func (stub *GraphicsStub) UseMaterial(arg1 alias1.Material, arg2 alias1.MaterialFilter) error {
 	stub.useMaterialMutex.Lock()
 	defer stub.useMaterialMutex.Unlock()
@@ -711,6 +773,26 @@ func (stub *GraphicsStub) UseMaterialReturns(result1 error) {
 	stub.useMaterialReturns = struct {
 		result1 error
 	}{result1}
+}
+func (stub *GraphicsStub) UseDepth(arg1 int) {
+	stub.useDepthMutex.Lock()
+	defer stub.useDepthMutex.Unlock()
+	stub.useDepthArgsForCall = append(stub.useDepthArgsForCall, struct {
+		arg1 int
+	}{arg1})
+	if stub.UseDepthStub != nil {
+		stub.UseDepthStub(arg1)
+	}
+}
+func (stub *GraphicsStub) UseDepthCallCount() int {
+	stub.useDepthMutex.RLock()
+	defer stub.useDepthMutex.RUnlock()
+	return len(stub.useDepthArgsForCall)
+}
+func (stub *GraphicsStub) UseDepthArgsForCall(index int) int {
+	stub.useDepthMutex.RLock()
+	defer stub.useDepthMutex.RUnlock()
+	return stub.useDepthArgsForCall[index].arg1
 }
 func (stub *GraphicsStub) BindAttribute(arg1 alias1.AttributeName, arg2 alias1.AttributeArray) error {
 	stub.bindAttributeMutex.Lock()

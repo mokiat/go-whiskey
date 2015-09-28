@@ -1,5 +1,15 @@
 package ecs
 
+type Query struct {
+	componentTypes []ComponentType
+}
+
+func MakeQuery(componentTypes ...ComponentType) Query {
+	return Query{
+		componentTypes: componentTypes,
+	}
+}
+
 //go:generate gostub EntityManager
 
 // EntityManager manages the lifecycle of all Entity object in the game.
@@ -34,6 +44,8 @@ type EntityManager interface {
 	// RemoveEntityComponent removes the component of the specified type from
 	// the specified entity
 	RemoveEntityComponent(Entity, ComponentType)
+
+	Search(Query) []Entity
 }
 
 // NewEntityManager creates a new EntityManager instance.
@@ -91,6 +103,25 @@ func (m *entityManager) RemoveEntityComponent(entity Entity, compType ComponentT
 	delete(descriptor.Components, compType)
 }
 
+func (m *entityManager) Search(query Query) []Entity {
+	result := []Entity{}
+	for entity, descriptor := range m.entityMap {
+		if descriptor.hasComponents(query) {
+			result = append(result, entity)
+		}
+	}
+	return result
+}
+
 type entityDescriptor struct {
 	Components map[ComponentType]interface{}
+}
+
+func (d entityDescriptor) hasComponents(query Query) bool {
+	for _, componentType := range query.componentTypes {
+		if _, found := d.Components[componentType]; !found {
+			return false
+		}
+	}
+	return true
 }

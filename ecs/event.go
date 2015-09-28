@@ -8,6 +8,10 @@ type Event interface {
 
 type EventListenerFunc func(event Event)
 
+func (f EventListenerFunc) OnEvent(event Event) {
+	f(event)
+}
+
 //go:generate gostub EventListener
 
 type EventListener interface {

@@ -65,6 +65,10 @@ type Graphics interface {
 	// it might get reused.
 	DeleteMaterial(Material) error
 
+	// CreateLayer creates a new Layer with the specified size.
+	// Layers are stacked back-to-front in order of creation.
+	CreateLayer(LayerSize) (Layer, error)
+
 	// Invalidate notifies the graphics engine that the
 	// graphics context was lost and that the engine needs to prepare to
 	// initialize all resources during the next Initialize call
@@ -83,34 +87,6 @@ type Graphics interface {
 	// Some Graphics implementations might require you to call this method
 	// from a specific thread.
 	Destroy() error
-
-	// UseMaterial indicates to the Rendering pipeline that the specified
-	// material should be used for future render operations.
-	UseMaterial(Material, MaterialFilter) error
-
-	// BindAttribute binds the specified attribute array to the specified
-	// attribute bind name
-	BindAttribute(AttributeName, AttributeArray) error
-
-	// BindUniform binds the specified uniform to the specified uniform
-	// bind name
-	BindUniform(UniformName, Uniform) error
-
-	// BindTexture binds the specified texture to the specified texture
-	// bind name
-	BindTexture(TextureName, Texture) error
-
-	// BindIndices binds the specified indices to be used for the construction
-	// of the mesh. If this command is not called, then the attributes will
-	// be iterated directly instead.
-	BindIndices(array IndexArray) error
-
-	// Render schedule a shape to be rendered. The actual rendering will
-	// take place during the next call to Flush.
-	// The offset and count parameters specify and offset relative to
-	// the start of the IndexArray and a number of indices to be used
-	// for the rendering of the shape.
-	Render(sequence SequenceType, offset, count int) error
 
 	// Flush triggers the rendering pipeline to draw all of the scheduled
 	// shapes via the Render call to be rendered to the screen.

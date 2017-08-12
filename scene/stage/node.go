@@ -1,8 +1,8 @@
 package stage
 
 import (
-	"github.com/momchil-atanasov/go-whiskey/math"
-	"github.com/momchil-atanasov/go-whiskey/scene/shape"
+	"github.com/mokiat/go-whiskey/math"
+	"github.com/mokiat/go-whiskey/scene/shape"
 )
 
 type NodeLocation int

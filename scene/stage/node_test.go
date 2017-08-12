@@ -1,8 +1,8 @@
 package stage_test
 
 import (
-	. "github.com/momchil-atanasov/go-whiskey/math/test_helpers"
-	. "github.com/momchil-atanasov/go-whiskey/scene/stage"
+	. "github.com/mokiat/go-whiskey/math/test_helpers"
+	. "github.com/mokiat/go-whiskey/scene/stage"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

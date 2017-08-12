@@ -1,9 +1,9 @@
 package shape_test
 
 import (
-	"github.com/momchil-atanasov/go-whiskey/math"
-	. "github.com/momchil-atanasov/go-whiskey/math/test_helpers"
-	. "github.com/momchil-atanasov/go-whiskey/scene/shape"
+	"github.com/mokiat/go-whiskey/math"
+	. "github.com/mokiat/go-whiskey/math/test_helpers"
+	. "github.com/mokiat/go-whiskey/scene/shape"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

@@ -1,6 +1,6 @@
 package graphics
 
-import "github.com/momchil-atanasov/go-whiskey/math"
+import "github.com/mokiat/go-whiskey/math"
 
 // UniformName is an enumeration the specifies the different possible
 // binding targets for a uniform.

@@ -1,6 +1,6 @@
 package shape
 
-import "github.com/momchil-atanasov/go-whiskey/math"
+import "github.com/mokiat/go-whiskey/math"
 
 type AABox struct {
 	Position   math.Vec3

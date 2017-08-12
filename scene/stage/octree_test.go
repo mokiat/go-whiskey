@@ -1,7 +1,7 @@
 package stage_test
 
 import (
-	. "github.com/momchil-atanasov/go-whiskey/scene/stage"
+	. "github.com/mokiat/go-whiskey/scene/stage"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

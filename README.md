@@ -1,6 +1,6 @@
 # Whiskey Game Engine in Go
 
-[![](https://travis-ci.org/mokiat/go-whiskey.svg?branch=master)](https://travis-ci.org/mokiat/go-whiskey)
+[![](https://travis-ci.org/mokiat/go-whiskey.svg?branch=master)](https://travis-ci.org/mokiat/go-whiskey) [![Go Report Card](https://goreportcard.com/badge/github.com/mokiat/go-whiskey)](https://goreportcard.com/report/github.com/mokiat/go-whiskey)
 
 ```
 _______ _______      _     _ __   __ ___ _______ ___   _ _______ __   __

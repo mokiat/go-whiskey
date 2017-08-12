@@ -1,8 +1,8 @@
 package ecs_test
 
 import (
-	. "github.com/momchil-atanasov/go-whiskey/ecs"
-	"github.com/momchil-atanasov/go-whiskey/ecs/ecs_stubs"
+	. "github.com/mokiat/go-whiskey/ecs"
+	"github.com/mokiat/go-whiskey/ecs/ecs_stubs"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

@@ -1,7 +1,7 @@
 package buf_test
 
 import (
-	. "github.com/momchil-atanasov/go-whiskey/common/buf"
+	. "github.com/mokiat/go-whiskey/common/buf"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

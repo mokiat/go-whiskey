@@ -1,7 +1,7 @@
 package test_helpers
 
 import (
-	"github.com/momchil-atanasov/go-whiskey/math"
+	"github.com/mokiat/go-whiskey/math"
 	. "github.com/onsi/gomega"
 )
 

@@ -1,7 +1,7 @@
 package common_test
 
 import (
-	. "github.com/momchil-atanasov/go-whiskey/common"
+	. "github.com/mokiat/go-whiskey/common"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

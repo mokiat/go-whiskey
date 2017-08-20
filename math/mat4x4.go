@@ -1,7 +1,5 @@
 package math
 
-import "math"
-
 type Mat4x4 struct {
 	M11, M12, M13, M14 float32
 	M21, M22, M23, M24 float32
@@ -73,10 +71,10 @@ func ScaleMat4x4(x, y, z float32) Mat4x4 {
 	}
 }
 
-func RotationMat4x4(angle float64, x, y, z float32) Mat4x4 {
-	radians := angle * math.Pi / 180.0
-	cs := float32(math.Cos(radians))
-	sn := float32(math.Sin(radians))
+func RotationMat4x4(angle, x, y, z float32) Mat4x4 {
+	radians := angle * Pi / 180.0
+	cs := Cos32(radians)
+	sn := Sin32(radians)
 	vector := Vec3{x, y, z}.Resize(1.0)
 	return getRotationMat4x4FromNormalizedData(cs, sn, vector.X, vector.Y, vector.Z)
 }

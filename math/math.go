@@ -17,3 +17,7 @@ func Sin32(angle float32) float32 {
 func Cos32(angle float32) float32 {
 	return float32(intmath.Cos(float64(angle)))
 }
+
+func Sqrt32(value float32) float32 {
+	return float32(intmath.Sqrt(float64(value)))
+}

@@ -1,7 +1,5 @@
 package math
 
-import "math"
-
 type Vec2 struct {
 	X float32
 	Y float32
@@ -59,7 +57,7 @@ func (v Vec2) LengthSquared() float32 {
 }
 
 func (v Vec2) Length() float32 {
-	return float32(math.Sqrt(float64(v.LengthSquared())))
+	return Sqrt32(v.LengthSquared())
 }
 
 func (v Vec2) Resize(desiredLength float32) Vec2 {

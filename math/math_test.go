@@ -22,4 +22,8 @@ var _ = Describe("Math", func() {
 		AssertFloatEquals(Cos32(Pi/3.0), 0.5)
 	})
 
+	It("Sqrt32", func() {
+		AssertFloatEquals(Sqrt32(16.0), 4.0)
+	})
+
 })

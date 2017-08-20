@@ -18,9 +18,9 @@ func (v Vec3) Inverse() Vec3 {
 
 func (v Vec3) IncCoords(x, y, z float32) Vec3 {
 	return Vec3{
-		v.X + x,
-		v.Y + y,
-		v.Z + z,
+		X: v.X + x,
+		Y: v.Y + y,
+		Z: v.Z + z,
 	}
 }
 
@@ -30,9 +30,9 @@ func (v Vec3) IncVec3(other Vec3) Vec3 {
 
 func (v Vec3) DecCoords(x, y, z float32) Vec3 {
 	return Vec3{
-		v.X - x,
-		v.Y - y,
-		v.Z - z,
+		X: v.X - x,
+		Y: v.Y - y,
+		Z: v.Z - z,
 	}
 }
 
@@ -42,17 +42,17 @@ func (v Vec3) DecVec3(other Vec3) Vec3 {
 
 func (v Vec3) Mul(amount float32) Vec3 {
 	return Vec3{
-		v.X * amount,
-		v.Y * amount,
-		v.Z * amount,
+		X: v.X * amount,
+		Y: v.Y * amount,
+		Z: v.Z * amount,
 	}
 }
 
 func (v Vec3) Div(amount float32) Vec3 {
 	return Vec3{
-		v.X / amount,
-		v.Y / amount,
-		v.Z / amount,
+		X: v.X / amount,
+		Y: v.Y / amount,
+		Z: v.Z / amount,
 	}
 }
 
@@ -94,14 +94,22 @@ func BaseVec3Z() Vec3 {
 	return Vec3{0.0, 0.0, 1.0}
 }
 
+func MakeVec3(x, y, z float32) Vec3 {
+	return Vec3{
+		X: x,
+		Y: y,
+		Z: z,
+	}
+}
+
 func Vec3DotProduct(a, b Vec3) float32 {
 	return a.X*b.X + a.Y*b.Y + a.Z*b.Z
 }
 
 func Vec3CrossProduct(a, b Vec3) Vec3 {
 	return Vec3{
-		a.Y*b.Z - a.Z*b.Y,
-		a.Z*b.X - a.X*b.Z,
-		a.X*b.Y - a.Y*b.X,
+		X: a.Y*b.Z - a.Z*b.Y,
+		Y: a.Z*b.X - a.X*b.Z,
+		Z: a.X*b.Y - a.Y*b.X,
 	}
 }

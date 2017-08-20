@@ -22,9 +22,9 @@ var _ = Describe("Vec3", func() {
 			Z: 4.0,
 		}
 		secondVector = Vec3{
-			-1.0,
-			2.0,
-			-3.0,
+			X: -1.0,
+			Y: 2.0,
+			Z: -3.0,
 		}
 	})
 
@@ -44,7 +44,7 @@ var _ = Describe("Vec3", func() {
 	})
 
 	It("#IncVec3", func() {
-		incremented := firstVector.IncVec3(Vec3{1.5, -2.5, 5.0})
+		incremented := firstVector.IncVec3(MakeVec3(1.5, -2.5, 5.0))
 		AssertVec3Equals(incremented, 3.5, 0.5, 9.0)
 	})
 
@@ -54,7 +54,7 @@ var _ = Describe("Vec3", func() {
 	})
 
 	It("#DecVec3", func() {
-		decremented := firstVector.DecVec3(Vec3{1.5, -2.5, 5.0})
+		decremented := firstVector.DecVec3(MakeVec3(1.5, -2.5, 5.0))
 		AssertVec3Equals(decremented, 0.5, 5.5, -1.0)
 	})
 
@@ -107,6 +107,10 @@ var _ = Describe("Vec3", func() {
 
 	It("BaseVec3Z", func() {
 		AssertVec3Equals(BaseVec3Z(), 0.0, 0.0, 1.0)
+	})
+
+	It("MakeVec3", func() {
+		AssertVec3Equals(MakeVec3(2.6, 8.1, 9.4), 2.6, 8.1, 9.4)
 	})
 
 	It("Vec3DotProduct", func() {

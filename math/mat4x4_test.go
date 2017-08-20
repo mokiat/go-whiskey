@@ -14,7 +14,7 @@ var _ = Describe("Mat4x4", func() {
 	var otherMatrix Mat4x4
 
 	BeforeEach(func() {
-		vector = Vec4{2.5, 1.5, 3.0, 1.0}
+		vector = MakeVec4(2.5, 1.5, 3.0, 1.0)
 		matrix = Mat4x4{
 			0.1, 0.2, 0.3, 0.4,
 			0.5, 0.6, 0.7, 0.8,
@@ -69,7 +69,7 @@ var _ = Describe("Mat4x4", func() {
 	})
 
 	It("RotationMat4x4", func() {
-		vector = Vec4{1.0, 0.0, 0.0, 1.0}
+		vector = MakeVec4(1.0, 0.0, 0.0, 1.0)
 		rotationMatrix := RotationMat4x4(120.0, 1.0, 1.0, 1.0)
 		result := rotationMatrix.MulVec4(vector)
 		AssertVec4Equals(result, 0.0, 1.0, 0.0, 1.0)
@@ -79,12 +79,12 @@ var _ = Describe("Mat4x4", func() {
 		orthoMatrix := OrthoMat4x4(-1.1, 2.1, 1.5, -3.4, 1.7, 3.8)
 
 		// Test two opposite corner projections
-		nearCorner := Vec4{-1.1, -3.4, -1.7, 1.0}
+		nearCorner := MakeVec4(-1.1, -3.4, -1.7, 1.0)
 		projectedNearCorner := orthoMatrix.MulVec4(nearCorner)
 		projectedNearCorner = projectedNearCorner.Div(projectedNearCorner.W)
 		AssertVec4Equals(projectedNearCorner, -1.0, -1.0, -1.0, 1.0)
 
-		farCorner := Vec4{2.1, 1.5, -3.8, 1.0}
+		farCorner := MakeVec4(2.1, 1.5, -3.8, 1.0)
 		projectedFarCorner := orthoMatrix.MulVec4(farCorner)
 		projectedFarCorner = projectedFarCorner.Div(projectedFarCorner.W)
 		AssertVec4Equals(projectedFarCorner, 1.0, 1.0, 1.0, 1.0)
@@ -94,12 +94,12 @@ var _ = Describe("Mat4x4", func() {
 		perspectiveMatrix := PerspectiveMat4x4(-1.1, 2.1, 1.5, -3.4, 1.7, 3.8)
 
 		// Test two opposite corner projection
-		nearCorner := Vec4{-1.1, -3.4, -1.7, 1.0}
+		nearCorner := MakeVec4(-1.1, -3.4, -1.7, 1.0)
 		projectedNearCorner := perspectiveMatrix.MulVec4(nearCorner)
 		projectedNearCorner = projectedNearCorner.Div(projectedNearCorner.W)
 		AssertVec4Equals(projectedNearCorner, -1.0, -1.0, -1.0, 1.0)
 
-		farCorner := Vec4{4.6941, 3.3529, -3.8, 1.0}
+		farCorner := MakeVec4(4.6941, 3.3529, -3.8, 1.0)
 		projectedFarCorner := perspectiveMatrix.MulVec4(farCorner)
 		projectedFarCorner = projectedFarCorner.Div(projectedFarCorner.W)
 		AssertVec4Equals(projectedFarCorner, 1.0, 1.0, 1.0, 1.0)

@@ -15,7 +15,12 @@ var _ = Describe("Vec4", func() {
 
 	BeforeEach(func() {
 		nullVector = Vec4{}
-		firstVector = Vec4{1.0, 2.0, 3.0, 4.0}
+		firstVector = Vec4{
+			X: 1.0,
+			Y: 2.0,
+			Z: 3.0,
+			W: 4.0,
+		}
 	})
 
 	It("#Null", func() {
@@ -37,4 +42,7 @@ var _ = Describe("Vec4", func() {
 		AssertVec4Equals(NullVec4(), 0.0, 0.0, 0.0, 0.0)
 	})
 
+	It("MakeVec4", func() {
+		AssertVec4Equals(MakeVec4(1.1, 2.2, 3.3, 4.4), 1.1, 2.2, 3.3, 4.4)
+	})
 })

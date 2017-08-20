@@ -32,3 +32,12 @@ func (v Vec4) Div(amount float32) Vec4 {
 func NullVec4() Vec4 {
 	return Vec4{}
 }
+
+func MakeVec4(x, y, z, w float32) Vec4 {
+	return Vec4{
+		X: x,
+		Y: y,
+		Z: z,
+		W: w,
+	}
+}

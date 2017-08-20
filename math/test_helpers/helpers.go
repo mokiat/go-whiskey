@@ -11,6 +11,11 @@ func AssertFloatEquals(actualValue, expectedValue float32) {
 	Ω(actualValue).Should(BeNumerically("~", expectedValue, FloatMargin))
 }
 
+func AssertVec2Equals(vector math.Vec2, expectedX, expectedY float32) {
+	AssertFloatEquals(vector.X, expectedX)
+	AssertFloatEquals(vector.Y, expectedY)
+}
+
 func AssertVec3Equals(vector math.Vec3, expectedX, expectedY, expectedZ float32) {
 	AssertFloatEquals(vector.X, expectedX)
 	AssertFloatEquals(vector.Y, expectedY)

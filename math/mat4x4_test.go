@@ -15,18 +15,18 @@ var _ = Describe("Mat4x4", func() {
 
 	BeforeEach(func() {
 		vector = MakeVec4(2.5, 1.5, 3.0, 1.0)
-		matrix = Mat4x4{
+		matrix = MakeMath4x4RowOrder(
 			0.1, 0.2, 0.3, 0.4,
 			0.5, 0.6, 0.7, 0.8,
 			0.9, 1.0, 1.1, 1.2,
 			1.3, 1.4, 1.5, 1.6,
-		}
-		otherMatrix = Mat4x4{
+		)
+		otherMatrix = MakeMath4x4RowOrder(
 			0.5, 0.3, 0.2, 0.0,
 			0.2, 0.8, 0.7, 0.4,
 			0.1, 0.2, 0.9, 0.8,
 			0.6, 0.6, 0.3, 0.1,
-		}
+		)
 	})
 
 	It("#MulVec4", func() {
@@ -75,6 +75,50 @@ var _ = Describe("Mat4x4", func() {
 		AssertVec4Equals(result, 0.0, 1.0, 0.0, 1.0)
 	})
 
+	It("DirectionXCoords", func() {
+		matrix := NullMat4x4()
+		matrix = matrix.DirectionXCoords(1.1, 2.1, 3.1)
+		vector := MakeVec4(2.0, 9.0, 9.0, 9.0)
+		position := matrix.MulVec4(vector)
+		AssertVec4Equals(position, 2.2, 4.2, 6.2, 0.0)
+	})
+
+	It("DirectionYCoords", func() {
+		matrix := NullMat4x4()
+		matrix = matrix.DirectionYCoords(1.1, 2.1, 3.1)
+		vector := MakeVec4(9.0, 2.0, 9.0, 9.0)
+		position := matrix.MulVec4(vector)
+		AssertVec4Equals(position, 2.2, 4.2, 6.2, 0.0)
+	})
+
+	It("DirectionZCoords", func() {
+		matrix := NullMat4x4()
+		matrix = matrix.DirectionZCoords(1.1, 2.1, 3.1)
+		vector := MakeVec4(9.0, 9.0, 2.0, 9.0)
+		position := matrix.MulVec4(vector)
+		AssertVec4Equals(position, 2.2, 4.2, 6.2, 0.0)
+	})
+
+	It("Reposition", func() {
+		matrix := IdentityMat4x4()
+		matrix = matrix.RepositionCoords(1.1, 2.2, 3.3)
+		vector := MakeVec4(0.0, 0.0, 0.0, 1.0)
+		position := matrix.MulVec4(vector)
+		AssertVec4Equals(position, 1.1, 2.2, 3.3, 1.0)
+	})
+
+	It("VectorMat4x4", func() {
+		matrix := VectorMat4x4(
+			MakeVec3(-1.0, 0.0, 0.0),
+			MakeVec3(0.0, -1.0, 0.0),
+			MakeVec3(0.0, 0.0, -1.0),
+			MakeVec3(4.4, 5.5, 6.6),
+		)
+		vector := MakeVec4(2.0, 3.0, 4.0, 1.0)
+		position := matrix.MulVec4(vector)
+		AssertVec4Equals(position, 2.4, 2.5, 2.6, 1.0)
+	})
+
 	It("OrthoMat4x4", func() {
 		orthoMatrix := OrthoMat4x4(-1.1, 2.1, 1.5, -3.4, 1.7, 3.8)
 
@@ -91,9 +135,9 @@ var _ = Describe("Mat4x4", func() {
 	})
 
 	It("PerspectiveMat4x4", func() {
-		perspectiveMatrix := PerspectiveMat4x4(-1.1, 2.1, 1.5, -3.4, 1.7, 3.8)
+		perspectiveMatrix := PerspectiveMat4x4(-1.1, 2.1, -3.4, 1.5, 1.7, 3.8)
 
-		// Test two opposite corner projection
+		// Test two opposite corner projections
 		nearCorner := MakeVec4(-1.1, -3.4, -1.7, 1.0)
 		projectedNearCorner := perspectiveMatrix.MulVec4(nearCorner)
 		projectedNearCorner = projectedNearCorner.Div(projectedNearCorner.W)

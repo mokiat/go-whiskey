@@ -44,6 +44,19 @@ func NullMat4x4() Mat4x4 {
 	return Mat4x4{}
 }
 
+func MakeMath4x4RowOrder(
+	m11, m12, m13, m14,
+	m21, m22, m23, m24,
+	m31, m32, m33, m34,
+	m41, m42, m43, m44 float32) Mat4x4 {
+	return Mat4x4{
+		M11: m11, M12: m12, M13: m13, M14: m14,
+		M21: m21, M22: m22, M23: m23, M24: m24,
+		M31: m31, M32: m32, M33: m33, M34: m34,
+		M41: m41, M42: m42, M43: m43, M44: m44,
+	}
+}
+
 func IdentityMat4x4() Mat4x4 {
 	return Mat4x4{
 		1.0, 0.0, 0.0, 0.0,
@@ -76,10 +89,12 @@ func RotationMat4x4(angle, x, y, z float32) Mat4x4 {
 	cs := Cos32(radians)
 	sn := Sin32(radians)
 	vector := Vec3{x, y, z}.Resize(1.0)
-	return getRotationMat4x4FromNormalizedData(cs, sn, vector.X, vector.Y, vector.Z)
+	return getRotationMat4x4FromNormalizedData(cs, sn, vector)
 }
 
-func getRotationMat4x4FromNormalizedData(cs, sn, x, y, z float32) Mat4x4 {
+func getRotationMat4x4FromNormalizedData(cs, sn float32, vector Vec3) Mat4x4 {
+	x, y, z := vector.X, vector.Y, vector.Z
+
 	result := Mat4x4{}
 	result.M11 = x*x*(1.0-cs) + cs
 	result.M21 = x*y*(1.0-cs) + z*sn
@@ -127,7 +142,7 @@ func OrthoMat4x4(left, right, top, bottom, near, far float32) Mat4x4 {
 	return result
 }
 
-func PerspectiveMat4x4(left, right, top, bottom, near, far float32) Mat4x4 {
+func PerspectiveMat4x4(left, right, bottom, top, near, far float32) Mat4x4 {
 	result := Mat4x4{}
 
 	result.M11 = 2.0 * near / (right - left)
@@ -150,4 +165,50 @@ func PerspectiveMat4x4(left, right, top, bottom, near, far float32) Mat4x4 {
 	result.M43 = -1.0
 	result.M44 = 0.0
 	return result
+}
+
+func VectorMat4x4(vecX, vecY, vecZ, position Vec3) Mat4x4 {
+	m := NullMat4x4()
+	m.M11 = vecX.X
+	m.M21 = vecX.Y
+	m.M31 = vecX.Z
+	m.M12 = vecY.X
+	m.M22 = vecY.Y
+	m.M32 = vecY.Z
+	m.M13 = vecZ.X
+	m.M23 = vecZ.Y
+	m.M33 = vecZ.Z
+	m.M14 = position.X
+	m.M24 = position.Y
+	m.M34 = position.Z
+	m.M44 = 1.0
+	return m
+}
+
+func (m Mat4x4) DirectionXCoords(x, y, z float32) Mat4x4 {
+	m.M11 = x
+	m.M21 = y
+	m.M31 = z
+	return m
+}
+
+func (m Mat4x4) DirectionYCoords(x, y, z float32) Mat4x4 {
+	m.M12 = x
+	m.M22 = y
+	m.M32 = z
+	return m
+}
+
+func (m Mat4x4) DirectionZCoords(x, y, z float32) Mat4x4 {
+	m.M13 = x
+	m.M23 = y
+	m.M33 = z
+	return m
+}
+
+func (m Mat4x4) RepositionCoords(x, y, z float32) Mat4x4 {
+	m.M14 = x
+	m.M24 = y
+	m.M34 = z
+	return m
 }

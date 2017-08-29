@@ -107,6 +107,19 @@ var _ = Describe("Mat4x4", func() {
 		AssertVec4Equals(position, 1.1, 2.2, 3.3, 1.0)
 	})
 
+	It("QuickInverse", func() {
+		matrix := VectorMat4x4(
+			MakeVec3(1.0, 0.0, 0.0),
+			MakeVec3(0.0, 1.0, 0.0),
+			MakeVec3(0.0, 0.0, 1.0),
+			MakeVec3(4.4, 5.5, 6.6),
+		)
+		matrix = matrix.QuickInverse()
+		vector := MakeVec4(6.4, 8.5, 10.6, 1.0)
+		position := matrix.MulVec4(vector)
+		AssertVec4Equals(position, 2.0, 3.0, 4.0, 1.0)
+	})
+
 	It("VectorMat4x4", func() {
 		matrix := VectorMat4x4(
 			MakeVec3(-1.0, 0.0, 0.0),

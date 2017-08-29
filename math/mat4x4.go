@@ -212,3 +212,18 @@ func (m Mat4x4) RepositionCoords(x, y, z float32) Mat4x4 {
 	m.M34 = z
 	return m
 }
+
+func (m Mat4x4) QuickInverse() Mat4x4 {
+	vecX := MakeVec3(m.M11, m.M21, m.M31)
+	vecY := MakeVec3(m.M12, m.M22, m.M32)
+	vecZ := MakeVec3(m.M13, m.M23, m.M33)
+	position := MakeVec3(m.M14, m.M24, m.M34)
+	// tranpose direction vectors
+	m = m.DirectionXCoords(vecX.X, vecY.X, vecZ.X)
+	m = m.DirectionYCoords(vecX.Y, vecY.Y, vecZ.Y)
+	m = m.DirectionZCoords(vecX.Z, vecY.Z, vecZ.Z)
+	// negate translation
+	position = position.Inverse()
+	m = m.RepositionCoords(position.X, position.Y, position.Z)
+	return m
+}

@@ -26,4 +26,13 @@ var _ = Describe("Math", func() {
 		AssertFloatEquals(Sqrt32(16.0), 4.0)
 	})
 
+	It("Signum32", func() {
+		AssertFloatEquals(Signum32(0.1), 1.0)
+		AssertFloatEquals(Signum32(-0.1), -1.0)
+	})
+
+	It("Atan32", func() {
+		AssertFloatEquals(Atan32(2.0), 1.10714872)
+	})
+
 })

@@ -21,3 +21,14 @@ func Cos32(angle float32) float32 {
 func Sqrt32(value float32) float32 {
 	return float32(intmath.Sqrt(float64(value)))
 }
+
+func Signum32(value float32) float32 {
+	if intmath.Signbit(float64(value)) {
+		return -1.0
+	}
+	return 1.0
+}
+
+func Atan32(value float32) float32 {
+	return float32(intmath.Atan(float64(value)))
+}

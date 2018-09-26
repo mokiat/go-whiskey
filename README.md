@@ -26,9 +26,9 @@ One can see how some of the APIs can be used by looking at the **[go-whiskey-dem
 
 ## Plugins
 
-Though most of the APIs provided in this library can be used stand-alone, some APIs are merely interfaces that don't have an actual implementation. One needs to include a specific implementation libraries for their exact use-case.
+Though most of the APIs provided in this library can be used stand-alone, some APIs are merely interfaces that don't have an actual implementation. One needs to include a specific implementation library for their exact use-case.
 
-* **[go-whiskey-android](https://github.com/mokiat/go-whiskey-android)** - Contains API implementations for Android
+* **[go-whiskey-gl](https://github.com/mokiat/go-whiskey-gl)** - Contains API implementations for OpenGL graphics
 
 ## User's Guide
 

@@ -24,6 +24,8 @@ The idea behind this library is to provide a set of APIs through which one could
 
 One can see how some of the APIs can be used by looking at the **[go-whiskey-demo](https://github.com/mokiat/go-whiskey-demo)** example application.
 
+The **[rally-mka](https://github.com/mokiat/rally-mka)** project is an example game written in Go that uses `go-whiskey` and `go-whiskey-gl`.
+
 ## Plugins
 
 Though most of the APIs provided in this library can be used stand-alone, some APIs are merely interfaces that don't have an actual implementation. One needs to include a specific implementation library for their exact use-case.

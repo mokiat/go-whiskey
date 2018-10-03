@@ -40,6 +40,23 @@ func (m Mat4x4) MulMat4x4(other Mat4x4) Mat4x4 {
 	}
 }
 
+func (m Mat4x4) QuickInverse() Mat4x4 {
+	vecX := MakeVec3(m.M11, m.M21, m.M31)
+	vecY := MakeVec3(m.M12, m.M22, m.M32)
+	vecZ := MakeVec3(m.M13, m.M23, m.M33)
+	position := MakeVec3(m.M14, m.M24, m.M34)
+
+	inverseTranslate := TranslationMat4x4(-position.X, -position.Y, -position.Z)
+	inverseRotate := VectorMat4x4(
+		MakeVec3(vecX.X, vecY.X, vecZ.X),
+		MakeVec3(vecX.Y, vecY.Y, vecZ.Y),
+		MakeVec3(vecX.Z, vecY.Z, vecZ.Z),
+		NullVec3(),
+	)
+
+	return inverseRotate.MulMat4x4(inverseTranslate)
+}
+
 func NullMat4x4() Mat4x4 {
 	return Mat4x4{}
 }
@@ -185,6 +202,14 @@ func VectorMat4x4(vecX, vecY, vecZ, position Vec3) Mat4x4 {
 	return m
 }
 
+func Mat4x4MulMany(matrices ...Mat4x4) Mat4x4 {
+	result := IdentityMat4x4()
+	for _, matrix := range matrices {
+		result = result.MulMat4x4(matrix)
+	}
+	return result
+}
+
 func (m Mat4x4) DirectionXCoords(x, y, z float32) Mat4x4 {
 	m.M11 = x
 	m.M21 = y
@@ -210,20 +235,5 @@ func (m Mat4x4) RepositionCoords(x, y, z float32) Mat4x4 {
 	m.M14 = x
 	m.M24 = y
 	m.M34 = z
-	return m
-}
-
-func (m Mat4x4) QuickInverse() Mat4x4 {
-	vecX := MakeVec3(m.M11, m.M21, m.M31)
-	vecY := MakeVec3(m.M12, m.M22, m.M32)
-	vecZ := MakeVec3(m.M13, m.M23, m.M33)
-	position := MakeVec3(m.M14, m.M24, m.M34)
-	// tranpose direction vectors
-	m = m.DirectionXCoords(vecX.X, vecY.X, vecZ.X)
-	m = m.DirectionYCoords(vecX.Y, vecY.Y, vecZ.Y)
-	m = m.DirectionZCoords(vecX.Z, vecY.Z, vecZ.Z)
-	// negate translation
-	position = position.Inverse()
-	m = m.RepositionCoords(position.X, position.Y, position.Z)
 	return m
 }

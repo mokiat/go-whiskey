@@ -108,16 +108,13 @@ var _ = Describe("Mat4x4", func() {
 	})
 
 	It("QuickInverse", func() {
-		matrix := VectorMat4x4(
-			MakeVec3(1.0, 0.0, 0.0),
-			MakeVec3(0.0, 1.0, 0.0),
-			MakeVec3(0.0, 0.0, 1.0),
-			MakeVec3(4.4, 5.5, 6.6),
+		matrix = Mat4x4MulMany(
+			TranslationMat4x4(1.5, 2.3, 3.7),
+			RotationMat4x4(45.0, 0.5, 0.3, 0.2),
 		)
-		matrix = matrix.QuickInverse()
-		vector := MakeVec4(6.4, 8.5, 10.6, 1.0)
-		position := matrix.MulVec4(vector)
-		AssertVec4Equals(position, 2.0, 3.0, 4.0, 1.0)
+		inverseMatrix := matrix.QuickInverse()
+		productMatrix := inverseMatrix.MulMat4x4(matrix)
+		Ω(productMatrix).Should(EqualMat4x4(IdentityMat4x4()))
 	})
 
 	It("VectorMat4x4", func() {
@@ -162,4 +159,12 @@ var _ = Describe("Mat4x4", func() {
 		AssertVec4Equals(projectedFarCorner, 1.0, 1.0, 1.0, 1.0)
 	})
 
+	It("Mat4x4MulMany", func() {
+		matrix = Mat4x4MulMany(
+			TranslationMat4x4(2.0, 3.0, 5.0),
+			ScaleMat4x4(2.0, 4.0, 8.0),
+		)
+		vector := matrix.MulVec4(MakeVec4(1.0, 1.0, 1.0, 1.0))
+		AssertVec4Equals(vector, 4.0, 7.0, 13.0, 1.0)
+	})
 })

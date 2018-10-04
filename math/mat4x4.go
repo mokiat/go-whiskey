@@ -7,6 +7,15 @@ type Mat4x4 struct {
 	M41, M42, M43, M44 float32
 }
 
+func (m Mat4x4) Mul(value float32) Mat4x4 {
+	return Mat4x4{
+		m.M11 * value, m.M12 * value, m.M13 * value, m.M14 * value,
+		m.M21 * value, m.M22 * value, m.M23 * value, m.M24 * value,
+		m.M31 * value, m.M32 * value, m.M33 * value, m.M34 * value,
+		m.M41 * value, m.M42 * value, m.M43 * value, m.M44 * value,
+	}
+}
+
 func (m Mat4x4) MulVec4(vec Vec4) Vec4 {
 	return Vec4{
 		m.M11*vec.X + m.M12*vec.Y + m.M13*vec.Z + m.M14*vec.W,
@@ -40,6 +49,45 @@ func (m Mat4x4) MulMat4x4(other Mat4x4) Mat4x4 {
 	}
 }
 
+// Inverse calculates the inverse of the matrix.
+//
+// The behavior is undefined if the matrix is not reversible (i.e. has a zero determinant).
+func (m Mat4x4) Inverse() Mat4x4 {
+	minor11 := m.M22*m.M33*m.M44 + m.M23*m.M34*m.M42 + m.M24*m.M32*m.M43 - m.M24*m.M33*m.M42 - m.M23*m.M32*m.M44 - m.M22*m.M34*m.M43
+	minor12 := m.M21*m.M33*m.M44 + m.M23*m.M34*m.M41 + m.M24*m.M31*m.M43 - m.M24*m.M33*m.M41 - m.M23*m.M31*m.M44 - m.M21*m.M34*m.M43
+	minor13 := m.M21*m.M32*m.M44 + m.M22*m.M34*m.M41 + m.M24*m.M31*m.M42 - m.M24*m.M32*m.M41 - m.M22*m.M31*m.M44 - m.M21*m.M34*m.M42
+	minor14 := m.M21*m.M32*m.M43 + m.M22*m.M33*m.M41 + m.M23*m.M31*m.M42 - m.M23*m.M32*m.M41 - m.M22*m.M31*m.M43 - m.M21*m.M33*m.M42
+	minor21 := m.M12*m.M33*m.M44 + m.M13*m.M34*m.M42 + m.M14*m.M32*m.M43 - m.M14*m.M33*m.M42 - m.M13*m.M32*m.M44 - m.M12*m.M34*m.M43
+	minor22 := m.M11*m.M33*m.M44 + m.M13*m.M34*m.M41 + m.M14*m.M31*m.M43 - m.M14*m.M33*m.M41 - m.M13*m.M31*m.M44 - m.M11*m.M34*m.M43
+	minor23 := m.M11*m.M32*m.M44 + m.M12*m.M34*m.M41 + m.M14*m.M31*m.M42 - m.M14*m.M32*m.M41 - m.M12*m.M31*m.M44 - m.M11*m.M34*m.M42
+	minor24 := m.M11*m.M32*m.M43 + m.M12*m.M33*m.M41 + m.M13*m.M31*m.M42 - m.M13*m.M32*m.M41 - m.M12*m.M31*m.M43 - m.M11*m.M33*m.M42
+	minor31 := m.M12*m.M23*m.M44 + m.M13*m.M24*m.M42 + m.M14*m.M22*m.M43 - m.M14*m.M23*m.M42 - m.M13*m.M22*m.M44 - m.M12*m.M24*m.M43
+	minor32 := m.M11*m.M23*m.M44 + m.M13*m.M24*m.M41 + m.M14*m.M21*m.M43 - m.M14*m.M23*m.M41 - m.M13*m.M21*m.M44 - m.M11*m.M24*m.M43
+	minor33 := m.M11*m.M22*m.M44 + m.M12*m.M24*m.M41 + m.M14*m.M21*m.M42 - m.M14*m.M22*m.M41 - m.M12*m.M21*m.M44 - m.M11*m.M24*m.M42
+	minor34 := m.M11*m.M22*m.M43 + m.M12*m.M23*m.M41 + m.M13*m.M21*m.M42 - m.M13*m.M22*m.M41 - m.M12*m.M21*m.M43 - m.M11*m.M23*m.M42
+	minor41 := m.M12*m.M23*m.M34 + m.M13*m.M24*m.M32 + m.M14*m.M22*m.M33 - m.M14*m.M23*m.M32 - m.M13*m.M22*m.M34 - m.M12*m.M24*m.M33
+	minor42 := m.M11*m.M23*m.M34 + m.M13*m.M24*m.M31 + m.M14*m.M21*m.M33 - m.M14*m.M23*m.M31 - m.M13*m.M21*m.M34 - m.M11*m.M24*m.M33
+	minor43 := m.M11*m.M22*m.M34 + m.M12*m.M24*m.M31 + m.M14*m.M21*m.M32 - m.M14*m.M22*m.M31 - m.M12*m.M21*m.M34 - m.M11*m.M24*m.M32
+	minor44 := m.M11*m.M22*m.M33 + m.M12*m.M23*m.M31 + m.M13*m.M21*m.M32 - m.M13*m.M22*m.M31 - m.M12*m.M21*m.M33 - m.M11*m.M23*m.M32
+
+	determinant := m.M11*minor11 - m.M12*minor12 + m.M13*minor13 - m.M14*minor14
+
+	return MakeMath4x4RowOrder(
+		+minor11, -minor21, +minor31, -minor41,
+		-minor12, +minor22, -minor32, +minor42,
+		+minor13, -minor23, +minor33, -minor43,
+		-minor14, +minor24, -minor34, +minor44,
+	).Mul(1.0 / determinant)
+}
+
+// QuickInverse calculates the inverse of the matrix with a few caveats.
+//
+// The matrix should be a transformation one that was constructed through the multiplication
+// of one or more of the following transformations: identity, translation, rotation.
+//
+// For all other scenarios (e.g. a scale transformation was used), the Inverse method should be used instead.
+// However, the Inverse method can be more costly, as it involves more float32 multiplications than the
+// QuickInverse approach.
 func (m Mat4x4) QuickInverse() Mat4x4 {
 	vecX := MakeVec3(m.M11, m.M21, m.M31)
 	vecY := MakeVec3(m.M12, m.M22, m.M32)

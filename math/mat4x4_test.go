@@ -29,6 +29,16 @@ var _ = Describe("Mat4x4", func() {
 		)
 	})
 
+	It("#Mul", func() {
+		result := matrix.Mul(2.0)
+		Ω(result).Should(EqualMat4x4(MakeMath4x4RowOrder(
+			0.2, 0.4, 0.6, 0.8,
+			1.0, 1.2, 1.4, 1.6,
+			1.8, 2.0, 2.2, 2.4,
+			2.6, 2.8, 3.0, 3.2,
+		)))
+	})
+
 	It("#MulVec4", func() {
 		result := matrix.MulVec4(vector)
 		AssertVec4Equals(result, 1.85, 5.05, 8.25, 11.45)
@@ -113,6 +123,18 @@ var _ = Describe("Mat4x4", func() {
 			RotationMat4x4(45.0, 0.5, 0.3, 0.2),
 		)
 		inverseMatrix := matrix.QuickInverse()
+		productMatrix := inverseMatrix.MulMat4x4(matrix)
+		Ω(productMatrix).Should(EqualMat4x4(IdentityMat4x4()))
+	})
+
+	It("Inverse", func() {
+		matrix := MakeMath4x4RowOrder(
+			4.0, 3.0, 2.0, 1.0,
+			1.1, 4.1, 3.1, 2.1,
+			2.2, 3.2, 4.2, 1.2,
+			3.3, 2.3, 1.3, 4.3,
+		)
+		inverseMatrix := matrix.Inverse()
 		productMatrix := inverseMatrix.MulMat4x4(matrix)
 		Ω(productMatrix).Should(EqualMat4x4(IdentityMat4x4()))
 	})

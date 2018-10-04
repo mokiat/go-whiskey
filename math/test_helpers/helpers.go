@@ -29,6 +29,25 @@ func EqualFloat32(expectedValue float32) types.GomegaMatcher {
 	})
 }
 
+func HaveVec3Coords(expectedX, expectedY, expectedZ float32) types.GomegaMatcher {
+	return QuickMatcher(func(actual interface{}) (MatchStatus, error) {
+		vector, ok := actual.(math.Vec3)
+		if !ok {
+			return MatchStatus{}, fmt.Errorf("HaveVec4Coords matcher expects a math.Vec3")
+		}
+		matches := areEqualFloat32(vector.X, expectedX, FloatMargin) &&
+			areEqualFloat32(vector.Y, expectedY, FloatMargin) &&
+			areEqualFloat32(vector.Z, expectedZ, FloatMargin)
+		if !matches {
+			return FailureMatchStatus(
+				fmt.Sprintf("Expected\n\t%#v\nto have coords\n\t(%f, %f, %f)", vector, expectedX, expectedY, expectedZ),
+				fmt.Sprintf("Expected\n\t%#v\nnot to have coords\n\t(%f, %f, %f)", vector, expectedX, expectedY, expectedZ),
+			), nil
+		}
+		return SuccessMatchStatus(), nil
+	})
+}
+
 func HaveVec4Coords(expectedX, expectedY, expectedZ, expectedW float32) types.GomegaMatcher {
 	return QuickMatcher(func(actual interface{}) (MatchStatus, error) {
 		vector, ok := actual.(math.Vec4)
@@ -88,12 +107,6 @@ func assertFloatEquals(actualValue, expectedValue float32) {
 func AssertVec2Equals(vector math.Vec2, expectedX, expectedY float32) {
 	assertFloatEquals(vector.X, expectedX)
 	assertFloatEquals(vector.Y, expectedY)
-}
-
-func AssertVec3Equals(vector math.Vec3, expectedX, expectedY, expectedZ float32) {
-	assertFloatEquals(vector.X, expectedX)
-	assertFloatEquals(vector.Y, expectedY)
-	assertFloatEquals(vector.Z, expectedZ)
 }
 
 func AssertMat4x4Equals(matrix math.Mat4x4,

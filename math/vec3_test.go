@@ -34,37 +34,37 @@ var _ = Describe("Vec3", func() {
 
 	It("#Inverse", func() {
 		inverted := firstVector.Inverse()
-		AssertVec3Equals(inverted, -2.0, -3.0, -4.0)
+		Ω(inverted).Should(HaveVec3Coords(-2.0, -3.0, -4.0))
 	})
 
 	It("#IncCoords", func() {
 		incremented := firstVector.IncCoords(1.5, -2.5, 5.0)
-		AssertVec3Equals(incremented, 3.5, 0.5, 9.0)
+		Ω(incremented).Should(HaveVec3Coords(3.5, 0.5, 9.0))
 	})
 
 	It("#IncVec3", func() {
 		incremented := firstVector.IncVec3(MakeVec3(1.5, -2.5, 5.0))
-		AssertVec3Equals(incremented, 3.5, 0.5, 9.0)
+		Ω(incremented).Should(HaveVec3Coords(3.5, 0.5, 9.0))
 	})
 
 	It("#DecCoords", func() {
 		decremented := firstVector.DecCoords(1.5, -2.5, 5.0)
-		AssertVec3Equals(decremented, 0.5, 5.5, -1.0)
+		Ω(decremented).Should(HaveVec3Coords(0.5, 5.5, -1.0))
 	})
 
 	It("#DecVec3", func() {
 		decremented := firstVector.DecVec3(MakeVec3(1.5, -2.5, 5.0))
-		AssertVec3Equals(decremented, 0.5, 5.5, -1.0)
+		Ω(decremented).Should(HaveVec3Coords(0.5, 5.5, -1.0))
 	})
 
 	It("#Mul", func() {
 		multiplied := firstVector.Mul(0.5)
-		AssertVec3Equals(multiplied, 1.0, 1.5, 2.0)
+		Ω(multiplied).Should(HaveVec3Coords(1.0, 1.5, 2.0))
 	})
 
 	It("#Div", func() {
 		divided := firstVector.Div(2.0)
-		AssertVec3Equals(divided, 1.0, 1.5, 2.0)
+		Ω(divided).Should(HaveVec3Coords(1.0, 1.5, 2.0))
 	})
 
 	It("#LengthSquared", func() {
@@ -79,7 +79,7 @@ var _ = Describe("Vec3", func() {
 
 	It("#Resize", func() {
 		resized := firstVector.Resize(10.77032961426901)
-		AssertVec3Equals(resized, 4.0, 6.0, 8.0)
+		Ω(resized).Should(HaveVec3Coords(4.0, 6.0, 8.0))
 	})
 
 	It("#DistanceToCoords", func() {
@@ -93,23 +93,24 @@ var _ = Describe("Vec3", func() {
 	})
 
 	It("NullVec3", func() {
-		AssertVec3Equals(NullVec3(), 0.0, 0.0, 0.0)
+		Ω(NullVec3()).Should(HaveVec3Coords(0.0, 0.0, 0.0))
 	})
 
 	It("BaseVec3X", func() {
-		AssertVec3Equals(BaseVec3X(), 1.0, 0.0, 0.0)
+		Ω(BaseVec3X()).Should(HaveVec3Coords(1.0, 0.0, 0.0))
 	})
 
 	It("BaseVec3Y", func() {
-		AssertVec3Equals(BaseVec3Y(), 0.0, 1.0, 0.0)
+		Ω(BaseVec3Y()).Should(HaveVec3Coords(0.0, 1.0, 0.0))
 	})
 
 	It("BaseVec3Z", func() {
-		AssertVec3Equals(BaseVec3Z(), 0.0, 0.0, 1.0)
+		Ω(BaseVec3Z()).Should(HaveVec3Coords(0.0, 0.0, 1.0))
 	})
 
 	It("MakeVec3", func() {
-		AssertVec3Equals(MakeVec3(2.6, 8.1, 9.4), 2.6, 8.1, 9.4)
+		vector := MakeVec3(2.6, 8.1, 9.4)
+		Ω(vector).Should(HaveVec3Coords(2.6, 8.1, 9.4))
 	})
 
 	It("Vec3DotProduct", func() {
@@ -119,6 +120,6 @@ var _ = Describe("Vec3", func() {
 
 	It("Vec3CrossProduct", func() {
 		cross := Vec3CrossProduct(firstVector, secondVector)
-		AssertVec3Equals(cross, -17.0, 2.0, 7.0)
+		Ω(cross).Should(HaveVec3Coords(-17.0, 2.0, 7.0))
 	})
 })

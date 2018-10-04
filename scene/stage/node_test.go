@@ -10,9 +10,9 @@ import (
 
 func AssertNodeBounds(node Node, x, y, z, size float32) {
 	bounds := node.Bounds()
-	AssertFloatEquals(bounds.Width(), size)
-	AssertFloatEquals(bounds.Height(), size)
-	AssertFloatEquals(bounds.Depth(), size)
+	Ω(bounds.Width()).Should(EqualFloat32(size))
+	Ω(bounds.Height()).Should(EqualFloat32(size))
+	Ω(bounds.Depth()).Should(EqualFloat32(size))
 }
 
 var _ = Describe("Node", func() {

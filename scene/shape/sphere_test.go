@@ -21,7 +21,7 @@ var _ = Describe("Sphere", func() {
 	})
 
 	It("#Diameter", func() {
-		AssertFloatEquals(sphere.Diameter(), 10.0)
+		Ω(sphere.Diameter()).Should(EqualFloat32(10.0))
 	})
 
 	It("#ContainsPoint", func() {

@@ -10,7 +10,6 @@ import (
 )
 
 var _ = Describe("AABox", func() {
-
 	var box AABox
 
 	BeforeEach(func() {
@@ -23,55 +22,55 @@ var _ = Describe("AABox", func() {
 	})
 
 	It("#Width", func() {
-		AssertFloatEquals(box.Width(), 5.0)
+		Ω(box.Width()).Should(EqualFloat32(5.0))
 	})
 
 	It("#Height", func() {
-		AssertFloatEquals(box.Height(), 6.0)
+		Ω(box.Height()).Should(EqualFloat32(6.0))
 	})
 
 	It("#Depth", func() {
-		AssertFloatEquals(box.Depth(), 7.0)
+		Ω(box.Depth()).Should(EqualFloat32(7.0))
 	})
 
 	It("#TopLeftFrontCorner", func() {
 		corner := box.TopLeftFrontCorner()
-		AssertVec3Equals(corner, -0.5, 6.0, 7.5)
+		Ω(corner).Should(HaveVec3Coords(-0.5, 6.0, 7.5))
 	})
 
 	It("#TopRightFrontCorner", func() {
 		corner := box.TopRightFrontCorner()
-		AssertVec3Equals(corner, 4.5, 6.0, 7.5)
+		Ω(corner).Should(HaveVec3Coords(4.5, 6.0, 7.5))
 	})
 
 	It("#BottomLeftFrontCorner", func() {
 		corner := box.BottomLeftFrontCorner()
-		AssertVec3Equals(corner, -0.5, 0.0, 7.5)
+		Ω(corner).Should(HaveVec3Coords(-0.5, 0.0, 7.5))
 	})
 
 	It("#BottomRightFrontCorner", func() {
 		corner := box.BottomRightFrontCorner()
-		AssertVec3Equals(corner, 4.5, 0.0, 7.5)
+		Ω(corner).Should(HaveVec3Coords(4.5, 0.0, 7.5))
 	})
 
 	It("#TopLeftBackCorner", func() {
 		corner := box.TopLeftBackCorner()
-		AssertVec3Equals(corner, -0.5, 6.0, 0.5)
+		Ω(corner).Should(HaveVec3Coords(-0.5, 6.0, 0.5))
 	})
 
 	It("#TopRightBackCorner", func() {
 		corner := box.TopRightBackCorner()
-		AssertVec3Equals(corner, 4.5, 6.0, 0.5)
+		Ω(corner).Should(HaveVec3Coords(4.5, 6.0, 0.5))
 	})
 
 	It("#BottomLeftBackCorner", func() {
 		corner := box.BottomLeftBackCorner()
-		AssertVec3Equals(corner, -0.5, 0.0, 0.5)
+		Ω(corner).Should(HaveVec3Coords(-0.5, 0.0, 0.5))
 	})
 
 	It("#BottomRightBackCorner", func() {
 		corner := box.BottomRightBackCorner()
-		AssertVec3Equals(corner, 4.5, 0.0, 0.5)
+		Ω(corner).Should(HaveVec3Coords(4.5, 0.0, 0.5))
 	})
 
 	It("#ContainsPoint", func() {

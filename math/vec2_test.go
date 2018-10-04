@@ -68,12 +68,12 @@ var _ = Describe("Vec2", func() {
 
 	It("#LengthSquared", func() {
 		squaredLength := firstVector.LengthSquared()
-		AssertFloatEquals(squaredLength, 13.0)
+		Ω(squaredLength).Should(EqualFloat32(13.0))
 	})
 
 	It("#Length", func() {
 		length := firstVector.Length()
-		AssertFloatEquals(length, 3.605551275463989)
+		Ω(length).Should(EqualFloat32(3.605551275463989))
 	})
 
 	It("#Resize", func() {
@@ -83,12 +83,12 @@ var _ = Describe("Vec2", func() {
 
 	It("#DistanceToCoords", func() {
 		distance := firstVector.DistanceToCoords(-1.0, 2.0)
-		AssertFloatEquals(distance, 3.162277660168379)
+		Ω(distance).Should(EqualFloat32(3.162277660168379))
 	})
 
 	It("#DistanceToVec2", func() {
 		distance := firstVector.DistanceToVec2(secondVector)
-		AssertFloatEquals(distance, 3.162277660168379)
+		Ω(distance).Should(EqualFloat32(3.162277660168379))
 	})
 
 	It("NullVec2", func() {
@@ -109,6 +109,6 @@ var _ = Describe("Vec2", func() {
 
 	It("Vec2DotProduct", func() {
 		dot := Vec2DotProduct(firstVector, secondVector)
-		AssertFloatEquals(dot, 4.0)
+		Ω(dot).Should(EqualFloat32(4.0))
 	})
 })

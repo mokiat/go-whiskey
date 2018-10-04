@@ -9,7 +9,6 @@ import (
 )
 
 var _ = Describe("Vec3", func() {
-
 	var nullVector Vec3
 	var firstVector Vec3
 	var secondVector Vec3
@@ -70,12 +69,12 @@ var _ = Describe("Vec3", func() {
 
 	It("#LengthSquared", func() {
 		squaredLength := firstVector.LengthSquared()
-		AssertFloatEquals(squaredLength, 29.0)
+		Ω(squaredLength).Should(EqualFloat32(29.0))
 	})
 
 	It("#Length", func() {
 		length := firstVector.Length()
-		AssertFloatEquals(length, 5.385164807134504)
+		Ω(length).Should(EqualFloat32(5.385164807134504))
 	})
 
 	It("#Resize", func() {
@@ -85,12 +84,12 @@ var _ = Describe("Vec3", func() {
 
 	It("#DistanceToCoords", func() {
 		distance := firstVector.DistanceToCoords(-1.0, 2.0, -3.0)
-		AssertFloatEquals(distance, 7.681145747868608)
+		Ω(distance).Should(EqualFloat32(7.681145747868608))
 	})
 
 	It("#DistanceToVec3", func() {
 		distance := firstVector.DistanceToVec3(secondVector)
-		AssertFloatEquals(distance, 7.681145747868608)
+		Ω(distance).Should(EqualFloat32(7.681145747868608))
 	})
 
 	It("NullVec3", func() {
@@ -115,7 +114,7 @@ var _ = Describe("Vec3", func() {
 
 	It("Vec3DotProduct", func() {
 		dot := Vec3DotProduct(firstVector, secondVector)
-		AssertFloatEquals(dot, -8.0)
+		Ω(dot).Should(EqualFloat32(-8.0))
 	})
 
 	It("Vec3CrossProduct", func() {

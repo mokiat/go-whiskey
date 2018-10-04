@@ -72,7 +72,7 @@ func (m Mat4x4) Inverse() Mat4x4 {
 
 	determinant := m.M11*minor11 - m.M12*minor12 + m.M13*minor13 - m.M14*minor14
 
-	return MakeMath4x4RowOrder(
+	return MakeMat4x4RowOrder(
 		+minor11, -minor21, +minor31, -minor41,
 		-minor12, +minor22, -minor32, +minor42,
 		+minor13, -minor23, +minor33, -minor43,
@@ -109,7 +109,7 @@ func NullMat4x4() Mat4x4 {
 	return Mat4x4{}
 }
 
-func MakeMath4x4RowOrder(
+func MakeMat4x4RowOrder(
 	m11, m12, m13, m14,
 	m21, m22, m23, m24,
 	m31, m32, m33, m34,

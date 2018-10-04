@@ -12,13 +12,33 @@ import (
 
 const FloatMargin = 0.0001
 
+func HaveVec4Coords(expectedX, expectedY, expectedZ, expectedW float32) types.GomegaMatcher {
+	return QuickMatcher(func(actual interface{}) (MatchStatus, error) {
+		vector, ok := actual.(math.Vec4)
+		if !ok {
+			return MatchStatus{}, fmt.Errorf("HaveVec4Coords matcher expects a math.Vec4")
+		}
+		matches := areEqualFloat32(vector.X, expectedX, FloatMargin) &&
+			areEqualFloat32(vector.Y, expectedY, FloatMargin) &&
+			areEqualFloat32(vector.Z, expectedZ, FloatMargin) &&
+			areEqualFloat32(vector.W, expectedW, FloatMargin)
+		if !matches {
+			return FailureMatchStatus(
+				fmt.Sprintf("Expected\n\t%#v\nto have coords\n\t(%f, %f, %f, %f)", vector, expectedX, expectedY, expectedZ, expectedW),
+				fmt.Sprintf("Expected\n\t%#v\nnot to have coords equal\n\t(%f, %f, %f, %f)", vector, expectedX, expectedY, expectedZ, expectedW),
+			), nil
+		}
+		return SuccessMatchStatus(), nil
+	})
+}
+
 func EqualMat4x4(expectedValue math.Mat4x4) types.GomegaMatcher {
 	return QuickMatcher(func(actual interface{}) (MatchStatus, error) {
 		matrix, ok := actual.(math.Mat4x4)
 		if !ok {
 			return MatchStatus{}, fmt.Errorf("EqualMat4x4 matcher expects a math.Mat4x4")
 		}
-		areEqual := areEqualFloat32(matrix.M11, expectedValue.M11, FloatMargin) &&
+		matches := areEqualFloat32(matrix.M11, expectedValue.M11, FloatMargin) &&
 			areEqualFloat32(matrix.M21, expectedValue.M21, FloatMargin) &&
 			areEqualFloat32(matrix.M31, expectedValue.M31, FloatMargin) &&
 			areEqualFloat32(matrix.M41, expectedValue.M41, FloatMargin) &&
@@ -34,8 +54,7 @@ func EqualMat4x4(expectedValue math.Mat4x4) types.GomegaMatcher {
 			areEqualFloat32(matrix.M24, expectedValue.M24, FloatMargin) &&
 			areEqualFloat32(matrix.M34, expectedValue.M34, FloatMargin) &&
 			areEqualFloat32(matrix.M44, expectedValue.M44, FloatMargin)
-
-		if !areEqual {
+		if !matches {
 			return FailureMatchStatus(
 				fmt.Sprintf("Expected\n\t%#v\nto equal\n\t%#v", matrix, expectedValue),
 				fmt.Sprintf("Expected\n\t%#v\nnot to equal\n\t%#v", matrix, expectedValue),
@@ -58,13 +77,6 @@ func AssertVec3Equals(vector math.Vec3, expectedX, expectedY, expectedZ float32)
 	AssertFloatEquals(vector.X, expectedX)
 	AssertFloatEquals(vector.Y, expectedY)
 	AssertFloatEquals(vector.Z, expectedZ)
-}
-
-func AssertVec4Equals(vector math.Vec4, expectedX, expectedY, expectedZ, expectedW float32) {
-	AssertFloatEquals(vector.X, expectedX)
-	AssertFloatEquals(vector.Y, expectedY)
-	AssertFloatEquals(vector.Z, expectedZ)
-	AssertFloatEquals(vector.W, expectedW)
 }
 
 func AssertMat4x4Equals(matrix math.Mat4x4,

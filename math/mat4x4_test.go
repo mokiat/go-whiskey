@@ -41,7 +41,7 @@ var _ = Describe("Mat4x4", func() {
 
 	It("#MulVec4", func() {
 		result := matrix.MulVec4(vector)
-		AssertVec4Equals(result, 1.85, 5.05, 8.25, 11.45)
+		Ω(result).Should(HaveVec4Coords(1.85, 5.05, 8.25, 11.45))
 	})
 
 	It("#MulMat4x4", func() {
@@ -63,26 +63,26 @@ var _ = Describe("Mat4x4", func() {
 
 	It("IdentityMat4x4", func() {
 		result := IdentityMat4x4().MulMat4x4(matrix)
-		Ω(result).Should(Equal(matrix))
+		Ω(result).Should(EqualMat4x4(matrix))
 	})
 
 	It("TranslationMat4x4", func() {
 		translationMatrix := TranslationMat4x4(2.0, -3.0, 4.0)
 		result := translationMatrix.MulVec4(vector)
-		AssertVec4Equals(result, 4.5, -1.5, 7.0, 1.0)
+		Ω(result).Should(HaveVec4Coords(4.5, -1.5, 7.0, 1.0))
 	})
 
 	It("ScaleMat4x4", func() {
 		scaleMatrix := ScaleMat4x4(2.0, -3.0, 4.0)
 		result := scaleMatrix.MulVec4(vector)
-		AssertVec4Equals(result, 5.0, -4.5, 12.0, 1.0)
+		Ω(result).Should(HaveVec4Coords(5.0, -4.5, 12.0, 1.0))
 	})
 
 	It("RotationMat4x4", func() {
 		vector = MakeVec4(1.0, 0.0, 0.0, 1.0)
 		rotationMatrix := RotationMat4x4(120.0, 1.0, 1.0, 1.0)
 		result := rotationMatrix.MulVec4(vector)
-		AssertVec4Equals(result, 0.0, 1.0, 0.0, 1.0)
+		Ω(result).Should(HaveVec4Coords(0.0, 1.0, 0.0, 1.0))
 	})
 
 	It("DirectionXCoords", func() {
@@ -90,7 +90,7 @@ var _ = Describe("Mat4x4", func() {
 		matrix = matrix.DirectionXCoords(1.1, 2.1, 3.1)
 		vector := MakeVec4(2.0, 9.0, 9.0, 9.0)
 		position := matrix.MulVec4(vector)
-		AssertVec4Equals(position, 2.2, 4.2, 6.2, 0.0)
+		Ω(position).Should(HaveVec4Coords(2.2, 4.2, 6.2, 0.0))
 	})
 
 	It("DirectionYCoords", func() {
@@ -98,7 +98,7 @@ var _ = Describe("Mat4x4", func() {
 		matrix = matrix.DirectionYCoords(1.1, 2.1, 3.1)
 		vector := MakeVec4(9.0, 2.0, 9.0, 9.0)
 		position := matrix.MulVec4(vector)
-		AssertVec4Equals(position, 2.2, 4.2, 6.2, 0.0)
+		Ω(position).Should(HaveVec4Coords(2.2, 4.2, 6.2, 0.0))
 	})
 
 	It("DirectionZCoords", func() {
@@ -106,7 +106,7 @@ var _ = Describe("Mat4x4", func() {
 		matrix = matrix.DirectionZCoords(1.1, 2.1, 3.1)
 		vector := MakeVec4(9.0, 9.0, 2.0, 9.0)
 		position := matrix.MulVec4(vector)
-		AssertVec4Equals(position, 2.2, 4.2, 6.2, 0.0)
+		Ω(position).Should(HaveVec4Coords(2.2, 4.2, 6.2, 0.0))
 	})
 
 	It("Reposition", func() {
@@ -114,7 +114,7 @@ var _ = Describe("Mat4x4", func() {
 		matrix = matrix.RepositionCoords(1.1, 2.2, 3.3)
 		vector := MakeVec4(0.0, 0.0, 0.0, 1.0)
 		position := matrix.MulVec4(vector)
-		AssertVec4Equals(position, 1.1, 2.2, 3.3, 1.0)
+		Ω(position).Should(HaveVec4Coords(1.1, 2.2, 3.3, 1.0))
 	})
 
 	It("QuickInverse", func() {
@@ -148,37 +148,39 @@ var _ = Describe("Mat4x4", func() {
 		)
 		vector := MakeVec4(2.0, 3.0, 4.0, 1.0)
 		position := matrix.MulVec4(vector)
-		AssertVec4Equals(position, 2.4, 2.5, 2.6, 1.0)
+		Ω(position).Should(HaveVec4Coords(2.4, 2.5, 2.6, 1.0))
 	})
 
 	It("OrthoMat4x4", func() {
 		orthoMatrix := OrthoMat4x4(-1.1, 2.1, 1.5, -3.4, 1.7, 3.8)
 
-		// Test two opposite corner projections
+		// test negative boundary vector projection
 		nearCorner := MakeVec4(-1.1, -3.4, -1.7, 1.0)
 		projectedNearCorner := orthoMatrix.MulVec4(nearCorner)
 		projectedNearCorner = projectedNearCorner.Div(projectedNearCorner.W)
-		AssertVec4Equals(projectedNearCorner, -1.0, -1.0, -1.0, 1.0)
+		Ω(projectedNearCorner).Should(HaveVec4Coords(-1.0, -1.0, -1.0, 1.0))
 
+		// test positive boundary vector projection
 		farCorner := MakeVec4(2.1, 1.5, -3.8, 1.0)
 		projectedFarCorner := orthoMatrix.MulVec4(farCorner)
 		projectedFarCorner = projectedFarCorner.Div(projectedFarCorner.W)
-		AssertVec4Equals(projectedFarCorner, 1.0, 1.0, 1.0, 1.0)
+		Ω(projectedFarCorner).Should(HaveVec4Coords(1.0, 1.0, 1.0, 1.0))
 	})
 
 	It("PerspectiveMat4x4", func() {
 		perspectiveMatrix := PerspectiveMat4x4(-1.1, 2.1, -3.4, 1.5, 1.7, 3.8)
 
-		// Test two opposite corner projections
+		// test negative boundary vector projection
 		nearCorner := MakeVec4(-1.1, -3.4, -1.7, 1.0)
 		projectedNearCorner := perspectiveMatrix.MulVec4(nearCorner)
 		projectedNearCorner = projectedNearCorner.Div(projectedNearCorner.W)
-		AssertVec4Equals(projectedNearCorner, -1.0, -1.0, -1.0, 1.0)
+		Ω(projectedNearCorner).Should(HaveVec4Coords(-1.0, -1.0, -1.0, 1.0))
 
+		// test positive boundary vector projection
 		farCorner := MakeVec4(4.6941, 3.3529, -3.8, 1.0)
 		projectedFarCorner := perspectiveMatrix.MulVec4(farCorner)
 		projectedFarCorner = projectedFarCorner.Div(projectedFarCorner.W)
-		AssertVec4Equals(projectedFarCorner, 1.0, 1.0, 1.0, 1.0)
+		Ω(projectedFarCorner).Should(HaveVec4Coords(1.0, 1.0, 1.0, 1.0))
 	})
 
 	It("Mat4x4MulMany", func() {
@@ -187,6 +189,6 @@ var _ = Describe("Mat4x4", func() {
 			ScaleMat4x4(2.0, 4.0, 8.0),
 		)
 		vector := matrix.MulVec4(MakeVec4(1.0, 1.0, 1.0, 1.0))
-		AssertVec4Equals(vector, 4.0, 7.0, 13.0, 1.0)
+		Ω(vector).Should(HaveVec4Coords(4.0, 7.0, 13.0, 1.0))
 	})
 })

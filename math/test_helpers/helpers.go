@@ -29,11 +29,29 @@ func EqualFloat32(expectedValue float32) types.GomegaMatcher {
 	})
 }
 
+func HaveVec2Coords(expectedX, expectedY float32) types.GomegaMatcher {
+	return QuickMatcher(func(actual interface{}) (MatchStatus, error) {
+		vector, ok := actual.(math.Vec2)
+		if !ok {
+			return MatchStatus{}, fmt.Errorf("HaveVec2Coords matcher expects a math.Vec2")
+		}
+		matches := areEqualFloat32(vector.X, expectedX, FloatMargin) &&
+			areEqualFloat32(vector.Y, expectedY, FloatMargin)
+		if !matches {
+			return FailureMatchStatus(
+				fmt.Sprintf("Expected\n\t%#v\nto have coords\n\t(%f, %f)", vector, expectedX, expectedY),
+				fmt.Sprintf("Expected\n\t%#v\nnot to have coords\n\t(%f, %f)", vector, expectedX, expectedY),
+			), nil
+		}
+		return SuccessMatchStatus(), nil
+	})
+}
+
 func HaveVec3Coords(expectedX, expectedY, expectedZ float32) types.GomegaMatcher {
 	return QuickMatcher(func(actual interface{}) (MatchStatus, error) {
 		vector, ok := actual.(math.Vec3)
 		if !ok {
-			return MatchStatus{}, fmt.Errorf("HaveVec4Coords matcher expects a math.Vec3")
+			return MatchStatus{}, fmt.Errorf("HaveVec3Coords matcher expects a math.Vec3")
 		}
 		matches := areEqualFloat32(vector.X, expectedX, FloatMargin) &&
 			areEqualFloat32(vector.Y, expectedY, FloatMargin) &&
@@ -102,38 +120,6 @@ func EqualMat4x4(expectedValue math.Mat4x4) types.GomegaMatcher {
 
 func assertFloatEquals(actualValue, expectedValue float32) {
 	Ω(actualValue).Should(BeNumerically("~", expectedValue, FloatMargin))
-}
-
-func AssertVec2Equals(vector math.Vec2, expectedX, expectedY float32) {
-	assertFloatEquals(vector.X, expectedX)
-	assertFloatEquals(vector.Y, expectedY)
-}
-
-func AssertMat4x4Equals(matrix math.Mat4x4,
-	m11, m12, m13, m14,
-	m21, m22, m23, m24,
-	m31, m32, m33, m34,
-	m41, m42, m43, m44 float32) {
-
-	assertFloatEquals(matrix.M11, m11)
-	assertFloatEquals(matrix.M12, m12)
-	assertFloatEquals(matrix.M13, m13)
-	assertFloatEquals(matrix.M14, m14)
-
-	assertFloatEquals(matrix.M21, m21)
-	assertFloatEquals(matrix.M22, m22)
-	assertFloatEquals(matrix.M23, m23)
-	assertFloatEquals(matrix.M24, m24)
-
-	assertFloatEquals(matrix.M31, m31)
-	assertFloatEquals(matrix.M32, m32)
-	assertFloatEquals(matrix.M33, m33)
-	assertFloatEquals(matrix.M34, m34)
-
-	assertFloatEquals(matrix.M41, m41)
-	assertFloatEquals(matrix.M42, m42)
-	assertFloatEquals(matrix.M43, m43)
-	assertFloatEquals(matrix.M44, m44)
 }
 
 type MatchStatus struct {

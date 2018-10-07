@@ -11,7 +11,6 @@ import (
 )
 
 var _ = Describe("Writer", func() {
-
 	var buffer *bytes.Buffer
 	var writer TypedWriter
 	var reader TypedReader
@@ -58,6 +57,26 @@ var _ = Describe("Writer", func() {
 
 		It("is possible to read the value back", func() {
 			readValue, err := reader.ReadByte()
+			Ω(err).ShouldNot(HaveOccurred())
+			Ω(readValue).Should(Equal(writtenValue))
+		})
+	})
+
+	Context("when bool is written", func() {
+		var writtenValue bool
+
+		BeforeEach(func() {
+			writtenValue = true
+			err := writer.WriteBool(writtenValue)
+			Ω(err).ShouldNot(HaveOccurred())
+		})
+
+		It("1 byte is written", func() {
+			Ω(buffer.Bytes()).Should(HaveLen(1))
+		})
+
+		It("is possible to read the value back", func() {
+			readValue, err := reader.ReadBool()
 			Ω(err).ShouldNot(HaveOccurred())
 			Ω(readValue).Should(Equal(writtenValue))
 		})

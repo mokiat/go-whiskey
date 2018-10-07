@@ -9,6 +9,7 @@ import (
 type TypedReader interface {
 	ReadBytes([]byte) error
 	ReadByte() (byte, error)
+	ReadBool() (bool, error)
 	ReadUInt8() (uint8, error)
 	ReadInt8() (int8, error)
 	ReadUInt16() (uint16, error)
@@ -49,6 +50,13 @@ func (r typedReader) ReadByte() (byte, error) {
 		return 0, err
 	}
 	return r.buffer[0], nil
+}
+
+func (r typedReader) ReadBool() (bool, error) {
+	if err := r.readBuffer(1); err != nil {
+		return false, err
+	}
+	return r.buffer[0] != 0, nil
 }
 
 func (r typedReader) ReadUInt8() (uint8, error) {

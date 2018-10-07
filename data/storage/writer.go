@@ -9,6 +9,7 @@ import (
 type TypedWriter interface {
 	WriteBytes([]byte) error
 	WriteByte(byte) error
+	WriteBool(bool) error
 	WriteInt8(int8) error
 	WriteUInt8(uint8) error
 	WriteInt16(int16) error
@@ -45,6 +46,15 @@ func (w typedWriter) WriteBytes(data []byte) error {
 
 func (w typedWriter) WriteByte(value byte) error {
 	w.buffer[0] = value
+	return w.writeBuffer(1)
+}
+
+func (w typedWriter) WriteBool(value bool) error {
+	if value {
+		w.buffer[0] = 1
+	} else {
+		w.buffer[0] = 0
+	}
 	return w.writeBuffer(1)
 }
 

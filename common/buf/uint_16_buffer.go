@@ -2,6 +2,10 @@ package buf
 
 type UInt16Buffer []byte
 
+func CreateUInt16Buffer(size int) UInt16Buffer {
+	return UInt16Buffer(make([]byte, size*2))
+}
+
 func (b UInt16Buffer) Length() int {
 	return len(b) / 2
 }

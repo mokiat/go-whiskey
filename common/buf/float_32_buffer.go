@@ -2,6 +2,10 @@ package buf
 
 import "math"
 
+func CreateFloat32Buffer(size int) Float32Buffer {
+	return Float32Buffer(make([]byte, size*4))
+}
+
 type Float32Buffer []byte
 
 func (b Float32Buffer) Length() int {

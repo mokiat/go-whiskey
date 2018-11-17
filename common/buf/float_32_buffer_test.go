@@ -26,6 +26,11 @@ var _ = Describe("Float32Buffer", func() {
 		Ω(buffer.Get(1)).Should(Equal(float32(0.0)))
 	})
 
+	It("is possible to create one from scratch", func() {
+		buffer = CreateFloat32Buffer(3)
+		Ω(buffer.Length()).Should(Equal(3))
+	})
+
 	Context("when values have been set", func() {
 		BeforeEach(func() {
 			buffer.Set(0, 0.1)

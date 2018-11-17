@@ -27,6 +27,11 @@ var _ = Describe("Uint16Buffer", func() {
 		Ω(buffer.Get(2)).Should(Equal(uint16(0)))
 	})
 
+	It("is possible to create one from scratch", func() {
+		buffer = CreateUInt16Buffer(3)
+		Ω(buffer.Length()).Should(Equal(3))
+	})
+
 	Context("when values have been set", func() {
 		BeforeEach(func() {
 			buffer.Set(0, 65535)

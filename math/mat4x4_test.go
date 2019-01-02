@@ -29,6 +29,26 @@ var _ = Describe("Mat4x4", func() {
 		)
 	})
 
+	It("#DirectionX", func() {
+		result := matrix.DirectionX()
+		Ω(result).Should(HaveVec3Coords(0.1, 0.5, 0.9))
+	})
+
+	It("#DirectionY", func() {
+		result := matrix.DirectionY()
+		Ω(result).Should(HaveVec3Coords(0.2, 0.6, 1.0))
+	})
+
+	It("#DirectionZ", func() {
+		result := matrix.DirectionZ()
+		Ω(result).Should(HaveVec3Coords(0.3, 0.7, 1.1))
+	})
+
+	It("#Translation", func() {
+		result := matrix.Translation()
+		Ω(result).Should(HaveVec3Coords(0.4, 0.8, 1.2))
+	})
+
 	It("#Mul", func() {
 		result := matrix.Mul(2.0)
 		Ω(result).Should(EqualMat4x4(MakeMat4x4RowOrder(
@@ -37,6 +57,11 @@ var _ = Describe("Mat4x4", func() {
 			1.8, 2.0, 2.2, 2.4,
 			2.6, 2.8, 3.0, 3.2,
 		)))
+	})
+
+	It("#MulVec3", func() {
+		result := matrix.MulVec3(MakeVec3(2.5, 1.5, 3.0))
+		Ω(result).Should(HaveVec3Coords(1.85, 5.05, 8.25))
 	})
 
 	It("#MulVec4", func() {
@@ -52,6 +77,28 @@ var _ = Describe("Mat4x4", func() {
 			M31: 1.48, M32: 2.0100002, M33: 2.23, M34: 1.4000001,
 			M41: 2.04, M42: 2.77, M43: 3.07, M44: 1.92,
 		}))
+	})
+
+	It("#QuickInverse", func() {
+		matrix = Mat4x4MulMany(
+			TranslationMat4x4(1.5, 2.3, 3.7),
+			RotationMat4x4(45.0, 0.5, 0.3, 0.2),
+		)
+		inverseMatrix := matrix.QuickInverse()
+		productMatrix := inverseMatrix.MulMat4x4(matrix)
+		Ω(productMatrix).Should(EqualMat4x4(IdentityMat4x4()))
+	})
+
+	It("#Inverse", func() {
+		matrix := MakeMat4x4RowOrder(
+			4.0, 3.0, 2.0, 1.0,
+			1.1, 4.1, 3.1, 2.1,
+			2.2, 3.2, 4.2, 1.2,
+			3.3, 2.3, 1.3, 4.3,
+		)
+		inverseMatrix := matrix.Inverse()
+		productMatrix := inverseMatrix.MulMat4x4(matrix)
+		Ω(productMatrix).Should(EqualMat4x4(IdentityMat4x4()))
 	})
 
 	It("#GoString", func() {
@@ -127,28 +174,6 @@ var _ = Describe("Mat4x4", func() {
 		vector := MakeVec4(0.0, 0.0, 0.0, 1.0)
 		position := matrix.MulVec4(vector)
 		Ω(position).Should(HaveVec4Coords(1.1, 2.2, 3.3, 1.0))
-	})
-
-	It("QuickInverse", func() {
-		matrix = Mat4x4MulMany(
-			TranslationMat4x4(1.5, 2.3, 3.7),
-			RotationMat4x4(45.0, 0.5, 0.3, 0.2),
-		)
-		inverseMatrix := matrix.QuickInverse()
-		productMatrix := inverseMatrix.MulMat4x4(matrix)
-		Ω(productMatrix).Should(EqualMat4x4(IdentityMat4x4()))
-	})
-
-	It("Inverse", func() {
-		matrix := MakeMat4x4RowOrder(
-			4.0, 3.0, 2.0, 1.0,
-			1.1, 4.1, 3.1, 2.1,
-			2.2, 3.2, 4.2, 1.2,
-			3.3, 2.3, 1.3, 4.3,
-		)
-		inverseMatrix := matrix.Inverse()
-		productMatrix := inverseMatrix.MulMat4x4(matrix)
-		Ω(productMatrix).Should(EqualMat4x4(IdentityMat4x4()))
 	})
 
 	It("VectorMat4x4", func() {

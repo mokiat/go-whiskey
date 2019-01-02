@@ -9,12 +9,36 @@ type Mat4x4 struct {
 	M41, M42, M43, M44 float32
 }
 
+func (m Mat4x4) DirectionX() Vec3 {
+	return MakeVec3(m.M11, m.M21, m.M31)
+}
+
+func (m Mat4x4) DirectionY() Vec3 {
+	return MakeVec3(m.M12, m.M22, m.M32)
+}
+
+func (m Mat4x4) DirectionZ() Vec3 {
+	return MakeVec3(m.M13, m.M23, m.M33)
+}
+
+func (m Mat4x4) Translation() Vec3 {
+	return MakeVec3(m.M14, m.M24, m.M34)
+}
+
 func (m Mat4x4) Mul(value float32) Mat4x4 {
 	return Mat4x4{
 		m.M11 * value, m.M12 * value, m.M13 * value, m.M14 * value,
 		m.M21 * value, m.M22 * value, m.M23 * value, m.M24 * value,
 		m.M31 * value, m.M32 * value, m.M33 * value, m.M34 * value,
 		m.M41 * value, m.M42 * value, m.M43 * value, m.M44 * value,
+	}
+}
+
+func (m Mat4x4) MulVec3(vec Vec3) Vec3 {
+	return Vec3{
+		m.M11*vec.X + m.M12*vec.Y + m.M13*vec.Z + m.M14,
+		m.M21*vec.X + m.M22*vec.Y + m.M23*vec.Z + m.M24,
+		m.M31*vec.X + m.M32*vec.Y + m.M33*vec.Z + m.M34,
 	}
 }
 

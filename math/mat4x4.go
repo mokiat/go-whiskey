@@ -297,31 +297,3 @@ func Mat4x4MulMany(matrices ...Mat4x4) Mat4x4 {
 	}
 	return result
 }
-
-func (m Mat4x4) DirectionXCoords(x, y, z float32) Mat4x4 {
-	m.M11 = x
-	m.M21 = y
-	m.M31 = z
-	return m
-}
-
-func (m Mat4x4) DirectionYCoords(x, y, z float32) Mat4x4 {
-	m.M12 = x
-	m.M22 = y
-	m.M32 = z
-	return m
-}
-
-func (m Mat4x4) DirectionZCoords(x, y, z float32) Mat4x4 {
-	m.M13 = x
-	m.M23 = y
-	m.M33 = z
-	return m
-}
-
-func (m Mat4x4) RepositionCoords(x, y, z float32) Mat4x4 {
-	m.M14 = x
-	m.M24 = y
-	m.M34 = z
-	return m
-}

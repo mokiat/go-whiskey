@@ -144,38 +144,6 @@ var _ = Describe("Mat4x4", func() {
 		Ω(result).Should(HaveVec4Coords(0.0, 1.0, 0.0, 1.0))
 	})
 
-	It("DirectionXCoords", func() {
-		matrix := NullMat4x4()
-		matrix = matrix.DirectionXCoords(1.1, 2.1, 3.1)
-		vector := MakeVec4(2.0, 9.0, 9.0, 9.0)
-		position := matrix.MulVec4(vector)
-		Ω(position).Should(HaveVec4Coords(2.2, 4.2, 6.2, 0.0))
-	})
-
-	It("DirectionYCoords", func() {
-		matrix := NullMat4x4()
-		matrix = matrix.DirectionYCoords(1.1, 2.1, 3.1)
-		vector := MakeVec4(9.0, 2.0, 9.0, 9.0)
-		position := matrix.MulVec4(vector)
-		Ω(position).Should(HaveVec4Coords(2.2, 4.2, 6.2, 0.0))
-	})
-
-	It("DirectionZCoords", func() {
-		matrix := NullMat4x4()
-		matrix = matrix.DirectionZCoords(1.1, 2.1, 3.1)
-		vector := MakeVec4(9.0, 9.0, 2.0, 9.0)
-		position := matrix.MulVec4(vector)
-		Ω(position).Should(HaveVec4Coords(2.2, 4.2, 6.2, 0.0))
-	})
-
-	It("Reposition", func() {
-		matrix := IdentityMat4x4()
-		matrix = matrix.RepositionCoords(1.1, 2.2, 3.3)
-		vector := MakeVec4(0.0, 0.0, 0.0, 1.0)
-		position := matrix.MulVec4(vector)
-		Ω(position).Should(HaveVec4Coords(1.1, 2.2, 3.3, 1.0))
-	})
-
 	It("VectorMat4x4", func() {
 		matrix := VectorMat4x4(
 			MakeVec3(-1.0, 0.0, 0.0),

@@ -1,5 +1,7 @@
 package math
 
+import "fmt"
+
 type Mat4x4 struct {
 	M11, M12, M13, M14 float32
 	M21, M22, M23, M24 float32
@@ -103,6 +105,20 @@ func (m Mat4x4) QuickInverse() Mat4x4 {
 	)
 
 	return inverseRotate.MulMat4x4(inverseTranslate)
+}
+
+// GoString returns a string representation of this matrix
+// allowing values of Mat4x4 type to be nicely fmt printed
+// with the %#v flag.
+// Note that the matrix is printed in column-major order as
+// a sequence of 4D vectors.
+func (m Mat4x4) GoString() string {
+	return fmt.Sprintf("((%f, %f, %f, %f), (%f, %f, %f, %f), (%f, %f, %f, %f), (%f, %f, %f, %f))",
+		m.M11, m.M21, m.M31, m.M41,
+		m.M12, m.M22, m.M32, m.M42,
+		m.M13, m.M23, m.M33, m.M43,
+		m.M14, m.M24, m.M34, m.M44,
+	)
 }
 
 func NullMat4x4() Mat4x4 {

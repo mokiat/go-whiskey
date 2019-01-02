@@ -90,6 +90,11 @@ var _ = Describe("Vec2", func() {
 		Ω(distance).Should(EqualFloat32(3.162277660168379))
 	})
 
+	It("#GoString", func() {
+		representation := firstVector.GoString()
+		Ω(representation).Should(Equal("(2.000000, 3.000000)"))
+	})
+
 	It("NullVec2", func() {
 		Ω(NullVec2()).Should(HaveVec2Coords(0.0, 0.0))
 	})

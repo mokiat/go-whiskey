@@ -1,5 +1,7 @@
 package math
 
+import "fmt"
+
 type Vec3 struct {
 	X float32
 	Y float32
@@ -74,6 +76,10 @@ func (v Vec3) DistanceToCoords(x, y, z float32) float32 {
 
 func (v Vec3) DistanceToVec3(other Vec3) float32 {
 	return v.DistanceToCoords(other.X, other.Y, other.Z)
+}
+
+func (v Vec3) GoString() string {
+	return fmt.Sprintf("(%f, %f, %f)", v.X, v.Y, v.Z)
 }
 
 func NullVec3() Vec3 {

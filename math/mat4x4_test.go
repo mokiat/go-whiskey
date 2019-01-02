@@ -54,6 +54,16 @@ var _ = Describe("Mat4x4", func() {
 		}))
 	})
 
+	It("#GoString", func() {
+		representation := matrix.GoString()
+		Ω(representation).Should(Equal("(" +
+			"(0.100000, 0.500000, 0.900000, 1.300000), " +
+			"(0.200000, 0.600000, 1.000000, 1.400000), " +
+			"(0.300000, 0.700000, 1.100000, 1.500000), " +
+			"(0.400000, 0.800000, 1.200000, 1.600000))",
+		))
+	})
+
 	It("NullMat4x4", func() {
 		Ω(NullMat4x4()).Should(EqualMat4x4(Mat4x4{
 			M11: 0.0, M12: 0.0, M13: 0.0, M14: 0.0,

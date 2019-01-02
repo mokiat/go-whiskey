@@ -37,6 +37,11 @@ var _ = Describe("Vec4", func() {
 		Ω(result).Should(HaveVec4Coords(0.5, 1.0, 1.5, 2.0))
 	})
 
+	It("#GoString", func() {
+		representation := preconfiguredVector.GoString()
+		Ω(representation).Should(Equal("(1.000000, 2.000000, 3.000000, 4.000000)"))
+	})
+
 	It("NullVec4", func() {
 		Ω(NullVec4()).Should(HaveVec4Coords(0.0, 0.0, 0.0, 0.0))
 	})
